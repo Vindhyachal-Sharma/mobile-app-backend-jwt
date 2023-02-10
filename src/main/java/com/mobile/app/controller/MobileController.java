@@ -38,11 +38,11 @@ public class MobileController {
 	{
 		return mobileService.addMobileByCategoryId(mobile ,id);
 	}
-	@PostMapping("/mobile")
-	public Mobile addMobile(@RequestBody Mobile mobile)throws MobileException
-	{
-		return mobileService.addMobile(mobile);
-	}
+//	@PostMapping("/mobile")
+//	public Mobile addMobile(@RequestBody Mobile mobile)throws MobileException
+//	{
+//		return mobileService.addMobile(mobile);
+//	}
 
 	
 	@GetMapping("/mobile/{id}")

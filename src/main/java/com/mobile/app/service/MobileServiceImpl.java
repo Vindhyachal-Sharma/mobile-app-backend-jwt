@@ -34,20 +34,20 @@ public class MobileServiceImpl implements MobileService {
 		return newMobile;
 	}
 
-	@Override
-	public Mobile addMobile(Mobile mobile) throws MobileException {
-		Optional<Category> categoryOpt = this.categoryRepository.findById(mobile.getCategory().getId());
-		if(categoryOpt.isEmpty()) {
-			throw new MobileException("Need to add this category of mobile");
-		}
-		Category category = categoryOpt.get();
-
-		Mobile mob = new Mobile(mobile.getMobileId(), mobile.getMobileName(), mobile.getMobileCost(), mobile.getMfd(),
-				mobile.getModelNumber(), mobile.getCompanyName(), category);
-
-		return this.mobileRepository.save(mob);
-		
-	}
+//	@Override
+//	public Mobile addMobile(Mobile mobile) throws MobileException {
+//		Optional<Category> categoryOpt = this.categoryRepository.findById(mobile.getCategory().getId());
+//		if(categoryOpt==null) {
+//			throw new MobileException("Need to add this category of mobile");
+//		}
+//		Category category = categoryOpt.get();
+//
+//		Mobile mob = new Mobile(mobile.getMobileId(), mobile.getMobileName(), mobile.getMobileCost(), mobile.getMfd(),
+//				mobile.getModelNumber(), mobile.getCompanyName(), category);
+//
+//		return this.mobileRepository.save(mob);
+//		
+//	}
 
 	@Override
 	public Mobile getMobileById(Integer id) throws MobileException {

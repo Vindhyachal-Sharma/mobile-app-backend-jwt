@@ -9,7 +9,7 @@ public interface MobileService {
 
 	public Mobile addMobileByCategoryId(Mobile mobile, Integer categoryid) throws MobileException;
 
-	public Mobile addMobile(Mobile newMobile) throws MobileException;
+//	public Mobile addMobile(Mobile newMobile) throws MobileException;
 
 	public Mobile getMobileById(Integer MobileId) throws MobileException;
 
