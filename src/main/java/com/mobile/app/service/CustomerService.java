@@ -11,7 +11,7 @@ public interface CustomerService {
 	
 	Customer updateCustomer(Customer updateCustomer) throws CustomerException;
 	
-	Customer deleteCustomerById(Integer customerId)throws CustomerException;
+	String deleteCustomerById(Integer customerId)throws CustomerException;
 
 	Customer getCustomerById(Integer customerId) throws CustomerException;
 	

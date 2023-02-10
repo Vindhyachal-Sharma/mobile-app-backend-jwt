@@ -47,7 +47,7 @@ public class CustomerController {
 	}
 
 	@DeleteMapping("/customer/{id}")
-	public Customer deleteCustomerById(@PathVariable("id") Integer customerId) throws CustomerException {
+	public String deleteCustomerById(@PathVariable("id") Integer customerId) throws CustomerException {
 
 		return this.customerService.deleteCustomerById(customerId);
 

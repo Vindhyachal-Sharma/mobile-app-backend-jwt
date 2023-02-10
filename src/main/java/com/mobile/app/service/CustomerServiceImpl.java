@@ -35,31 +35,30 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public Customer updateCustomer(Customer updateCustomer) throws CustomerException {
 		Optional<Customer> customerOpt = this.customerRepository.findById(updateCustomer.getId());
-		if(customerOpt.isEmpty())
+		if (customerOpt.isEmpty())
 			throw new CustomerException("Customer id does not exist to update.");
-		
+
 		Customer customer = customerOpt.get();
 		customer.setName(updateCustomer.getName());
 		customer.setMobileNo(updateCustomer.getMobileNo());
 		customer.setEmail(updateCustomer.getEmail());
-		
+
 		return this.customerRepository.save(updateCustomer);
 	}
 
 	@Override
-	public Customer deleteCustomerById(Integer customerId) throws CustomerException {
-
+	public String deleteCustomerById(Integer customerId) throws CustomerException {
 		Optional<Customer> optCustomer = this.customerRepository.findById(customerId);
 		if (optCustomer.isEmpty())
 			throw new CustomerException("Customer id does not exists to delete !");
 		Customer customer = optCustomer.get();
-		this.customerRepository.delete(customer);
-		return customer;
+		this.customerRepository.deleteById(customerId);
+		return "Id Deleted Successfully";
 	}
 
 	@Override
 	public List<Customer> getAllCustomers() {
-	
+
 		return customerRepository.findAll();
 	}
 

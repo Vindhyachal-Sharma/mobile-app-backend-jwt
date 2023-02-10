@@ -72,17 +72,17 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public String ConfirmOrder(Orders order, Integer id) {
+	public String ConfirmOrder( Integer id) {
 		return null;
 	}
 
 	@Override
-	public String CancelOrder(Orders order, Integer id) {
+	public String CancelOrder( Integer id) {
 		return null;
 	}
 
 	@Override
-	public String checkCustomerStatusById(Customer customer, Integer id) {
+	public String checkCustomerStatusById( Integer id) {
 		return null;
 	}
 
@@ -131,7 +131,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public List<Mobile> getAllMobilesByCategory() {
+	public List<Mobile> getAllMobilesByCategory(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -28,13 +28,13 @@ public interface AdminService {
 
 	Orders addOrder(Orders order, Integer id);
 
-	String ConfirmOrder(Orders order, Integer id);
+	String ConfirmOrder( Integer id);
 
-	String CancelOrder(Orders order, Integer id);
+	String CancelOrder( Integer id);
 
 	// Admin beACustomer(Admin admin, Integer id);
 
-	String checkCustomerStatusById(Customer customer, Integer id);
+	String checkCustomerStatusById(Integer id);
 
 	Customer getCustomerById( Integer id) throws CustomerException;
 
@@ -48,7 +48,7 @@ public interface AdminService {
 
 	List<Mobile> getAllMobiles();
 
-	List<Mobile> getAllMobilesByCategory();
+	List<Mobile> getAllMobilesByCategory(Integer id);
 
 	List<Orders> getAllOrders();
 
