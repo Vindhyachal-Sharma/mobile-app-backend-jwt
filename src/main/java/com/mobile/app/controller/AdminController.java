@@ -68,42 +68,42 @@ public class AdminController {
 		return adminService.addMobile(mobile, id);
 	}
 
-	@PutMapping("admin/updatemobilecost/{id}")
-	public Mobile changeMobileCostById(@RequestBody Mobile mobile, @PathVariable("id") Integer id)
-			throws MobileException {
+//	@PutMapping("admin/updatemobilecost/{id}")
+//	public Mobile changeMobileCostById(@RequestBody Mobile mobile, @PathVariable("id") Integer id)
+//			throws MobileException {
+//
+//		return adminService.changeMobileCostById(mobile, id);
+//	}
 
-		return adminService.changeMobileCostById(mobile, id);
-	}
+//	@PutMapping("admin/updatemobilequantity/{id}")
+//	public Mobile changeMobileQuantityById(@RequestBody Mobile mobile, @PathVariable("id") Integer id)
+//			throws MobileException {
+//
+//		return adminService.changeMobileQuantityById(mobile, id);
+//	}
 
-	@PutMapping("admin/updatemobilequantity/{id}")
-	public Mobile changeMobileQuantityById(@RequestBody Mobile mobile, @PathVariable("id") Integer id)
-			throws MobileException {
+//	@PutMapping("admin/addorder/{id}")
+//	public Orders addOrder(@RequestBody Orders orders, @PathVariable("id") Integer id) {
+//
+//		return adminService.addOrder(orders, id);
+//	}
 
-		return adminService.changeMobileQuantityById(mobile, id);
-	}
-
-	@PutMapping("admin/addorder/{id}")
-	public Orders addOrder(@RequestBody Orders orders, @PathVariable("id") Integer id) {
-
-		return adminService.addOrder(orders, id);
-	}
-
-	@GetMapping("admin/confirmOrder/{id}")
-	public String ConfirmOrder( @PathVariable("id") Integer id) throws MobileException {
-
-		return adminService.ConfirmOrder( id);
-	}
-	
-	@GetMapping("admin/cancelorder/{id}")
-	public String CancelOrder(@RequestBody Orders order, @PathVariable("id") Integer id) throws MobileException {
-
-		return adminService.CancelOrder(id);
-	}
-	@GetMapping("admin/checkCustomerStatusById/{id}")
-	public String checkCustomerStatusById(@PathVariable("id") Integer id) throws MobileException {
-
-		return adminService.checkCustomerStatusById(id);
-	}
+//	@GetMapping("admin/confirmOrder/{id}")
+//	public String ConfirmOrder( @PathVariable("id") Integer id) throws MobileException {
+//
+//		return adminService.ConfirmOrder( id);
+//	}
+//	
+//	@GetMapping("admin/cancelorder/{id}")
+//	public String CancelOrder(@RequestBody Orders order, @PathVariable("id") Integer id) throws MobileException {
+//
+//		return adminService.CancelOrder(id);
+//	}
+//	@GetMapping("admin/checkCustomerStatusById/{id}")
+//	public String checkCustomerStatusById(@PathVariable("id") Integer id) throws MobileException {
+//
+//		return adminService.checkCustomerStatusById(id);
+//	}
 	@GetMapping("admin/getCustomerById/{id}")
 	public Customer getCustomerById(@PathVariable("id") Integer id) throws MobileException, CustomerException {
 

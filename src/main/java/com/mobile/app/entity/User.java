@@ -1,28 +1,31 @@
 package com.mobile.app.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="Users")
+@Table(name = "Users")
 public class User {
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 
 	private String username;
 
-	private String role;
+	private String password;
 
-	private Boolean isType;
+	private String role; 
 
-	public User(Integer id, String username, String role, Boolean isType) {
+	public User(Integer id, String username, String password, String role) {
 		super();
 		this.id = id;
 		this.username = username;
+		this.password = password;
 		this.role = role;
-		this.isType = isType;
 	}
 
 	public Integer getId() {
@@ -41,6 +44,14 @@ public class User {
 		this.username = username;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public String getRole() {
 		return role;
 	}
@@ -49,13 +60,6 @@ public class User {
 		this.role = role;
 	}
 
-	public Boolean getIsType() {
-		return isType;
-	}
 
-	public void setIsType(Boolean isType) {
-		this.isType = isType;
-	}
-	
 
 }
