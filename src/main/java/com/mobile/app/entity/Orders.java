@@ -1,10 +1,12 @@
 package com.mobile.app.entity;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -13,6 +15,7 @@ import javax.persistence.OneToOne;
 public class Orders {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
 	private LocalDate orderDate;
@@ -26,14 +29,14 @@ public class Orders {
 	private Payment payment;
 
 	@OneToMany
-	private Map<Integer, Mobile> mobilesMap = new HashMap<>();
+	private List<Mobile> mobiles = new ArrayList<>();
 
 	public Orders() {
 		super();
 	}
 
 	public Orders(Integer id, LocalDate orderDate, LocalDate dispatchDate, Double cost, Double totalCost,
-			Integer quantity, String status, Payment payment, Map<Integer, Mobile> mobilesMap) {
+			Integer quantity, String status, Payment payment, List<Mobile> mobiles) {
 		super();
 		this.id = id;
 		this.orderDate = orderDate;
@@ -43,7 +46,7 @@ public class Orders {
 		this.quantity = quantity;
 		this.status = status;
 		this.payment = payment;
-		this.mobilesMap = mobilesMap;
+		this.mobiles = mobiles;
 	}
 
 	public Integer getId() {
@@ -110,12 +113,14 @@ public class Orders {
 		this.payment = payment;
 	}
 
-	public Map<Integer, Mobile> getMobilesMap() {
-		return mobilesMap;
+	
+
+	public List<Mobile> getMobiles() {
+		return mobiles;
 	}
 
-	public void setMobilesMap(Map<Integer, Mobile> mobilesMap) {
-		this.mobilesMap = mobilesMap;
+	public void setMobiles(List<Mobile> mobiles) {
+		this.mobiles = mobiles;
 	}
 
 }

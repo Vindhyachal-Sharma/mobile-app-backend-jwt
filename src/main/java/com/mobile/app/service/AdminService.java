@@ -14,13 +14,13 @@ import com.mobile.app.exception.MobileException;
 
 public interface AdminService {
 
-	Category addCategory(Category category, Integer id) throws CategoryException;
+	Category addCategory(Category category) throws CategoryException;
 
-	String addCategoryDetails(Category category, Integer id) throws CategoryException;
+	String updateCategoryDetails(Category category) throws CategoryException;
 
-	Mobile addMobile(Mobile mobile, Integer id) throws MobileException;
+	Mobile addMobile(Mobile mobile, Integer id) throws CategoryException;
 
-	String updatemobileDetails(Mobile mobile, Integer id) throws MobileException;
+	String updatemobileDetails(Mobile mobile) throws MobileException;
 
 	Mobile changeMobileCostById(Mobile mobile, Integer id);
 

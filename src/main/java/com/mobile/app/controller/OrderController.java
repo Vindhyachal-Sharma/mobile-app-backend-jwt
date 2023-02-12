@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mobile.app.entity.Orders;
 import com.mobile.app.exception.CustomerException;
 import com.mobile.app.exception.OrderException;
+import com.mobile.app.service.CustomerService;
 import com.mobile.app.service.OrderService;
 
 @RestController
@@ -21,6 +22,9 @@ public class OrderController {
 
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private CustomerService customerService;
 
 	// ---------------------------------------------Services
 
@@ -49,16 +53,17 @@ public class OrderController {
 		return orderService.getOrderById(orderId);
 	}
 
-	@PutMapping("/order/")
-	public String updateOrder(@RequestBody Orders order, @PathVariable("id") Integer id) {
+	@PutMapping("/order")
+	public String updateOrder(@RequestBody Orders order) {
 
-		return orderService.updateOrder(order, id);
+		return orderService.updateOrder(order);
 	}
 
 	@DeleteMapping("/order/{id}")
-	public Orders deleteOrderById(@PathVariable("id") Integer orderId) throws OrderException {
+	public String deleteOrderById(@RequestBody Integer customerId, @PathVariable("id") Integer orderId)
+			throws OrderException, CustomerException {
 
-		return this.orderService.deleteOrderById(orderId);
+		return this.customerService.deleteOrdersFromCustomerById(customerId,orderId);
 
 	}
 

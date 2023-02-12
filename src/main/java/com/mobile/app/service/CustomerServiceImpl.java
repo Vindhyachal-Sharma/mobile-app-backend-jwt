@@ -6,15 +6,29 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mobile.app.entity.Cart;
 import com.mobile.app.entity.Customer;
+import com.mobile.app.entity.Orders;
+import com.mobile.app.exception.CartException;
 import com.mobile.app.exception.CustomerException;
+import com.mobile.app.exception.OrderException;
 import com.mobile.app.repository.CustomerRepository;
+import com.mobile.app.repository.OrderRepository;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
+
+	@Autowired
+	private OrderRepository orderRepository;
+
+	@Autowired
+	private CartService cartService;
+	
+	@Autowired 
+	private OrderService orderService;
 
 	@Override
 	public Customer addCustomer(Customer newCustomer) {
@@ -61,5 +75,60 @@ public class CustomerServiceImpl implements CustomerService {
 
 		return customerRepository.findAll();
 	}
+
+	@Override
+	public String deleteCartFromCustomerById(Integer customerId, Integer cartId)
+			throws CustomerException, CartException {
+		Cart deletedCart = null;
+		Customer customer = customerRepository.findById(customerId).get();
+
+		if (customer == null) {
+			throw new CustomerException("Customer Not Found");
+		} else {
+			if (customer.getCart() != null) {
+				cartService.deleteCartById(cartId);
+				customerRepository.save(customer);
+
+			} else
+				throw new CartException("Requested Cart" + cartId + "Not found");
+		}
+		return "Cart deleted Succesfully";
+
+	}
+	
+	@Override
+	public List<Orders> getAllOrdersOfCustomer(Integer customerId) throws CustomerException{
+		//return iAppointmentServiceImpl.getAppointmentById(userId);
+		Customer customer=getCustomerById(customerId);
+		
+		return customer.getOrders();
+	}
+	@Override
+	public String deleteOrdersFromCustomerById(Integer customerId, Integer orderId)
+			throws CustomerException,OrderException {
+		Orders deletedOrder = null;
+		Orders orders = orderRepository.findById(orderId).get();
+		Customer customer = customerRepository.findById(customerId).get();
+
+		if (customer == null) {
+			throw new CustomerException("Customer Not Found");
+		}  else {
+			if (orders.getMobiles() != null) {
+				for (Orders order : customer.getOrders()) {
+					if (order.getId() == orderId)
+						deletedOrder = order;
+				}
+				customer.getOrders().remove(deletedOrder);
+				orderService.deleteOrderById(orderId);
+				customerRepository.save(customer);
+			} else
+				throw new OrderException("Requested Order" + orderId + "Not found");
+		}
+		return "Mobile deleted Succesfully";
+	
+	
+	}
+
+	
 
 }

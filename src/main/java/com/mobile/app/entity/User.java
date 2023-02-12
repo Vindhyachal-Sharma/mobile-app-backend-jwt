@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "Users")
@@ -13,17 +15,23 @@ public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
-
-	private String username;
-
+	@NotBlank(message = "Name is mandatory")
+	@Pattern(regexp = "[a-zA-Z0-9]{5,}",message = "name must be min 5 chars, special chars not allowed.")
+	private String userName;
+	@Pattern(regexp = "[a-zA-Z0-9]{8,}", message = "pwd must be 8 chars, no special chars are alllowed")
 	private String password;
 
 	private String role; 
 
-	public User(Integer id, String username, String password, String role) {
+	public User() {
 		super();
-		this.id = id;
-		this.username = username;
+		
+	}
+
+	public User(Integer id, String userName, String password, String role) {
+		super();
+		this.id = id;  
+		this.userName = userName;
 		this.password = password;
 		this.role = role;
 	}
@@ -36,12 +44,12 @@ public class User {
 		this.id = id;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getPassword() {

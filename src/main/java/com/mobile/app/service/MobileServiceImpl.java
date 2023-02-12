@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.mobile.app.entity.Category;
 import com.mobile.app.entity.Mobile;
+import com.mobile.app.exception.CategoryException;
 import com.mobile.app.exception.MobileException;
 import com.mobile.app.repository.CategoryRepository;
 import com.mobile.app.repository.MobileRepository;
@@ -21,33 +22,38 @@ public class MobileServiceImpl implements MobileService {
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
+	@Autowired
+	private CategoryService categoryService;
+	
 	@Override
-	public Mobile addMobileByCategoryId(Mobile mobile, Integer id) throws MobileException {
-		Optional<Category> optCategory = this.categoryRepository.findById(id);
-		if(optCategory.isEmpty()) {
-		  throw new MobileException("Category does not exist!!");	
+	public Mobile addMobileToCategoryByCategoryId(Mobile mobile, Integer categoryId) throws CategoryException {
+				Category category=categoryService.getCategoryById(categoryId);
+		//		Optional<Category> optCategory = this.categoryRepository.findById(categoryId);
+		if(category==null) {
+		  throw new CategoryException("Category does not exist!!");	
 		}
-		Category foundCategory = optCategory.get();
+		Category foundCategory = category;
 		Mobile newMobile = this.mobileRepository.save(mobile);// add new mobile to DB
 		foundCategory.getMobiles().add(newMobile); // add managed mobile to catogory list
-		this.categoryRepository.save(foundCategory); // persist category
+		this.categoryRepository.save(foundCategory); // persist category 
+		return newMobile;
+	}
+	
+	@Override
+	public Mobile addMobileToCart(Mobile mobile,Integer categoryId, Integer cartId) throws CategoryException, MobileException {
+		
+		Optional<Category> category = categoryRepository.findById(categoryId);
+		if (category.isEmpty()) {
+			throw new CategoryException("Category Not Found");
+
+		}
+		Category foundCategory =category.get();
+		Mobile newMobile=addMobileToCategoryByCategoryId(mobile,categoryId);
+		foundCategory.getMobiles().add(newMobile);
 		return newMobile;
 	}
 
-//	@Override
-//	public Mobile addMobile(Mobile mobile) throws MobileException {
-//		Optional<Category> categoryOpt = this.categoryRepository.findById(mobile.getCategory().getId());
-//		if(categoryOpt==null) {
-//			throw new MobileException("Need to add this category of mobile");
-//		}
-//		Category category = categoryOpt.get();
-//
-//		Mobile mob = new Mobile(mobile.getMobileId(), mobile.getMobileName(), mobile.getMobileCost(), mobile.getMfd(),
-//				mobile.getModelNumber(), mobile.getCompanyName(), category);
-//
-//		return this.mobileRepository.save(mob);
-//		
-//	}
+
 
 	@Override
 	public Mobile getMobileById(Integer id) throws MobileException {
@@ -59,27 +65,31 @@ public class MobileServiceImpl implements MobileService {
 	}
 
 	@Override
-	public String updateMobileDetails(Mobile mobile,Integer mobileId)throws MobileException {
-		Optional<Mobile> existingMobile = mobileRepository.findById(mobileId);
+	public String updateMobileDetails(Mobile mobile)throws MobileException {
+		Optional<Mobile> existingMobile = mobileRepository.findById(mobile.getMobileId());
 		if(!existingMobile.isPresent())
 		{
 			throw new MobileException("Mobile not found");
 		}
 		Mobile updateMobile=existingMobile.get();
-		updateMobile.setMobileId(mobileId);
+		updateMobile.setMobileId(mobile.getMobileId());
+		updateMobile.setMobileName(mobile.getMobileName());
+		updateMobile.setMfd(mobile.getMfd());
+		updateMobile.setModelNumber(mobile.getModelNumber());
+		updateMobile.setCompanyName(mobile.getCompanyName());
 		updateMobile.setMobileCost(mobile.getMobileCost());
 	    this.mobileRepository.save(updateMobile);
 	    
 	    return "Mobile details updated successfully";
 	}
 	@Override
-	public Mobile deleteMobileById(Integer MobileId)throws MobileException {
-		Optional<Mobile> optMobile = this.mobileRepository.findById(MobileId);
+	public String deleteMobileById(Integer mobileId)throws MobileException {
+		Optional<Mobile> optMobile = this.mobileRepository.findById(mobileId);
 		if (optMobile.isEmpty())
 			throw new MobileException("Mobile id does not exists to delete !");
 		Mobile mobile = optMobile.get();
-		this.mobileRepository.delete(mobile);
-		return mobile;
+		this.mobileRepository.deleteById(mobileId);
+		return "Mobile Deleted Successfully";
 		
 	}
 

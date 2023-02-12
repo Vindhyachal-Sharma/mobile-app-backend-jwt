@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mobile.app.entity.Mobile;
+import com.mobile.app.exception.CategoryException;
 import com.mobile.app.exception.MobileException;
+import com.mobile.app.service.CategoryService;
 import com.mobile.app.service.MobileService;
 
 @RestController
@@ -20,6 +22,9 @@ public class MobileController {
 
 	@Autowired
 	private MobileService mobileService;
+
+	@Autowired
+	private CategoryService categoryService;
 
 //	----------------------------------------MobileService----------------
 //	public Mobile addMobileByCategory(Mobile mobile, Integer categoryId) throws MobileException;
@@ -32,11 +37,11 @@ public class MobileController {
 //	public List<Mobile> getMobilesByPrice(Integer cost) throws MobileException;
 //	public List<Mobile> getMobilesByModelNumber(String modelNumber) throws MobileException;
 //	public List<Mobile> getMobilesByCompanyName(String companyName) throws MobileException;
-	
-	@PostMapping("/mobile/{id}")
-	public Mobile addMobileByCategory(@RequestBody Mobile mobile,@PathVariable ("id")Integer id)throws MobileException
-	{
-		return mobileService.addMobileByCategoryId(mobile ,id);
+
+	@PostMapping("/mobile/{categoryId}")
+	public Mobile addMobileByCategory(@RequestBody Mobile mobile, @PathVariable("categoryId") Integer categoryId)
+			throws CategoryException {
+		return mobileService.addMobileToCategoryByCategoryId(mobile, categoryId);
 	}
 //	@PostMapping("/mobile")
 //	public Mobile addMobile(@RequestBody Mobile mobile)throws MobileException
@@ -44,48 +49,50 @@ public class MobileController {
 //		return mobileService.addMobile(mobile);
 //	}
 
-	
-	@GetMapping("/mobile/{id}")
-	public Mobile getMobileById(@PathVariable("id") Integer id) throws MobileException 
-	{
+	@GetMapping("/mobiles/{id}")
+	public Mobile getMobileById(@PathVariable("id") Integer id) throws MobileException {
 
 		return mobileService.getMobileById(id);
 	}
-	@PutMapping("/updateMobile/{id}")
-	public String updateMobileDetails(@RequestBody Mobile mobile,@PathVariable("id") Integer id)throws MobileException {
-		
-		return mobileService.updateMobileDetails(mobile,id);
+
+	@PutMapping("/updateMobile")
+	public String updateMobileDetails(@RequestBody Mobile mobile) throws MobileException {
+
+		return mobileService.updateMobileDetails(mobile);
 	}
-	@DeleteMapping("/mobile/{id}") 
-	public Mobile deleteMobileById(@PathVariable("id") Integer id) throws MobileException {
-		
-		return this.mobileService.deleteMobileById(id);
+
+	@DeleteMapping("/mobile/{mobileId}")
+	public String deleteMobileById(@RequestBody Integer categoryId, @PathVariable("mobileId") Integer mobileId)
+			throws MobileException, CategoryException {
+
+		return this.categoryService.removeMobileFromCategoryById(categoryId, mobileId);
 	}
+
 	@GetMapping("/mobiles")
-	public List<Mobile> getAllMobiles()
-	{
+	public List<Mobile> getAllMobiles() {
 		return mobileService.getAllMobiles();
 	}
-	@GetMapping("/mobile/{mobileName}")
-	public List<Mobile> getMobilesByName(@PathVariable ("mobileName")String mobileName) throws MobileException
-	{
+
+	@GetMapping("/mobileN/{mobileName}")
+	public List<Mobile> getMobilesByName(@PathVariable("mobileName") String mobileName) throws MobileException {
 		return mobileService.getMobilesByName(mobileName);
 	}
-	@GetMapping("/mobile/{cost}")
-	public List<Mobile> getMobilesByPrice(@PathVariable ("cost")Double cost) throws MobileException
-	{
+
+	@GetMapping("/mobileC/{cost}")
+	public List<Mobile> getMobilesByPrice(@PathVariable("cost") Double cost) throws MobileException {
 		return mobileService.getMobilesByMobileCost(cost);
 	}
-	@GetMapping("/mobile/{modelNumber}")
-	public List<Mobile> getMobilesByModelNumber(@PathVariable ("modelNumber")String modelNumber) throws MobileException
-	{
+
+	@GetMapping("/mobilemn/{modelNumber}")
+	public List<Mobile> getMobilesByModelNumber(@PathVariable("modelNumber") String modelNumber)
+			throws MobileException {
 		return mobileService.getMobilesByModelNumber(modelNumber);
 	}
-	@GetMapping("/mobile/{companyName}")
-	public List<Mobile> getMobilesByCompanyName(@PathVariable ("companyName")String companyName) throws MobileException
-	{
+
+	@GetMapping("/mobileCn/{companyName}")
+	public List<Mobile> getMobilesByCompanyName(@PathVariable("companyName") String companyName)
+			throws MobileException {
 		return mobileService.getMobilesByCompanyName(companyName);
 	}
-	
-}
 
+}

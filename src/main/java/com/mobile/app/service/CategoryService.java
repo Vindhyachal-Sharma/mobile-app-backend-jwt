@@ -4,17 +4,22 @@ import java.util.List;
 
 import com.mobile.app.entity.Category;
 import com.mobile.app.exception.CategoryException;
+import com.mobile.app.exception.MobileException;
 
 public interface CategoryService {
 	
-	Category addCategory(Category category,Integer id) throws CategoryException;
+	Category addCategory(Category category) throws CategoryException;
 	
-	String updateCategory(Category category,Integer id) throws CategoryException;
+	String updateCategory(Category category) throws CategoryException;
 	
 	Category getCategoryById(Integer id) throws CategoryException;
 	
-	Category deleteCategoryById(Integer id);
+	String deleteCategoryById(Integer id) throws CategoryException;
 	
 	List<Category>getAllCategories();
+	
+	String removeMobileFromCategoryById(Integer categoryId,Integer mobileId)throws MobileException, CategoryException;
+	
+	
 
 }

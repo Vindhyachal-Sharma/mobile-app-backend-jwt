@@ -36,24 +36,24 @@ public class AdminServiceImpl implements AdminService {
 	private OrderService orderService;
 
 	@Override
-	public Category addCategory(Category category, Integer id) throws CategoryException {
-		return categoryService.addCategory(category, id);
+	public Category addCategory(Category category) throws CategoryException {
+		return categoryService.addCategory(category);
 	}
 
 	@Override
-	public String addCategoryDetails(Category category, Integer id) throws CategoryException {
-		return categoryService.updateCategory(category, id);
+	public String updateCategoryDetails(Category category) throws CategoryException {
+		return categoryService.updateCategory(category);
 	}
 
 	@Override
-	public Mobile addMobile(Mobile mobile, Integer id) throws MobileException {
+	public Mobile addMobile(Mobile mobile, Integer id) throws CategoryException {
 
-		return mobileService.addMobileByCategoryId(mobile, id);
+		return mobileService.addMobileToCategoryByCategoryId(mobile, id);
 	}
 
 	@Override
-	public String updatemobileDetails(Mobile mobile, Integer id) throws MobileException {
-		return mobileService.updateMobileDetails(mobile, id);
+	public String updatemobileDetails(Mobile mobile) throws MobileException {
+		return mobileService.updateMobileDetails(mobile);
 	}
 
 	@Override

@@ -1,28 +1,30 @@
 package com.mobile.app.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class Payment {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer paymentId;
 	private PaymentMode paymentMode;
 	private PaymentStatus paymentStatus;
-	
-	enum PaymentMode{
-		CASH_ON_DELIVERY,CARD
+
+	enum PaymentMode {
+		CASH_ON_DELIVERY, CARD
 	}
-	
-	enum PaymentStatus{
-		PENDING,SUCCESSFUL
+
+	enum PaymentStatus {
+		PENDING, SUCCESSFUL
 	}
-	
 
 	public Payment() {
 		super();
-		
+
 	}
 
 	public Payment(Integer paymentId, PaymentMode paymentMode, PaymentStatus paymentStatus) {
@@ -55,7 +57,5 @@ public class Payment {
 	public void setPaymentStatus(PaymentStatus paymentStatus) {
 		this.paymentStatus = paymentStatus;
 	}
-	
-	
-	
+
 }

@@ -29,10 +29,10 @@ public class CategoryController {
 //	List<Category>getAllCategory();
 
 	@PostMapping("/category")
-	public Category registerCategory(@RequestBody Category category, @PathVariable("id") Integer id)
+	public Category registerCategory(@RequestBody Category category)
 			throws CategoryException {
 
-		return categoryService.addCategory(category, id);
+		return categoryService.addCategory(category);
 	}
 
 	@GetMapping("/category/{id}")
@@ -42,14 +42,14 @@ public class CategoryController {
 	}
 
 	@PutMapping("/category")
-	public String updateCategory(@RequestBody Category updateCategory, @PathVariable("id") Integer id)
+	public String updateCategory(@RequestBody Category updateCategory)
 			throws CategoryException {
 
-		return categoryService.updateCategory(updateCategory,id);
+		return categoryService.updateCategory(updateCategory);
 	}
 
 	@DeleteMapping("/category/{id}")
-	public Category deleteCategoryById(@PathVariable("id") Integer categoryId) throws CategoryException {
+	public String deleteCategoryById(@PathVariable("id") Integer categoryId) throws CategoryException {
 
 		return this.categoryService.deleteCategoryById(categoryId);
 

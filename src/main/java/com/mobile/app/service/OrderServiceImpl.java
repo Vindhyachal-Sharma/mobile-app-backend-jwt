@@ -60,27 +60,27 @@ public class OrderServiceImpl implements OrderService {
 			throw new CustomerException("Customer Id Not Found");
 
 		}
-		Customer foundCustomer =customer.get();
-		Orders newOrders=addOrder(Order);
+		Customer foundCustomer = customer.get();
+		Orders newOrders = addOrder(Order);
 		foundCustomer.getOrders().add(newOrders);
 		return newOrders;
 	}
 
 	@Override
-	public String updateOrder(Orders order, Integer id) {
-		Optional<Orders> existingOrder = orderRepository.findById(id);
+	public String updateOrder(Orders order) {
+		Optional<Orders> existingOrder = orderRepository.findById(order.getId());
 		if (!existingOrder.isPresent()) {
 			return "No Order Available to update ";
 		}
 		Orders updatedOrder = existingOrder.get();
-		updatedOrder.setId(id);
+		updatedOrder.setId(order.getId());
 		updatedOrder.setOrderDate(order.getOrderDate());
-		;
+
 		updatedOrder.setDispatchDate(order.getDispatchDate());
-		;
+
 		updatedOrder.setCost(order.getCost());
 		updatedOrder.setQuantity(order.getQuantity());
-		;
+
 		updatedOrder.setPayment(order.getPayment());
 		orderRepository.save(updatedOrder);
 

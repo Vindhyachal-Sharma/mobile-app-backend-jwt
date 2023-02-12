@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 import com.mobile.app.entity.Cart;
 import com.mobile.app.entity.Customer;
 import com.mobile.app.entity.Mobile;
+import com.mobile.app.entity.Orders;
 import com.mobile.app.exception.CartException;
 import com.mobile.app.exception.CustomerException;
 import com.mobile.app.exception.MobileException;
 import com.mobile.app.repository.CartRepository;
+
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -27,26 +29,28 @@ public class CartServiceImpl implements CartService {
 	private MobileService mobileService;
 
 	@Override
-	public Cart addMobileToCart(Mobile mobile, Integer id) throws CustomerException, MobileException {
+	public Cart addMobileToCartByCustomerId(Mobile mobile, Integer customerId)
+			throws CustomerException, MobileException {
 		Cart cart = null;
-		Customer customer = customerService.getCustomerById(id);
+		Customer customer = customerService.getCustomerById(customerId);
 
 		Mobile mob = mobileService.getMobileById(mobile.getMobileId());
 
 		if (customer.getCart() == null) {
 			cart = new Cart();
-			cart.getMobilesMap().put(mobile.getMobileId(), mob);
+			cart.getMobiles().add(mobile);
 
 			cart = this.cartRepository.save(cart);
 			customer.setCart(cart);
 
 		} else {
 			cart = customer.getCart();
-			cart.getMobilesMap().put(mobile.getMobileId(), mob);
-			cart.setQuantity(updateMobileItemQuantity(mobile, id));
+			cart.getMobiles().add(mobile);
+			cart.setQuantity(updateMobileItemQuantity(mobile, customerId));
 		}
 
 		return this.cartRepository.save(cart);
+
 	}
 
 	@Override
@@ -82,15 +86,30 @@ public class CartServiceImpl implements CartService {
 //	}
 
 	@Override
-	public Cart removeMobileFromCart(Mobile mobile, Integer id) throws CartException {
-		// TODO Auto-generated method stub
-		return null;
+	public Cart removeMobileFromCart(Mobile mobile, Integer customerId)
+			throws CartException, CustomerException, MobileException {
+		Cart cart = null;
+		Customer customer = customerService.getCustomerById(customerId);
+
+		Mobile mob = mobileService.getMobileById(mobile.getMobileId());
+
+		if (customer.getCart() == null) {
+			throw new CartException("Cart not found for Customer");
+
+		} else {
+			cart = customer.getCart();
+			cart.getMobiles().remove(mobile);
+			cart.setQuantity(removeMobileItemQuantity(mobile, customerId));
+		}
+
+		return this.cartRepository.save(cart);
+
 	}
 
 	public Integer updateMobileItemQuantity(Mobile mobile, Integer CustId) throws CustomerException {
 		Integer count = 0;
 
-		if (customerService.getCustomerById(CustId).getCart().getMobilesMap().containsKey(mobile.getMobileId())) {
+		if (customerService.getCustomerById(CustId).getCart().getMobiles().contains(mobile.getMobileId())) {
 
 			count = customerService.getCustomerById(CustId).getCart().getQuantity();
 			count++;
@@ -99,7 +118,18 @@ public class CartServiceImpl implements CartService {
 		}
 		return count;
 	}
+	public Integer removeMobileItemQuantity(Mobile mobile, Integer CustId) throws CustomerException {
+		Integer count = 0;
 
+		if (customerService.getCustomerById(CustId).getCart().getMobiles().contains(mobile.getMobileId())) {
+
+			count = customerService.getCustomerById(CustId).getCart().getQuantity();
+			count--;
+			customerService.getCustomerById(CustId).getCart().setQuantity(count);
+
+		}
+		return count;
+	}
 	@Override
 	public Cart getCartById(Integer cartId) throws CartException {
 		Optional<Cart> optCart = cartRepository.findById(cartId);
@@ -107,18 +137,22 @@ public class CartServiceImpl implements CartService {
 			throw new CartException("Cart id not found :" + cartId);
 
 		return optCart.get();
-		
+
 	}
+
 	@Override
-	public Cart deleteCartById(Integer cartId) throws CartException {
+	public String deleteCartById(Integer cartId) throws CartException {
 		Optional<Cart> optCart = this.cartRepository.findById(cartId);
 		if (optCart.isEmpty())
 			throw new CartException("cart id does not exists to delete !");
 		Cart cart = optCart.get();
-		this.cartRepository.delete(cart);
-		return cart;
-		
-	}
+		this.cartRepository.deleteById(cartId);
+		return "Cart Deleted Successfully";
 
+	}
+	
+	
+	
+	
 
 }

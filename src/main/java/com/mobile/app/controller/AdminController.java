@@ -48,22 +48,22 @@ public class AdminController {
 //	List<Mobile> getAllMobilesByCategory();
 //	List<Orders> getAllOrders();
 
-	@PostMapping("admin/addCategory/{id}")
-	public Category addCategory(@RequestBody Category category, @PathVariable("id") Integer id)
+	@PostMapping("admin/addCategory")
+	public Category addCategory(@RequestBody Category category)
 			throws CategoryException {
 
-		return adminService.addCategory(category, id);
+		return adminService.addCategory(category);
 	}
 
 	@PostMapping("admin/addCategoryDetails/{id}")
-	public String addCategoryDetails(@RequestBody Category category, @PathVariable("id") Integer id)
+	public String updateCategoryDetails(@RequestBody Category category)
 			throws CategoryException {
 
-		return adminService.addCategoryDetails(category, id);
+		return adminService.updateCategoryDetails(category);
 	}
 
 	@PostMapping("admin/addmobile/{id}")
-	public Mobile addMobile(@RequestBody Mobile mobile, @PathVariable("id") Integer id) throws MobileException {
+	public Mobile addMobile(@RequestBody Mobile mobile, @PathVariable("id") Integer id) throws CategoryException {
 
 		return adminService.addMobile(mobile, id);
 	}

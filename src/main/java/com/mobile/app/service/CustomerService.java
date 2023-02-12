@@ -3,7 +3,13 @@ package com.mobile.app.service;
 import java.util.List;
 
 import com.mobile.app.entity.Customer;
+import com.mobile.app.entity.Mobile;
+import com.mobile.app.entity.Orders;
+import com.mobile.app.exception.CartException;
+import com.mobile.app.exception.CategoryException;
 import com.mobile.app.exception.CustomerException;
+import com.mobile.app.exception.MobileException;
+import com.mobile.app.exception.OrderException;
 
 public interface CustomerService {
 	// CRUD
@@ -15,10 +21,16 @@ public interface CustomerService {
 
 	Customer getCustomerById(Integer customerId) throws CustomerException;
 	
-	List<Customer> getAllCustomers();//for admin 
-
+	List<Customer> getAllCustomers();//for admin
 	
 
+
+	String deleteCartFromCustomerById(Integer customerId,Integer cartId)throws CustomerException, CartException;
+
+	List<Orders> getAllOrdersOfCustomer(Integer customerId) throws CustomerException;
+
+	String deleteOrdersFromCustomerById(Integer customerId, Integer orderId) throws CustomerException, OrderException;
+	
 	
 
 }

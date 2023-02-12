@@ -17,12 +17,15 @@ import com.mobile.app.exception.CartException;
 import com.mobile.app.exception.CustomerException;
 import com.mobile.app.exception.MobileException;
 import com.mobile.app.service.CartService;
+import com.mobile.app.service.CustomerService;
 
 @RestController
 public class CartController {
 
 	@Autowired
 	private CartService cartService;
+	@Autowired
+	private CustomerService customerService;
 //	--------------------------------------------CartServices---------------------------------------
 //	Cart addMobileToCart(Mobile mobile, Integer id) throws CustomerException, MobileException;
 //	Cart updateCart(Mobile mobile,Integer id) throws CartException;
@@ -33,7 +36,7 @@ public class CartController {
 	public Cart registerCart(@RequestBody Mobile mobile, @PathVariable("id") Integer id)
 			throws CustomerException, MobileException {
 
-		return cartService.addMobileToCart(mobile, id);
+		return cartService.addMobileToCartByCustomerId(mobile, id);
 	}
 
 	@PutMapping("/cart/{id}")
@@ -54,10 +57,10 @@ public class CartController {
 		return cartService.getCartById(cartId);
 	}
 
-	@DeleteMapping("/card/{id}")
-	public Cart deleteCartById(@PathVariable("id") Integer cartId) throws CartException {
+	@DeleteMapping("/card/{cartId}")
+	public String deleteCartById(@RequestBody Integer customerId,@PathVariable("id") Integer cartId) throws CartException ,CustomerException{
 
-		return this.cartService.deleteCartById(cartId);
+		return this.customerService.deleteCartFromCustomerById(customerId,cartId);
 	}
 
 }

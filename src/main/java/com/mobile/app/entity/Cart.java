@@ -1,50 +1,55 @@
 package com.mobile.app.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
-
 @Entity
 public class Cart {
+
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	private Integer quantity;
 	private Double cost;
 	private String type;
 	private String status;
-	
+
+//	@ManyToMany
+//	private Map<Integer, Mobile> mobilesMap = new HashMap<>();
 	@ManyToMany
-	private Map<Integer,Mobile> mobilesMap = new HashMap<>();
-//	private List<Mobile> mobile=new ArrayList<>();
-	
+	private List<Mobile> mobiles = new ArrayList<>();
 
 	public Cart() {
 		super();
 	}
 
 	public Cart(Integer id, Integer quantity, Double cost, String type, String status,
-			/* List<Mobile> mobile, */Map<Integer,Mobile>mobilesMap) {
+			List<Mobile> mobiles/* Map<Integer,Mobile>mobilesMap */) {
 		super();
 		this.id = id;
 		this.quantity = quantity;
 		this.cost = cost;
 		this.type = type;
 		this.status = status;
-//		this.mobiles = mobile;
-		this.mobilesMap=mobilesMap;
+		this.mobiles = mobiles;
+//		this.mobilesMap=mobilesMap;
 	}
 
-	public Map<Integer, Mobile> getMobilesMap() {
-		return mobilesMap;
-	}
-
-	public void setMobilesMap(Map<Integer, Mobile> mobilesMap) {
-		this.mobilesMap = mobilesMap;
-	}
+//	public Map<Integer, Mobile> getMobilesMap() {
+//		return mobilesMap;
+//	}
+//
+//	public void setMobilesMap(Map<Integer, Mobile> mobilesMap) {
+//		this.mobilesMap = mobilesMap;
+//	}
 
 	public Integer getId() {
 		return id;
@@ -86,12 +91,12 @@ public class Cart {
 		this.status = status;
 	}
 
-	/*
-	 * public List<Mobile> getMobiles() { return mobile; }
-	 * 
-	 * public void setMobiles(List<Mobile>mobile) { this.mobiles = mobile; }
-	 */
-	
+	public List<Mobile> getMobiles() {
+		return mobiles;
+	}
+
+	public void setMobiles(List<Mobile> mobile) {
+		this.mobiles = mobile;
+	}
 
 }
-
