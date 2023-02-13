@@ -25,11 +25,14 @@ public class PaymentServiceImpl implements PaymentService{
 		return paymentRepository.save(payment);
 	}
 
-	@Override
+	@Override 
 	public Payment updatePayment(Payment payment,Integer id) {
 		
 		if(paymentRepository.existsById(id)) {
 			Payment paymentToBeUpdated = paymentRepository.findById(id).get();
+			paymentToBeUpdated.setPaymentStatus(payment.getPaymentStatus());
+			paymentToBeUpdated.setPaymentMode(payment.getPaymentMode());
+			paymentRepository.save(paymentToBeUpdated);
 			paymentRepository.save(payment);
 			return paymentToBeUpdated;
 		}
@@ -55,12 +58,12 @@ public class PaymentServiceImpl implements PaymentService{
 	}
 
 	@Override
-	public Payment getPaymentById(Integer id) {
-		Optional<Payment> payment =paymentRepository.findById(id);
+	public Payment getPaymentById(Integer paymentId)throws PaymentException {
+		Optional<Payment> payment =paymentRepository.findById(paymentId);
 		if(payment.isPresent()) {
 			return payment.get();
 		}else {
-			return null;
+			throw new PaymentException("Payment with Id"+paymentId+"was not found");
 		}
 	}
 

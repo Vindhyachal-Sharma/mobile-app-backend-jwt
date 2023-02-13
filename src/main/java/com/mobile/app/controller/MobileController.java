@@ -2,6 +2,8 @@ package com.mobile.app.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +41,7 @@ public class MobileController {
 //	public List<Mobile> getMobilesByCompanyName(String companyName) throws MobileException;
 
 	@PostMapping("/mobile/{categoryId}")
-	public Mobile addMobileByCategory(@RequestBody Mobile mobile, @PathVariable("categoryId") Integer categoryId)
+	public Mobile addMobileByCategory(@Valid @RequestBody Mobile mobile, @PathVariable("categoryId") Integer categoryId)
 			throws CategoryException {
 		return mobileService.addMobileToCategoryByCategoryId(mobile, categoryId);
 	}
@@ -56,13 +58,13 @@ public class MobileController {
 	}
 
 	@PutMapping("/updateMobile")
-	public String updateMobileDetails(@RequestBody Mobile mobile) throws MobileException {
+	public String updateMobileDetails(@Valid @RequestBody Mobile mobile) throws MobileException {
 
 		return mobileService.updateMobileDetails(mobile);
 	}
 
 	@DeleteMapping("/mobile/{mobileId}")
-	public String deleteMobileById(@RequestBody Integer categoryId, @PathVariable("mobileId") Integer mobileId)
+	public String deleteMobileById(@Valid @RequestBody Integer categoryId, @PathVariable("mobileId") Integer mobileId)
 			throws MobileException, CategoryException {
 
 		return this.categoryService.removeMobileFromCategoryById(categoryId, mobileId);

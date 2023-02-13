@@ -2,6 +2,8 @@ package com.mobile.app.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +31,7 @@ public class CategoryController {
 //	List<Category>getAllCategory();
 
 	@PostMapping("/category")
-	public Category registerCategory(@RequestBody Category category)
+	public Category registerCategory(@Valid @RequestBody Category category)
 			throws CategoryException {
 
 		return categoryService.addCategory(category);
@@ -42,7 +44,7 @@ public class CategoryController {
 	}
 
 	@PutMapping("/category")
-	public String updateCategory(@RequestBody Category updateCategory)
+	public String updateCategory(@Valid @RequestBody Category updateCategory)
 			throws CategoryException {
 
 		return categoryService.updateCategory(updateCategory);

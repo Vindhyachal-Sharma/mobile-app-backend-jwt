@@ -15,51 +15,50 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Entity
-public class Customer /* extends User */{
-	public Integer getId() {
-		return id;
-	}
-
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
+public class Customer /* extends User */ {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	
+	@NotBlank(message = "Name is mandatory")
+	@Pattern(regexp="^[a-zA-Z\\s]+$", message="Name can only contain letters and spaces")
 	private String name;
-//	@NotBlank(message = "Email is mandatory")
-//	 @Email(message = "Please enter a valid email Id", regexp="^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\\.[a-zA-Z.]{2,5}")
-//    @NotNull(message = "Please enter a valid email Id")	
+	@NotBlank(message = "Email is mandatory")
+	@Email(message = "Please enter a valid email Id", regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\\.[a-zA-Z.]{2,5}")
 	private String email;
-//	@Pattern(regexp = "[0-9]{10}",message = "Phone number must be 10 digits")
-	private long mobileNo;
+	@Pattern(regexp = "[0-9]{10}", message = "Phone number must be 10 digits")
+	private String mobileNo;
 
 	@OneToOne
 	private Cart cart;
 
-	@OneToMany 
+	@OneToMany
 	private List<Orders> orders = new ArrayList<>();
+
 	public Customer() {
 		super();
 	}
-//	public Customer(Integer id, String username, String password, String role, String name, String email, long mobileNo,
-//			Cart cart, List<Orders> orders) {
-//		super(id, username, password, role);
-//		this.name = name;
-//		this.email = email;
-//		this.mobileNo = mobileNo;
-//		this.cart = cart;
-//		this.orders = orders;
-//	}
-	
 
-//	public Customer(Integer id, String username, String password, String role) {
-//		super(id, username, password, role);
-//
-//	}
+	public Customer(Integer id, @NotBlank(message = "Name is mandatory") String name,
+			@NotBlank(message = "Email is mandatory") @Email(message = "Please enter a valid email Id", regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\\.[a-zA-Z.]{2,5}") String email,
+			@Pattern(regexp = "[0-9]{10}", message = "Phone number must be 10 digits") String mobileNo, Cart cart,
+			List<Orders> orders) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.mobileNo = mobileNo;
+		this.cart = cart;
+		this.orders = orders;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
@@ -77,11 +76,11 @@ public class Customer /* extends User */{
 		this.email = email;
 	}
 
-	public long getMobileNo() {
+	public String getMobileNo() {
 		return mobileNo;
 	}
 
-	public void setMobileNo(long mobileNo) {
+	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
 
@@ -100,8 +99,5 @@ public class Customer /* extends User */{
 	public void setOrders(List<Orders> orders) {
 		this.orders = orders;
 	}
-	
-
-
 
 }

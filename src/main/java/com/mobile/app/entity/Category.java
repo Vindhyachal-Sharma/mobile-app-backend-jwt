@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,7 +18,8 @@ public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-//	@Pattern(regexp = "[a-zA-Z0-9]{3,}", message = "name must be min 3 chars, special chars not allowed.")
+	@NotBlank(message = "Name is mandatory")
+	@Pattern(regexp="^[a-zA-Z\\s]+$", message="Name can only contain letters and spaces")
 	private String name;
 	
 

@@ -63,8 +63,8 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public Cart updateCart(Mobile mobile, Integer id) throws CartException {
-		Optional<Cart> existingCart = cartRepository.findById(id);
+	public Cart updateCart(Mobile mobile, Integer cartId) throws CartException {
+		Optional<Cart> existingCart = cartRepository.findById(cartId);
 		if (!existingCart.isPresent()) {
 			throw new CartException("Cart Id Not Found");
 

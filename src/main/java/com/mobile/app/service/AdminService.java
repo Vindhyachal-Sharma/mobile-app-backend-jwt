@@ -11,6 +11,7 @@ import com.mobile.app.exception.AdminException;
 import com.mobile.app.exception.CategoryException;
 import com.mobile.app.exception.CustomerException;
 import com.mobile.app.exception.MobileException;
+import com.mobile.app.exception.OrderException;
 
 public interface AdminService {
 
@@ -26,7 +27,7 @@ public interface AdminService {
 
 	Mobile changeMobileQuantityById(Mobile mobile, Integer id);
 
-	Orders addOrder(Orders order, Integer id);
+	Orders addMobileToOrderByCustomerId(Integer  mobileId, Integer id) throws CustomerException, MobileException, OrderException;
 
 	String ConfirmOrder( Integer id);
 

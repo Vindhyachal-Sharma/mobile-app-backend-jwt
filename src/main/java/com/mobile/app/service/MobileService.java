@@ -5,7 +5,9 @@ import java.util.List;
 import com.mobile.app.entity.Mobile;
 import com.mobile.app.entity.Orders;
 import com.mobile.app.exception.CategoryException;
+import com.mobile.app.exception.CustomerException;
 import com.mobile.app.exception.MobileException;
+import com.mobile.app.exception.OrderException;
 
 public interface MobileService {
 
@@ -29,6 +31,10 @@ public interface MobileService {
 	public List<Mobile> getMobilesByCompanyName(String companyName) throws MobileException;
 
 
-	Mobile addMobileToCart(Mobile mobile, Integer categoryId, Integer cartId) throws CategoryException, MobileException;
+//	Mobile addMobileToCart(Mobile mobile, Integer categoryId, Integer cartId) throws CategoryException, MobileException;
+//
+//
+//	Orders addMobileToOrderByCustomerId(Integer MobileId, Integer custId)
+//			throws CustomerException, MobileException, OrderException;
 
 }

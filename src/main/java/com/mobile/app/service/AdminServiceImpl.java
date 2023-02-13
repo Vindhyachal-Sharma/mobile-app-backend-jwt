@@ -15,6 +15,7 @@ import com.mobile.app.exception.AdminException;
 import com.mobile.app.exception.CategoryException;
 import com.mobile.app.exception.CustomerException;
 import com.mobile.app.exception.MobileException;
+import com.mobile.app.exception.OrderException;
 import com.mobile.app.repository.AdminRepository;
 
 @Service
@@ -66,10 +67,10 @@ public class AdminServiceImpl implements AdminService {
 		return null;
 	}
 
-	@Override
-	public Orders addOrder(Orders order, Integer id) {
-		return orderService.addOrder(order);
-	}
+//	@Override
+//	public Orders addMobileToOrderByCustomerId(Integer mobileId, Integer customerId) throws CustomerException, MobileException, OrderException {
+//		return orderService.addMobileToOrderByCustomerId(mobileId,customerId);
+//	}
 
 	@Override
 	public String ConfirmOrder( Integer id) {
@@ -140,6 +141,13 @@ public class AdminServiceImpl implements AdminService {
 	public List<Orders> getAllOrders() {
 		// TODO Auto-generated method stub
 		return orderService.getAllOrders();
+	}
+
+	@Override
+	public Orders addMobileToOrderByCustomerId(Integer mobileId, Integer id)
+			throws CustomerException, MobileException, OrderException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

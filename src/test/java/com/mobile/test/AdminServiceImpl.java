@@ -3,7 +3,7 @@ package com.mobile.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -17,7 +17,7 @@ import com.mobile.app.repository.OrderRepository;
 import com.mobile.app.service.CategoryServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
-	public class AdminServiceImpl {
+public class AdminServiceImpl {
 
 	@InjectMocks
 	private CategoryServiceImpl categoryServiceImpl;
@@ -30,14 +30,13 @@ import com.mobile.app.service.CategoryServiceImpl;
 	private OrderRepository orderRepository;
 	private Category category;
 
-	
-
 	@Test
 	public void testAddCategorySuccess() throws CategoryException {
 	when(categoryRepository.save(category)).thenReturn(category);
 	Category result = categoryServiceImpl.addCategory(category);
 	assertEquals("Smartphones", result.getName());
 	}
+
 	@Test
 	public void testUpdateCategoryDetailsSuccess() throws CategoryException {
 	when(categoryRepository.save(category)).thenReturn(category);
@@ -71,5 +70,4 @@ import com.mobile.app.service.CategoryServiceImpl;
 //	when(adminRepository.findById(2)).thenReturn(Optional.empty());
 //	adminServiceImpl.updateAdminDetails(admin, 2);
 //	}
-	}
-
+}

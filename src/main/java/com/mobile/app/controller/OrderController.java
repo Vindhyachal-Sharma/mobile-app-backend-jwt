@@ -2,6 +2,8 @@ package com.mobile.app.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,31 +38,31 @@ public class OrderController {
 //	// double calculateTotalCost(List<Mobile> list);
 //	List<Orders> getAllOrders();
 
-	@PostMapping("/order")
-	public Orders addOrder(@RequestBody Orders newOrder) throws OrderException {
+//	@PostMapping("/order")
+//	public Orders addOrder(@RequestBody Orders newOrder) throws OrderException {
+//
+//		return orderService.addOrder(newOrder);
+//	}
 
-		return orderService.addOrder(newOrder);
-	}
-
-	@PostMapping("/order/{id}")
-	public Orders addOrderToCustomer(@RequestBody Orders order, @PathVariable("id") Integer id) throws CustomerException {
-		return this.orderService.addOrderToCustomer(order, id);
+	@PostMapping("/order/{customerId}")
+	public Orders addOrderToCustomer(@Valid @RequestBody Orders order, @PathVariable("customerId") Integer customerId) throws CustomerException {
+		return this.orderService.addOrderToCustomer(order, customerId);
 	}
 
 	@GetMapping("/order/{id}")
 	public Orders getOrderById(@PathVariable("id") Integer orderId) throws OrderException {
 
-		return orderService.getOrderById(orderId);
+		return orderService.getOrderById(orderId); 
 	}
 
 	@PutMapping("/order")
-	public String updateOrder(@RequestBody Orders order) {
+	public String updateOrder(@Valid @RequestBody Orders order) {
 
 		return orderService.updateOrder(order);
 	}
 
 	@DeleteMapping("/order/{id}")
-	public String deleteOrderById(@RequestBody Integer customerId, @PathVariable("id") Integer orderId)
+	public String deleteOrderById(@Valid @RequestBody Integer customerId, @PathVariable("id") Integer orderId)
 			throws OrderException, CustomerException {
 
 		return this.customerService.deleteOrdersFromCustomerById(customerId,orderId);

@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.mobile.app.entity.Category;
 import com.mobile.app.entity.Mobile;
+import com.mobile.app.entity.Orders;
 import com.mobile.app.exception.CategoryException;
+import com.mobile.app.exception.CustomerException;
 import com.mobile.app.exception.MobileException;
+import com.mobile.app.exception.OrderException;
 import com.mobile.app.repository.CategoryRepository;
 import com.mobile.app.repository.MobileRepository;
 
@@ -24,6 +27,9 @@ public class MobileServiceImpl implements MobileService {
 	
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private CustomerService customerService;
 	
 	@Override
 	public Mobile addMobileToCategoryByCategoryId(Mobile mobile, Integer categoryId) throws CategoryException {
@@ -39,20 +45,31 @@ public class MobileServiceImpl implements MobileService {
 		return newMobile;
 	}
 	
-	@Override
-	public Mobile addMobileToCart(Mobile mobile,Integer categoryId, Integer cartId) throws CategoryException, MobileException {
-		
-		Optional<Category> category = categoryRepository.findById(categoryId);
-		if (category.isEmpty()) {
-			throw new CategoryException("Category Not Found");
-
-		}
-		Category foundCategory =category.get();
-		Mobile newMobile=addMobileToCategoryByCategoryId(mobile,categoryId);
-		foundCategory.getMobiles().add(newMobile);
-		return newMobile;
-	}
-
+//	@Override
+//	public Mobile addMobileToCart(Mobile mobile,Integer categoryId, Integer cartId) throws CategoryException, MobileException {
+//		
+//		Optional<Category> category = categoryRepository.findById(categoryId);
+//		if (category.isEmpty()) {
+//			throw new CategoryException("Category Not Found");
+//
+//		}
+//		Category foundCategory =category.get();
+//		Mobile newMobile=addMobileToCategoryByCategoryId(mobile,categoryId);
+//		foundCategory.getMobiles().add(newMobile);
+//		return newMobile;
+//	}
+//	
+//	public Mobile addMobileToOrder(Mobile mobile,Integer categoryId,Integer orderId) throws MobileException,CategoryException,CustomerException,OrderException{
+//		Optional<Category> category = categoryRepository.findById(categoryId);
+//		if (category.isEmpty()) {
+//			throw new CategoryException("Category Not Found");
+//
+//		}
+//		Category foundCategory =category.get();
+//		Mobile newMobile=addMobileToCategoryByCategoryId(mobile,categoryId);
+//		foundCategory.getMobiles().add(newMobile);
+//		return newMobile;
+//	}
 
 
 	@Override
@@ -151,5 +168,6 @@ public class MobileServiceImpl implements MobileService {
 		}
 		return mobileList;
 	}
+
 
 }

@@ -14,14 +14,14 @@ public class Payment {
 	private PaymentMode paymentMode;
 	private PaymentStatus paymentStatus;
 
-	enum PaymentMode {
-		CASH_ON_DELIVERY, CARD
+	public enum PaymentMode {
+		CASH_ON_DELIVERY,UPI
 	}
 
-	enum PaymentStatus {
-		PENDING, SUCCESSFUL
+	public enum PaymentStatus {
+		PENDING,PAID
 	}
-
+ 
 	public Payment() {
 		super();
 

@@ -6,7 +6,7 @@ import com.mobile.app.entity.Payment;
 import com.mobile.app.exception.PaymentException;
 
 public interface PaymentService {
-	 Payment getPaymentById(Integer id);
+	 Payment getPaymentById(Integer id) throws PaymentException;
 	
 	Payment addPayment(Payment payment);
 
@@ -14,7 +14,7 @@ public interface PaymentService {
 
 	Payment deletePaymentById(Integer id) throws PaymentException;
 
-	Payment addPaymentToOrder(Payment payment,Integer id) throws PaymentException;
+	Payment addPaymentToOrder(Payment payment,Integer orderId) throws PaymentException;
 	
 	List<Payment> getAllPayments();
 	

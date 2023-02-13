@@ -10,6 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 
 @Entity
 public class Orders {
@@ -17,13 +21,16 @@ public class Orders {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-
+	@NotNull
+	@PastOrPresent
 	private LocalDate orderDate;
+	@NotNull
+	@FutureOrPresent
 	private LocalDate dispatchDate;
+	@Min(value = 0, message = "Cost cannot be neagtive")
 	private Double cost;
-	private Double totalCost;
+
 	private Integer quantity;
-	private String status;
 
 	@OneToOne
 	private Payment payment;
@@ -35,16 +42,15 @@ public class Orders {
 		super();
 	}
 
-	public Orders(Integer id, LocalDate orderDate, LocalDate dispatchDate, Double cost, Double totalCost,
-			Integer quantity, String status, Payment payment, List<Mobile> mobiles) {
+	public Orders(Integer id, LocalDate orderDate, LocalDate dispatchDate, Double cost, Integer quantity,
+			Payment payment, List<Mobile> mobiles) {
 		super();
 		this.id = id;
 		this.orderDate = orderDate;
 		this.dispatchDate = dispatchDate;
 		this.cost = cost;
-		this.totalCost = totalCost;
+
 		this.quantity = quantity;
-		this.status = status;
 		this.payment = payment;
 		this.mobiles = mobiles;
 	}
@@ -81,28 +87,12 @@ public class Orders {
 		this.cost = cost;
 	}
 
-	public Double getTotalCost() {
-		return totalCost;
-	}
-
-	public void setTotalCost(Double totalCost) {
-		this.totalCost = totalCost;
-	}
-
 	public Integer getQuantity() {
 		return quantity;
 	}
 
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 	public Payment getPayment() {
@@ -112,8 +102,6 @@ public class Orders {
 	public void setPayment(Payment payment) {
 		this.payment = payment;
 	}
-
-	
 
 	public List<Mobile> getMobiles() {
 		return mobiles;

@@ -2,6 +2,8 @@ package com.mobile.app.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,34 +35,36 @@ public class CartController {
 //	List<Cart> getAllCarts();
 
 	@PostMapping("/cart/{customerId}")
-	public Cart registerCart(@RequestBody Integer mobileId, @PathVariable("customerId") Integer customerId)
-			throws CustomerException, MobileException, CartException {
+	public Cart addMobileToCartByCustomerId(@Valid @RequestBody Integer mobileId,
+			@PathVariable("customerId") Integer customerId) throws CustomerException, MobileException, CartException {
 
 		return cartService.addMobileToCartByCustomerId(mobileId, customerId);
 	}
 
-	@PutMapping("/cart/{id}")
-	public Cart updateCart(@RequestBody Mobile mobile, @PathVariable("id") Integer id) throws CartException {
+	@PutMapping("/cart/{cartId}")
+	public Cart updateCart(@Valid @RequestBody Mobile mobile, @PathVariable("cartId") Integer cartId)
+			throws CartException {
 
-		return cartService.updateCart(mobile,id);
+		return cartService.updateCart(mobile, cartId);
 	}
 
 	@GetMapping("/carts")
-	public List<Cart> getAllCarts(){
+	public List<Cart> getAllCarts() {
 
 		return cartService.getAllCarts();
 	}
 
 	@GetMapping("/cart/{id}")
-	public Cart getCartById(@PathVariable("id") Integer cartId) throws CartException {
+	public Cart getCartById(@Valid @PathVariable("id") Integer cartId) throws CartException {
 
 		return cartService.getCartById(cartId);
 	}
 
 	@DeleteMapping("/card/{cartId}")
-	public String deleteCartById(@RequestBody Integer customerId,@PathVariable("cartId") Integer cartId) throws CartException ,CustomerException{
+	public String deleteCartById(@Valid @RequestBody Integer customerId, @PathVariable("cartId") Integer cartId)
+			throws CartException, CustomerException {
 
-		return this.customerService.deleteCartFromCustomerById(customerId,cartId);
+		return this.customerService.deleteCartFromCustomerById(customerId, cartId);
 	}
 
 }

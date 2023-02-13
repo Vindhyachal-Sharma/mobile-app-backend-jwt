@@ -2,6 +2,8 @@ package com.mobile.app.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,24 +32,24 @@ public class PaymentController {
 	private PaymentService paymentService;
 	
 	@PostMapping("/payment")
-	public Payment registerPayment(@RequestBody Payment payment) {
+	public Payment registerPayment(@Valid @RequestBody Payment payment) {
 
 		return paymentService.addPayment(payment);
 	}
 	@PostMapping("/payment/{id}")
-	public Payment addPaymentToOrder(@RequestBody Payment payment,@PathVariable("id") Integer id) throws PaymentException {
+	public Payment addPaymentToOrder(@Valid @RequestBody Payment payment,@PathVariable("id") Integer id) throws PaymentException {
 
 		return paymentService.addPaymentToOrder(payment,id);
 	}
 	
 	@PutMapping("/payment")
-	public Payment updatePayment(@RequestBody Payment updatePayment,@PathVariable("id") Integer id) {
+	public Payment updatePayment(@Valid @RequestBody Payment updatePayment,@PathVariable("id") Integer id) {
 		
 		return paymentService.updatePayment(updatePayment,id);
 	}
 	
 	@DeleteMapping("/payment/{id}") 
-	public Payment deletePaymentById(@PathVariable("id") Integer id) throws PaymentException {
+	public Payment deletePaymentById(@Valid @PathVariable("id") Integer id) throws PaymentException {
 		
 		return this.paymentService.deletePaymentById(id);
 		
@@ -57,4 +59,5 @@ public class PaymentController {
 	{
      return paymentService.getAllPayments();
 }
+	
 }

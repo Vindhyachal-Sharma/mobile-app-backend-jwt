@@ -2,6 +2,8 @@ package com.mobile.app.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,21 +51,21 @@ public class AdminController {
 //	List<Orders> getAllOrders();
 
 	@PostMapping("admin/addCategory")
-	public Category addCategory(@RequestBody Category category)
+	public Category addCategory(@Valid @RequestBody Category category)
 			throws CategoryException {
 
 		return adminService.addCategory(category);
 	}
 
 	@PostMapping("admin/addCategoryDetails/{id}")
-	public String updateCategoryDetails(@RequestBody Category category)
+	public String updateCategoryDetails(@Valid @RequestBody Category category)
 			throws CategoryException {
 
 		return adminService.updateCategoryDetails(category);
 	}
 
 	@PostMapping("admin/addmobile/{id}")
-	public Mobile addMobile(@RequestBody Mobile mobile, @PathVariable("id") Integer id) throws CategoryException {
+	public Mobile addMobile(@Valid @RequestBody Mobile mobile, @PathVariable("id") Integer id) throws CategoryException {
 
 		return adminService.addMobile(mobile, id);
 	}
@@ -105,12 +107,12 @@ public class AdminController {
 //		return adminService.checkCustomerStatusById(id);
 //	}
 	@GetMapping("admin/getCustomerById/{id}")
-	public Customer getCustomerById(@PathVariable("id") Integer id) throws MobileException, CustomerException {
+	public Customer getCustomerById( @PathVariable("id") Integer id) throws MobileException, CustomerException {
 
 		return adminService.getCustomerById(id);
 	}
 	@PostMapping("admin/updateAdminDetails/{id}")
-	public Admin updateAdminDetails(@RequestBody Admin admin, @PathVariable("id") Integer id)
+	public Admin updateAdminDetails(@Valid @RequestBody Admin admin, @PathVariable("id") Integer id)
 			throws  AdminException {
 
 		return adminService.updateAdminDetails(admin, id);
@@ -131,7 +133,7 @@ public class AdminController {
 		return adminService.getAllMobiles();
 	}
 	@GetMapping("/getAllMobilesByCategory")
-	public List<Mobile> getAllMobilesByCategory(@PathVariable("id") Integer id){
+	public List<Mobile> getAllMobilesByCategory( @PathVariable("id") Integer id){
 
 		return adminService.getAllMobilesByCategory(id);
 	}

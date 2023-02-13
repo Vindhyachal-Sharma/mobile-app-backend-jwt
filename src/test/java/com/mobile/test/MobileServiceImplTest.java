@@ -46,21 +46,21 @@ public class MobileServiceImplTest {
 	private Integer categoryId;
 	private Integer cartId;
 
-	@Test
-	public void testAddMobileToCartSuccess() throws CategoryException, MobileException {
-		Category category = new Category();
-		category.setId(1);
-		category.setName("Smartphones");
-		category.getMobiles().add(mobile);
-
-		when(categoryRepository.findById(categoryId)).thenReturn(java.util.Optional.of(category));
-		when(mobileService.addMobileToCategoryByCategoryId(any(Mobile.class), any(Integer.class))).thenReturn(mobile);
-
-		Mobile result = mobileService.addMobileToCart(mobile, categoryId, cartId);
-		assertNotNull(result);
-		assertEquals(mobile.getMobileId(), result.getMobileId());
-		assertEquals(mobile.getMobileName(), result.getMobileName());
-	}
+//	@Test
+//	public void testAddMobileToCartSuccess() throws CategoryException, MobileException {
+//		Category category = new Category();
+//		category.setId(1);
+//		category.setName("Smartphones");
+//		category.getMobiles().add(mobile);
+//
+//		when(categoryRepository.findById(categoryId)).thenReturn(java.util.Optional.of(category));
+//		when(mobileService.addMobileToCategoryByCategoryId(any(Mobile.class), any(Integer.class))).thenReturn(mobile);
+//
+//		Mobile result = mobileService.addMobileToCart(mobile, categoryId, cartId);
+//		assertNotNull(result);
+//		assertEquals(mobile.getMobileId(), result.getMobileId());
+//		assertEquals(mobile.getMobileName(), result.getMobileName());
+//	}
 
 //	  @Test(expected = CategoryException.class)
 //	  public void testAddMobileToCartCategoryNotFound() throws CategoryException, MobileException {

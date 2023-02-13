@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 
 import com.mobile.app.entity.Customer;
 import com.mobile.app.entity.Orders;
+import com.mobile.app.entity.Payment;
 import com.mobile.app.exception.CustomerException;
 import com.mobile.app.exception.OrderException;
 import com.mobile.app.repository.CustomerRepository;
 import com.mobile.app.repository.OrderRepository;
+import com.mobile.app.repository.PaymentRepository;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -21,6 +23,8 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
+	@Autowired
+	private PaymentRepository paymentRepository;
 
 	public Orders addOrder(Orders newOrder) {
 
@@ -28,14 +32,14 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Orders deleteOrderById(Integer orderId) throws OrderException {
+	public String deleteOrderById(Integer orderId) throws OrderException {
 
 		Optional<Orders> optOrder = this.orderRepository.findById(orderId);
 		if (optOrder.isEmpty())
 			throw new OrderException("Order id does not exists to delete !");
-		Orders order = optOrder.get();
-		this.orderRepository.delete(order);
-		return order;
+//		Orders order = optOrder.get();
+		this.orderRepository.deleteById(orderId);
+		return "Order Deleted Succesfully";
 	}
 
 	@Override
@@ -54,8 +58,8 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Orders addOrderToCustomer(Orders Order, Integer id) throws CustomerException {
-		Optional<Customer> customer = customerRepository.findById(id);
+	public Orders addOrderToCustomer(Orders Order, Integer customerId) throws CustomerException {
+		Optional<Customer> customer = customerRepository.findById(customerId);
 		if (customer.isEmpty()) {
 			throw new CustomerException("Customer Id Not Found");
 
@@ -63,6 +67,8 @@ public class OrderServiceImpl implements OrderService {
 		Customer foundCustomer = customer.get();
 		Orders newOrders = addOrder(Order);
 		foundCustomer.getOrders().add(newOrders);
+//		orderRepository.save(newOrders);
+		customerRepository.save(foundCustomer);
 		return newOrders;
 	}
 
@@ -84,7 +90,21 @@ public class OrderServiceImpl implements OrderService {
 		updatedOrder.setPayment(order.getPayment());
 		orderRepository.save(updatedOrder);
 
-		return "Order Successfully Added";
+		return "Order Successfully Updated";
 	}
+	@Override
+	public Payment removePaymenttByid(Integer orderId) throws OrderException {
+		Orders order = getOrderById(orderId);
+		Payment pay = order.getPayment();
+		order.setPayment(null);
+		paymentRepository.delete(pay);
+		orderRepository.save(order);
+		return pay;
+ 
+	}
+
+	
+
+
 
 }

@@ -6,9 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mobile.app.entity.Cart;
 import com.mobile.app.entity.Customer;
-import com.mobile.app.entity.Mobile;
 import com.mobile.app.entity.Orders;
 import com.mobile.app.exception.CartException;
 import com.mobile.app.exception.CustomerException;
@@ -99,7 +97,6 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public List<Orders> getAllOrdersOfCustomer(Integer customerId) throws CustomerException {
-		// return iAppointmentServiceImpl.getAppointmentById(userId);
 		Customer customer = getCustomerById(customerId);
 
 		return customer.getOrders();

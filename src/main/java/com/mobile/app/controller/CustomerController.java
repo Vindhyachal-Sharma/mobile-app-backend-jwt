@@ -2,6 +2,8 @@ package com.mobile.app.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +31,7 @@ public class CustomerController {
 //	List<Customer> getAllCustomers();
 
 	@PostMapping("/customer")
-	public Customer registerCustomer(@RequestBody Customer newCustomer) {
+	public Customer registerCustomer(@Valid @RequestBody Customer newCustomer) {
 
 		return customerService.addCustomer(newCustomer);
 	}
@@ -41,7 +43,7 @@ public class CustomerController {
 	}
 
 	@PutMapping("/customer")
-	public Customer updateCustomer(@RequestBody Customer updateCustomer) throws CustomerException {
+	public Customer updateCustomer(@Valid @RequestBody Customer updateCustomer) throws CustomerException {
 
 		return customerService.updateCustomer(updateCustomer);
 	}

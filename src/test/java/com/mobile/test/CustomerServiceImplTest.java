@@ -1,6 +1,7 @@
 package com.mobile.test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -56,7 +57,7 @@ public class CustomerServiceImplTest {
 		customer = new Customer();
 		customer.setId(1);
 		customer.setName("John Doe");
-		customer.setMobileNo(1234567890);
+		customer.setMobileNo("1234567890");
 		customer.setEmail("johndoe@email.com");
 
 		orders = new Orders();
@@ -109,7 +110,7 @@ public class CustomerServiceImplTest {
 		Customer expectedCustomer = new Customer();
 		expectedCustomer.setId(customerId);
 		expectedCustomer.setName("John Doe");
-		expectedCustomer.setMobileNo(1234567890);
+		expectedCustomer.setMobileNo("1234567890");
 		expectedCustomer.setEmail("johndoe@example.com");
 		when(customerRepository.findById(customerId)).thenReturn(Optional.of(expectedCustomer));
 		when(customerRepository.save(expectedCustomer)).thenReturn(expectedCustomer);
@@ -117,7 +118,7 @@ public class CustomerServiceImplTest {
 		Customer updateCustomer = new Customer();
 		updateCustomer.setId(customerId);
 		updateCustomer.setName("Jane Doe");
-		updateCustomer.setMobileNo(987654321);
+		updateCustomer.setMobileNo("987654321");
 		updateCustomer.setEmail("janedoe@example.com");
 
 		Customer actualCustomer = customerService.updateCustomer(updateCustomer);
@@ -163,13 +164,13 @@ public class CustomerServiceImplTest {
 		Customer customer1 = new Customer();
 		customer1.setId(1);
 		customer1.setName("John Doe");
-		customer1.setMobileNo(1234567890);
+		customer1.setMobileNo("1234567890");
 		customer1.setEmail("johndoe@example.com");
 		expectedCustomers.add(customer1);
 		Customer customer2 = new Customer();
 		customer2.setId(2);
 		customer2.setName("Jane Doe");
-		customer2.setMobileNo(987654321);
+		customer2.setMobileNo("987654321");
 		customer2.setEmail("janedoe@example.com");
 		expectedCustomers.add(customer2);
 		when(customerRepository.findAll()).thenReturn(expectedCustomers);
@@ -266,5 +267,28 @@ public class CustomerServiceImplTest {
 		Mockito.verify(customerRepository, Mockito.times(1)).save(customer);
 		assertEquals(0, customer.getOrders().size());
 	}
+
+	
+//	@Test
+//	void getCutomerByIdTest() throws CustomerException {
+//		assertNotNull(customerService.getCustomerById(100));
+//	}
+//	
+//	@Test
+//	void getCutomerByIdExceptionMessageTest() {
+//		
+//		String msg=null;
+//		try {
+//			customerService.getCustomerById(500);
+//		} catch (CustomerException e) {
+//			// TODO Auto-generated catch block
+//			//e.printStackTrace();
+//			msg=e.getMessage();
+//		}
+//		
+//		assertEquals("Cusomer id not found :500", msg);
+//	}
+	
+	
 
 }
