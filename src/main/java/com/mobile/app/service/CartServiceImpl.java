@@ -9,12 +9,10 @@ import org.springframework.stereotype.Service;
 import com.mobile.app.entity.Cart;
 import com.mobile.app.entity.Customer;
 import com.mobile.app.entity.Mobile;
-import com.mobile.app.entity.Orders;
 import com.mobile.app.exception.CartException;
 import com.mobile.app.exception.CustomerException;
 import com.mobile.app.exception.MobileException;
 import com.mobile.app.repository.CartRepository;
-
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -29,24 +27,28 @@ public class CartServiceImpl implements CartService {
 	private MobileService mobileService;
 
 	@Override
-	public Cart addMobileToCartByCustomerId(Mobile mobile, Integer customerId)
-			throws CustomerException, MobileException {
-		Cart cart = null;
+	public Cart addMobileToCartByCustomerId(Integer mobileId, Integer customerId)
+			throws CustomerException, MobileException, CartException {
 		Customer customer = customerService.getCustomerById(customerId);
+		
+		Cart cart = customer.getCart();
 
-		Mobile mob = mobileService.getMobileById(mobile.getMobileId());
+		
 
-		if (customer.getCart() == null) {
+		Mobile mob = mobileService.getMobileById(mobileId);
+
+		if (cart == null) {
 			cart = new Cart();
-			cart.getMobiles().add(mobile);
+			cart.getMobiles().add(mob);
 
 			cart = this.cartRepository.save(cart);
 			customer.setCart(cart);
 
 		} else {
 			cart = customer.getCart();
-			cart.getMobiles().add(mobile);
-			cart.setQuantity(updateMobileItemQuantity(mobile, customerId));
+			cart.getMobiles().add(mob);
+			cart.setQuantity(updateMobileItemQuantity(mob, customerId));
+			customer.setCart(cart);
 		}
 
 		return this.cartRepository.save(cart);
@@ -86,20 +88,20 @@ public class CartServiceImpl implements CartService {
 //	}
 
 	@Override
-	public Cart removeMobileFromCart(Mobile mobile, Integer customerId)
+	public Cart removeMobileFromCart(Integer mobileId, Integer customerId)
 			throws CartException, CustomerException, MobileException {
 		Cart cart = null;
 		Customer customer = customerService.getCustomerById(customerId);
 
-		Mobile mob = mobileService.getMobileById(mobile.getMobileId());
+		Mobile mob = mobileService.getMobileById(mobileId);
 
 		if (customer.getCart() == null) {
 			throw new CartException("Cart not found for Customer");
 
 		} else {
 			cart = customer.getCart();
-			cart.getMobiles().remove(mobile);
-			cart.setQuantity(removeMobileItemQuantity(mobile, customerId));
+			cart.getMobiles().remove(mob);
+			cart.setQuantity(removeMobileItemQuantity(mob, customerId));
 		}
 
 		return this.cartRepository.save(cart);
@@ -118,6 +120,7 @@ public class CartServiceImpl implements CartService {
 		}
 		return count;
 	}
+
 	public Integer removeMobileItemQuantity(Mobile mobile, Integer CustId) throws CustomerException {
 		Integer count = 0;
 
@@ -130,6 +133,7 @@ public class CartServiceImpl implements CartService {
 		}
 		return count;
 	}
+
 	@Override
 	public Cart getCartById(Integer cartId) throws CartException {
 		Optional<Cart> optCart = cartRepository.findById(cartId);
@@ -150,9 +154,17 @@ public class CartServiceImpl implements CartService {
 		return "Cart Deleted Successfully";
 
 	}
-	
-	
-	
-	
+
+	@Override
+	public Cart getCartByCustomerId(Integer customerId) throws CartException, CustomerException {
+		Customer customer = customerService.getCustomerById(customerId);
+
+		Cart cart = customer.getCart();
+		if (cart == null)
+			throw new CartException("Cart  not found :");
+		else
+		return cart;
+
+	}
 
 }

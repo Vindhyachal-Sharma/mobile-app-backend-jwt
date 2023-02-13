@@ -32,11 +32,11 @@ public class CartController {
 //	Cart removeMobileFromCart(Mobile mobile, Integer id) throws CartException;
 //	List<Cart> getAllCarts();
 
-	@PostMapping("/cart/{id}")
-	public Cart registerCart(@RequestBody Mobile mobile, @PathVariable("id") Integer id)
-			throws CustomerException, MobileException {
+	@PostMapping("/cart/{customerId}")
+	public Cart registerCart(@RequestBody Integer mobileId, @PathVariable("customerId") Integer customerId)
+			throws CustomerException, MobileException, CartException {
 
-		return cartService.addMobileToCartByCustomerId(mobile, id);
+		return cartService.addMobileToCartByCustomerId(mobileId, customerId);
 	}
 
 	@PutMapping("/cart/{id}")
@@ -58,7 +58,7 @@ public class CartController {
 	}
 
 	@DeleteMapping("/card/{cartId}")
-	public String deleteCartById(@RequestBody Integer customerId,@PathVariable("id") Integer cartId) throws CartException ,CustomerException{
+	public String deleteCartById(@RequestBody Integer customerId,@PathVariable("cartId") Integer cartId) throws CartException ,CustomerException{
 
 		return this.customerService.deleteCartFromCustomerById(customerId,cartId);
 	}
