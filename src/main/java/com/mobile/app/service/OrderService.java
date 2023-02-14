@@ -14,7 +14,7 @@ public interface OrderService {
 		
 //		Orders addOrderToCustomer(Integer customerId,Integer OrderId);
 		
-		String updateOrder(Orders order);
+	//	String updateOrder(Orders order);
 		
 		String deleteOrderById(Integer orderId)throws OrderException;
 

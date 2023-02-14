@@ -50,25 +50,25 @@ public class AdminController {
 //	List<Mobile> getAllMobilesByCategory();
 //	List<Orders> getAllOrders();
 
-	@PostMapping("admin/addCategory")
-	public Category addCategory(@Valid @RequestBody Category category)
-			throws CategoryException {
-
-		return adminService.addCategory(category);
-	}
-
-	@PostMapping("admin/addCategoryDetails/{id}")
-	public String updateCategoryDetails(@Valid @RequestBody Category category)
-			throws CategoryException {
-
-		return adminService.updateCategoryDetails(category);
-	}
-
-	@PostMapping("admin/addmobile/{id}")
-	public Mobile addMobile(@Valid @RequestBody Mobile mobile, @PathVariable("id") Integer id) throws CategoryException {
-
-		return adminService.addMobile(mobile, id);
-	}
+//	@PostMapping("admin/addCategory")
+//	public Category addCategory(@Valid @RequestBody Category category)
+//			throws CategoryException {
+//
+//		return adminService.addCategory(category);
+//	}
+//
+//	@PostMapping("admin/addCategoryDetails/{id}")
+//	public String updateCategoryDetails(@Valid @RequestBody Category category)
+//			throws CategoryException {
+//
+//		return adminService.updateCategoryDetails(category);
+//	}
+//
+//	@PostMapping("admin/addmobile/{id}")
+//	public Mobile addMobile(@Valid @RequestBody Mobile mobile, @PathVariable("id") Integer id) throws CategoryException {
+//
+//		return adminService.addMobile(mobile, id);
+//	}
 
 //	@PutMapping("admin/updatemobilecost/{id}")
 //	public Mobile changeMobileCostById(@RequestBody Mobile mobile, @PathVariable("id") Integer id)
@@ -106,41 +106,41 @@ public class AdminController {
 //
 //		return adminService.checkCustomerStatusById(id);
 //	}
-	@GetMapping("admin/getCustomerById/{id}")
-	public Customer getCustomerById( @PathVariable("id") Integer id) throws MobileException, CustomerException {
-
-		return adminService.getCustomerById(id);
-	}
-	@PostMapping("admin/updateAdminDetails/{id}")
-	public Admin updateAdminDetails(@Valid @RequestBody Admin admin, @PathVariable("id") Integer id)
-			throws  AdminException {
-
-		return adminService.updateAdminDetails(admin, id);
-	}
-	@GetMapping("admin/getAllCategories")
-	public List<Category> getAllCategories(){
-
-		return adminService.getAllCategories();
-	}
-	@GetMapping("admin/getAllCustomers")
-	public List<Customer> getAllCustomers(){
-
-		return adminService.getAllCustomers();
-	}
-	@GetMapping("/getAllMobiles")
-	public List<Mobile> getAllMobiles(){
-
-		return adminService.getAllMobiles();
-	}
-	@GetMapping("/getAllMobilesByCategory")
-	public List<Mobile> getAllMobilesByCategory( @PathVariable("id") Integer id){
-
-		return adminService.getAllMobilesByCategory(id);
-	}
-	@GetMapping("/getAllOrders")
-	public List<Orders> getAllOrders(){
-
-		return adminService.getAllOrders();
-	}
+//	@GetMapping("admin/getCustomerById/{id}")
+//	public Customer getCustomerById( @PathVariable("id") Integer id) throws MobileException, CustomerException {
+//
+//		return adminService.getCustomerById(id);
+//	}
+//	@PostMapping("admin/updateAdminDetails/{id}")
+//	public Admin updateAdminDetails(@Valid @RequestBody Admin admin, @PathVariable("id") Integer id)
+//			throws  AdminException {
+//
+//		return adminService.updateAdminDetails(admin, id);
+//	}
+//	@GetMapping("admin/getAllCategories")
+//	public List<Category> getAllCategories(){
+//
+//		return adminService.getAllCategories();
+//	}
+//	@GetMapping("admin/getAllCustomers")
+//	public List<Customer> getAllCustomers(){
+//
+//		return adminService.getAllCustomers();
+//	}
+//	@GetMapping("/getAllMobiles")
+//	public List<Mobile> getAllMobiles(){
+//
+//		return adminService.getAllMobiles();
+//	}
+//	@GetMapping("/getAllMobilesByCategory")
+//	public List<Mobile> getAllMobilesByCategory( @PathVariable("id") Integer id){
+//
+//		return adminService.getAllMobilesByCategory(id);
+//	}
+//	@GetMapping("/getAllOrders")
+//	public List<Orders> getAllOrders(){
+//
+//		return adminService.getAllOrders();
+//	}
 	
 }

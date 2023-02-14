@@ -27,19 +27,19 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	private CartRepository cartRepository;
 
-	@Autowired
-	private CartService cartService;
+
 
 	@Autowired
 	private OrderService orderService;
 
 	@Override
-	public Customer addCustomer(Customer newCustomer) {
-		Customer customer = customerRepository.save(newCustomer);
-		Cart cart = new Cart(customer.getId(), 0, 0D, null, null);
+	public Customer addCustomer(Customer customer) {
+		Customer newCustomer = customerRepository.save(customer);
+		Cart cart = new Cart(customer.getId(),0, 0.0);
 		cartRepository.save(cart);
-
-		return customerRepository.save(customer);
+		customer.setCart(cart);
+		customerRepository.save(customer);
+		return  newCustomer;
 	}
 
 	@Override
@@ -53,16 +53,16 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Customer updateCustomer(Customer updateCustomer) throws CustomerException {
-		Optional<Customer> customerOpt = this.customerRepository.findById(updateCustomer.getId());
+	public Customer updateCustomer(Customer customer) throws CustomerException {
+		Optional<Customer> customerOpt = this.customerRepository.findById(customer.getId());
 		if (customerOpt.isEmpty())
 			throw new CustomerException("Customer id does not exist to update.");
 
-		Customer customer = customerOpt.get();
-		customer.setName(updateCustomer.getName());
-		customer.setMobileNo(updateCustomer.getMobileNo());
-		customer.setEmail(updateCustomer.getEmail());
-
+		Customer updateCustomer = customerOpt.get();
+		updateCustomer.setName(customer.getName());
+		updateCustomer.setMobileNo(customer.getMobileNo());
+		updateCustomer.setEmail(customer.getEmail());
+		
 		return this.customerRepository.save(updateCustomer);
 	}
 

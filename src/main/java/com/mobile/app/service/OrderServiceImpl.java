@@ -67,28 +67,28 @@ public class OrderServiceImpl implements OrderService {
 		Customer foundCustomer = customer.get();
 		Orders newOrders = addOrder(Order);
 		foundCustomer.getOrders().add(newOrders);
-//		orderRepository.save(newOrders);
+		orderRepository.save(newOrders);
 		customerRepository.save(foundCustomer);
 		return newOrders;
 	}
 
-	@Override
-	public String updateOrder(Orders order) {
-		Optional<Orders> existingOrder = orderRepository.findById(order.getId());
-		if (!existingOrder.isPresent()) {
-			return "No Order Available to update ";
-		}
-		Orders updatedOrder = existingOrder.get();
-		updatedOrder.setId(order.getId());
-		updatedOrder.setOrderDate(order.getOrderDate());
-
-		updatedOrder.setDispatchDate(order.getDispatchDate());
-
-		updatedOrder.setCost(order.getCost());
-		updatedOrder.setQuantity(order.getQuantity());
-
-		return "Order Successfully Updated";
-	}
+//	@Override
+//	public String updateOrder(Orders order) {
+//		Optional<Orders> existingOrder = orderRepository.findById(order.getId());
+//		if (!existingOrder.isPresent()) {
+//			return "No Order Available to update ";
+//		}
+//		Orders updatedOrder = existingOrder.get();
+//		updatedOrder.setId(order.getId());
+//		updatedOrder.setOrderDate(order.getOrderDate());
+//
+//		updatedOrder.setDispatchDate(order.getDispatchDate());
+//
+//		updatedOrder.setCost(order.getCost());
+//		updatedOrder.setQuantity(order.getQuantity());
+//
+//		return "Order Successfully Updated";
+//	}
 	
 
 	

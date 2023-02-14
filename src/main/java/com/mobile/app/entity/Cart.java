@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
@@ -15,15 +13,12 @@ import javax.validation.constraints.Min;
 public class Cart {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@Min(value = 0, message = "Cost cannot be neagtive")
-
+	@Min(value = 0, message = "Quantity cannot be neagtive")
 	private Integer quantity;
 	@Min(value = 0, message = "Cost cannot be neagtive")
 	private Double cost;
-
 
 	@ManyToMany
 	private List<Mobile> mobiles = new ArrayList<>();
@@ -33,6 +28,14 @@ public class Cart {
 
 	public Cart() {
 		super();
+	}
+
+	public Cart(Integer id, @Min(value = 0, message = "Quantity cannot be neagtive") Integer quantity,
+			@Min(value = 0, message = "Cost cannot be neagtive") Double cost) {
+		super();
+		this.id = id;
+		this.quantity = quantity;
+		this.cost = cost;
 	}
 
 	public Cart(Integer id, @Min(value = 0, message = "Cost cannot be neagtive") Integer quantity,
@@ -85,5 +88,4 @@ public class Cart {
 		this.payment = payment;
 	}
 
-	
 }

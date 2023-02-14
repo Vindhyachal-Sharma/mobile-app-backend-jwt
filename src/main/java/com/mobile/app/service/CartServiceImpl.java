@@ -1,5 +1,7 @@
 package com.mobile.app.service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,12 +11,15 @@ import org.springframework.stereotype.Service;
 import com.mobile.app.entity.Cart;
 import com.mobile.app.entity.Customer;
 import com.mobile.app.entity.Mobile;
+import com.mobile.app.entity.Orders;
 import com.mobile.app.entity.Payment;
 import com.mobile.app.exception.CartException;
 import com.mobile.app.exception.CustomerException;
 import com.mobile.app.exception.MobileException;
 import com.mobile.app.exception.OrderException;
 import com.mobile.app.repository.CartRepository;
+import com.mobile.app.repository.CustomerRepository;
+import com.mobile.app.repository.OrderRepository;
 import com.mobile.app.repository.PaymentRepository;
 
 @Service
@@ -32,6 +37,15 @@ public class CartServiceImpl implements CartService {
 	@Autowired
 	private MobileService mobileService;
 
+	@Autowired
+	private PaymentService paymentService;
+
+	@Autowired
+	private CustomerRepository customerRepository;
+	
+	@Autowired
+	private OrderRepository orderRepository; 
+
 	@Override
 	public Cart addMobileToCartByCustomerId(Integer mobileId, Integer customerId)
 			throws CustomerException, MobileException, CartException {
@@ -41,12 +55,11 @@ public class CartServiceImpl implements CartService {
 
 		Mobile mob = mobileService.getMobileById(mobileId);
 
-		cart = customer.getCart();
 		cart.getMobiles().add(mob);
-		cart.setQuantity(updateMobileItemQuantity(mob, customerId));
+		cart.setQuantity(cart.getMobiles().size());
 		cart.setCost(addMobileAndUpdateTotalCost(mob, customerId));
 		customer.setCart(cart);
-
+		customerRepository.save(customer);
 		return this.cartRepository.save(cart);
 
 	}
@@ -66,6 +79,7 @@ public class CartServiceImpl implements CartService {
 		}
 		Cart updatedCart = existingCart.get();
 		updatedCart.setCost(mobile.getMobileCost());
+		cartRepository.save(updatedCart);
 		return updatedCart;
 	}
 
@@ -83,8 +97,10 @@ public class CartServiceImpl implements CartService {
 		} else {
 			cart = customer.getCart();
 			cart.getMobiles().remove(mob);
-			cart.setQuantity(removeMobileItemQuantity(mob, customerId));
+			cart.setQuantity(cart.getMobiles().size());
 			cart.setCost(removeMobileAndUpdateTotalCost(mob, customerId));
+			customer.setCart(cart);
+			customerRepository.save(customer);
 			cartRepository.save(cart);
 		}
 
@@ -121,26 +137,20 @@ public class CartServiceImpl implements CartService {
 	public Double removeMobileAndUpdateTotalCost(Mobile mobile, Integer CustId) throws CustomerException {
 		Double totalCost = 0.0;
 
-		if (customerService.getCustomerById(CustId).getCart().getMobiles().contains(mobile.getMobileId())) {
+		totalCost = customerService.getCustomerById(CustId).getCart().getCost();
+		totalCost -= mobile.getMobileCost();
+		customerService.getCustomerById(CustId).getCart().setCost(totalCost);
 
-			totalCost = customerService.getCustomerById(CustId).getCart().getCost();
-			totalCost -= mobile.getMobileCost();
-			customerService.getCustomerById(CustId).getCart().setCost(totalCost);
-
-		}
 		return totalCost;
 	}
 
 	public Double addMobileAndUpdateTotalCost(Mobile mobile, Integer CustId) throws CustomerException {
 		Double totalCost = 0.0;
 
-		if (customerService.getCustomerById(CustId).getCart().getMobiles().contains(mobile.getMobileId())) {
+		totalCost = customerService.getCustomerById(CustId).getCart().getCost();
+		totalCost += mobile.getMobileCost();
+		customerService.getCustomerById(CustId).getCart().setCost(totalCost);
 
-			totalCost = customerService.getCustomerById(CustId).getCart().getCost();
-			totalCost += mobile.getMobileCost();
-			customerService.getCustomerById(CustId).getCart().setCost(totalCost);
-
-		}
 		return totalCost;
 	}
 
@@ -155,12 +165,14 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public String deleteCartById(Integer cartId) throws CartException {
+	public String deleteCartById(Integer cartId) throws CartException, CustomerException {
 		Optional<Cart> optCart = this.cartRepository.findById(cartId);
 		if (optCart.isEmpty())
 			throw new CartException("cart id does not exists to delete !");
 		Cart cart = optCart.get();
-		this.cartRepository.deleteById(cartId);
+		Customer  customer= customerService.getCustomerById(cartId);
+		List<Mobile> newList=new ArrayList<>();
+		cart.setMobiles(newList);
 		cartRepository.save(cart);
 		return "Cart Deleted Successfully";
 
@@ -178,7 +190,8 @@ public class CartServiceImpl implements CartService {
 
 	}
 
-	public Payment removePaymenttFromCartId(Integer cartId) throws OrderException, CartException {
+	@Override
+	public Payment removePaymentFromCartId(Integer cartId) throws OrderException, CartException {
 		Cart cart = getCartById(cartId);
 		Payment pay = cart.getPayment();
 		cart.setPayment(null);
@@ -187,4 +200,39 @@ public class CartServiceImpl implements CartService {
 		return pay;
 
 	}
+
+	@Override
+	public String checkout(Payment payment, Integer cartId) throws CartException, CustomerException {
+
+		Payment madePayment = null;
+		Cart cart = getCartByCustomerId(cartId);
+		Customer customer = customerService.getCustomerById(cartId);
+		
+		madePayment.setPaymentMode(payment.getPaymentMode());
+		madePayment.setPaymentStatus(payment.getPaymentStatus());
+		paymentRepository.save(madePayment);
+		cart.setPayment(madePayment);
+		cartRepository.save(cart);
+		
+		Orders order = new Orders();
+		order.setCost(cart.getCost());
+		order.setMobiles(cart.getMobiles());
+		order.setQuantity(cart.getMobiles().size());
+		order.setOrderDate(LocalDate.now());
+//		order.setDispatchDate(LocalDateTime.from(LocalDate.now().toInstant()).plusDays(1));
+		order.setDispatchDate(LocalDate.now());
+		orderRepository.save(order);
+		List<Orders>orderList=new ArrayList<>();
+		orderList.add(order);
+		customer.setOrders(orderList);
+		customerRepository.save(customer);
+		List<Mobile> newList=new ArrayList<>();
+		cart.setMobiles(newList);
+		cartRepository.save(cart);
+		
+		return "Thanks for the order";
+	}
+
+	
+
 }

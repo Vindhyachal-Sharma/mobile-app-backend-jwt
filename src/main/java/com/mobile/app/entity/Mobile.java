@@ -13,15 +13,12 @@ import javax.validation.constraints.Pattern;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 public class Mobile {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int mobileId;
 	@NotBlank(message = "Name is mandatory")
-//	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Name can only contain letters and spaces")
 	private String mobileName;
 	@Min(value = 0, message = "Cost cannot be neagtive")
 	private Double mobileCost;
@@ -36,23 +33,9 @@ public class Mobile {
 	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Name can only contain letters and spaces")
 	private String companyName;
 
-//	@ManyToOne
-//	private Category category;
-	@JsonIgnore
-//	@OneToOne
-//	private Orders order;
-
 	public Mobile() {
 		super();
 	}
-
-//	public Category getCategory() {
-//		return category;
-//	}
-//
-//	public void setCategory(Category category) {
-//		this.category = category;
-//	}
 
 	public Mobile(int mobileId, String mobileName, Double mobileCost, LocalDate mfd, String modelNumber,
 			String companyName, Category category) {
@@ -63,7 +46,6 @@ public class Mobile {
 		this.mfd = mfd;
 		this.modelNumber = modelNumber;
 		this.companyName = companyName;
-//		this.category = category;
 
 	}
 
@@ -114,13 +96,5 @@ public class Mobile {
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
-
-//	public Orders getOrder() {
-//		return order;
-//	}
-//
-//	public void setOrder(Orders order) {
-//		this.order = order;
-//	}
 
 }

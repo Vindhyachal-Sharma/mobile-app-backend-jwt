@@ -20,12 +20,17 @@ public interface CartService {
 
 	Cart getCartById(Integer cartId) throws CartException;
 
-	String deleteCartById(Integer cartId) throws CartException;
+	String deleteCartById(Integer cartId) throws CartException, CustomerException;
 
 	List<Cart> getAllCarts();
 
 	Cart getCartByCustomerId(Integer customerId) throws CartException, CustomerException;
 
-	Payment removePaymenttFromCartId(Integer cartId) throws OrderException, CartException;
+	Payment removePaymentFromCartId(Integer cartId) throws OrderException, CartException;
+	
+
+	String checkout(Payment payment, Integer cartId) throws CartException, CustomerException; 
+	
+	
 
 }

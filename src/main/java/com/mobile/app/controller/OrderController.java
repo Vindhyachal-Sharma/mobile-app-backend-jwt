@@ -54,15 +54,15 @@ public class OrderController {
 
 		return orderService.getOrderById(orderId); 
 	}
-
-	@PutMapping("/order")
-	public String updateOrder(@Valid @RequestBody Orders order) {
-
-		return orderService.updateOrder(order);
-	}
+//
+//	@PutMapping("/order")
+//	public String updateOrder(@Valid @RequestBody Orders order) {
+//
+//		return orderService.updateOrder(order);
+//	}
 
 	@DeleteMapping("/order/{orderId}")
-	public String deleteOrderById(@Valid @RequestBody Integer customerId, @PathVariable("orderId") Integer orderId)
+	public String deleteOrderById( @RequestBody Integer customerId, @PathVariable("orderId") Integer orderId)
 			throws OrderException, CustomerException {
 
 		return this.customerService.deleteOrdersFromCustomerById(customerId,orderId);

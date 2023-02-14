@@ -64,7 +64,7 @@ public class MobileController {
 	}
 
 	@DeleteMapping("/mobile/{mobileId}")
-	public String deleteMobileById(@Valid @RequestBody Integer categoryId, @PathVariable("mobileId") Integer mobileId)
+	public String deleteMobileById( @RequestBody Integer categoryId, @PathVariable("mobileId") Integer mobileId)
 			throws MobileException, CategoryException {
 
 		return this.categoryService.removeMobileFromCategoryById(categoryId, mobileId);

@@ -34,19 +34,19 @@ public class CartController {
 //	Cart removeMobileFromCart(Mobile mobile, Integer id) throws CartException;
 //	List<Cart> getAllCarts();
 
-	@PostMapping("/cart/{customerId}")
-	public Cart addMobileToCartByCustomerId(@Valid @RequestBody Integer mobileId,
+	@PostMapping("/cart/mobile/{customerId}")
+	public Cart addMobileToCartByCustomerId(@RequestBody Integer mobileId,
 			@PathVariable("customerId") Integer customerId) throws CustomerException, MobileException, CartException {
 
 		return cartService.addMobileToCartByCustomerId(mobileId, customerId);
 	}
 
-	@PutMapping("/cart/{cartId}")
-	public Cart updateCart(@Valid @RequestBody Mobile mobile, @PathVariable("cartId") Integer cartId)
-			throws CartException {
-
-		return cartService.updateCart(mobile, cartId);
-	}
+//	@PutMapping("/cart/{cartId}")
+//	public Cart updateCart(@Valid @RequestBody Mobile mobile, @PathVariable("cartId") Integer cartId)
+//			throws CartException {
+//
+//		return cartService.updateCart(mobile, cartId);
+//	}
 
 	@GetMapping("/carts")
 	public List<Cart> getAllCarts() {
@@ -55,7 +55,7 @@ public class CartController {
 	}
 
 	@GetMapping("/cart/{id}")
-	public Cart getCartById(@Valid @PathVariable("id") Integer cartId) throws CartException {
+	public Cart getCartById( @PathVariable("id") Integer cartId) throws CartException {
 
 		return cartService.getCartById(cartId);
 	}
@@ -66,5 +66,10 @@ public class CartController {
 
 		return this.customerService.deleteExistingCartFromCustomerById(customerId);
 	}
+	@DeleteMapping("/cart/mobile/{customerId}")
+	public Cart deleteMobileFromCartById(@RequestBody Integer mobileId,@PathVariable("customerId") Integer customerId)
+			throws  MobileException, CartException, CustomerException {
 
+		return this.cartService.removeMobileFromCart(mobileId, customerId);
+	}
 }

@@ -16,7 +16,7 @@ public class Payment {
 	private PaymentStatus paymentStatus;
 
 	public enum PaymentMode {
-		CASH_ON_DELIVERY,UPI
+		COD,UPI
 	}
 
 	public enum PaymentStatus {
