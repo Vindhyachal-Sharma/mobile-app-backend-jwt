@@ -32,8 +32,8 @@ public class Orders {
 
 	private Integer quantity;
 
-	@OneToOne
-	private Payment payment;
+//	@OneToOne
+//	private Payment payment;
 
 	@OneToMany
 	private List<Mobile> mobiles = new ArrayList<>();
@@ -43,7 +43,7 @@ public class Orders {
 	}
 
 	public Orders(Integer id, LocalDate orderDate, LocalDate dispatchDate, Double cost, Integer quantity,
-			Payment payment, List<Mobile> mobiles) {
+			/* Payment payment, */ List<Mobile> mobiles) {
 		super();
 		this.id = id;
 		this.orderDate = orderDate;
@@ -51,7 +51,7 @@ public class Orders {
 		this.cost = cost;
 
 		this.quantity = quantity;
-		this.payment = payment;
+		//this.payment = payment;
 		this.mobiles = mobiles;
 	}
 
@@ -95,13 +95,13 @@ public class Orders {
 		this.quantity = quantity;
 	}
 
-	public Payment getPayment() {
-		return payment;
-	}
-
-	public void setPayment(Payment payment) {
-		this.payment = payment;
-	}
+//	public Payment getPayment() {
+//		return payment;
+//	}
+//
+//	public void setPayment(Payment payment) {
+//		this.payment = payment;
+//	}
 
 	public List<Mobile> getMobiles() {
 		return mobiles;

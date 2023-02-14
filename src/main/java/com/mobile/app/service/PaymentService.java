@@ -14,7 +14,7 @@ public interface PaymentService {
 
 	Payment deletePaymentById(Integer id) throws PaymentException;
 
-	Payment addPaymentToOrder(Payment payment,Integer orderId) throws PaymentException;
+	Payment addPaymentToCart(Payment payment,Integer cartId) throws PaymentException;
 	
 	List<Payment> getAllPayments();
 	

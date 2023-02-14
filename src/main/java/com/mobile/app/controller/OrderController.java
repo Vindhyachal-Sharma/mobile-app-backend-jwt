@@ -61,8 +61,8 @@ public class OrderController {
 		return orderService.updateOrder(order);
 	}
 
-	@DeleteMapping("/order/{id}")
-	public String deleteOrderById(@Valid @RequestBody Integer customerId, @PathVariable("id") Integer orderId)
+	@DeleteMapping("/order/{orderId}")
+	public String deleteOrderById(@Valid @RequestBody Integer customerId, @PathVariable("orderId") Integer orderId)
 			throws OrderException, CustomerException {
 
 		return this.customerService.deleteOrdersFromCustomerById(customerId,orderId);

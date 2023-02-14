@@ -24,34 +24,26 @@ public class Cart {
 	@Min(value = 0, message = "Cost cannot be neagtive")
 	private Double cost;
 
-//	@ManyToMany
-//	private Map<Integer, Mobile> mobilesMap = new HashMap<>();
+
 	@ManyToMany
 	private List<Mobile> mobiles = new ArrayList<>();
 
 	@OneToOne
-	Orders order;
+	Payment payment;
 
 	public Cart() {
 		super();
 	}
 
-	public Cart(Integer id, Integer quantity, Double cost, List<Mobile> mobiles/* Map<Integer,Mobile>mobilesMap */) {
+	public Cart(Integer id, @Min(value = 0, message = "Cost cannot be neagtive") Integer quantity,
+			@Min(value = 0, message = "Cost cannot be neagtive") Double cost, List<Mobile> mobiles, Payment payment) {
 		super();
 		this.id = id;
 		this.quantity = quantity;
 		this.cost = cost;
 		this.mobiles = mobiles;
-//		this.mobilesMap=mobilesMap;
+		this.payment = payment;
 	}
-
-//	public Map<Integer, Mobile> getMobilesMap() {
-//		return mobilesMap;
-//	}
-//
-//	public void setMobilesMap(Map<Integer, Mobile> mobilesMap) {
-//		this.mobilesMap = mobilesMap;
-//	}
 
 	public Integer getId() {
 		return id;
@@ -81,8 +73,17 @@ public class Cart {
 		return mobiles;
 	}
 
-	public void setMobiles(List<Mobile> mobile) {
-		this.mobiles = mobile;
+	public void setMobiles(List<Mobile> mobiles) {
+		this.mobiles = mobiles;
 	}
 
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
+
+	
 }

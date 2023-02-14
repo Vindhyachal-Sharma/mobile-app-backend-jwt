@@ -27,7 +27,7 @@ public interface OrderService {
 		
 		List<Orders> getAllOrders();
 
-		Payment removePaymenttByid(Integer orderId) throws OrderException; 
+		//Payment removePaymenttByid(Integer orderId) throws OrderException; 
 
 
 }

@@ -107,12 +107,12 @@ public class CustomerServiceImpl implements CustomerService {
 			throws CustomerException, OrderException {
 		Orders deletedOrder = null;
 		Orders orders = orderRepository.findById(orderId).get();
-		Customer customer = customerRepository.findById(customerId).get();
+		Customer customer = getCustomerById(customerId);
 
 		if (customer == null) {
 			throw new CustomerException("Customer Not Found");
 		} else {
-			if (orders.getMobiles() != null) {
+			if (orders.getMobiles().isEmpty()||orders.getMobiles()==null) {
 				for (Orders order : customer.getOrders()) {
 					if (order.getId() == orderId)
 						deletedOrder = order;

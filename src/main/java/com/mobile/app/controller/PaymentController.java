@@ -36,10 +36,10 @@ public class PaymentController {
 
 		return paymentService.addPayment(payment);
 	}
-	@PostMapping("/payment/{id}")
-	public Payment addPaymentToOrder(@Valid @RequestBody Payment payment,@PathVariable("id") Integer id) throws PaymentException {
+	@PostMapping("/payment/{cartId}")
+	public Payment addPaymentToCart(@Valid @RequestBody Payment payment,@PathVariable("cartId") Integer cartId) throws PaymentException {
 
-		return paymentService.addPaymentToOrder(payment,id);
+		return paymentService.addPaymentToCart(payment,cartId);
 	}
 	
 	@PutMapping("/payment")

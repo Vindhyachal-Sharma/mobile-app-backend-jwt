@@ -87,21 +87,9 @@ public class OrderServiceImpl implements OrderService {
 		updatedOrder.setCost(order.getCost());
 		updatedOrder.setQuantity(order.getQuantity());
 
-		updatedOrder.setPayment(order.getPayment());
-		orderRepository.save(updatedOrder);
-
 		return "Order Successfully Updated";
 	}
-	@Override
-	public Payment removePaymenttByid(Integer orderId) throws OrderException {
-		Orders order = getOrderById(orderId);
-		Payment pay = order.getPayment();
-		order.setPayment(null);
-		paymentRepository.delete(pay);
-		orderRepository.save(order);
-		return pay;
- 
-	}
+	
 
 	
 

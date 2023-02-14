@@ -4,9 +4,11 @@ import java.util.List;
 
 import com.mobile.app.entity.Cart;
 import com.mobile.app.entity.Mobile;
+import com.mobile.app.entity.Payment;
 import com.mobile.app.exception.CartException;
 import com.mobile.app.exception.CustomerException;
 import com.mobile.app.exception.MobileException;
+import com.mobile.app.exception.OrderException;
 
 public interface CartService {
 
@@ -23,5 +25,7 @@ public interface CartService {
 	List<Cart> getAllCarts();
 
 	Cart getCartByCustomerId(Integer customerId) throws CartException, CustomerException;
+
+	Payment removePaymenttFromCartId(Integer cartId) throws OrderException, CartException;
 
 }

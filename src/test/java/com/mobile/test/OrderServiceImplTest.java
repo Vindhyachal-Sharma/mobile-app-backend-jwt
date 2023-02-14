@@ -1,6 +1,7 @@
 package com.mobile.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -36,10 +37,10 @@ public class OrderServiceImplTest {
 	private CustomerRepository customerRepository;
 
 	Payment pay = new Payment(null, null, null);
-	Cart cart = new Cart(null, null, null, null);
+	Cart cart = new Cart(null, null, null, null,null);
 	LocalDate orderDate = LocalDate.parse("2023-02-10");
 	LocalDate dispatchDate = LocalDate.parse("2023-09-29");
-	Orders orders = new Orders(100, orderDate, dispatchDate, 989898.0, 2, pay, null);
+	Orders orders = new Orders(100, orderDate, dispatchDate, 989898.0, 2, null);
 
 	@Test
 	void addOrdersTest() throws Exception{
@@ -101,7 +102,7 @@ public class OrderServiceImplTest {
 	void updateOrdersTest() throws OrderException {
 		Integer id = 100;
 		LocalDate date = LocalDate.parse("2023-02-10");
-		Orders updateOrders = new Orders(100, date, date, 989898.0, 2, pay, null);
+		Orders updateOrders = new Orders(100, date, date, 989898.0, 2, null);
 
 		when(repository.findById(id)).thenReturn(Optional.of(orders));
 		when(repository.save(updateOrders)).thenReturn(updateOrders);
@@ -114,7 +115,7 @@ public class OrderServiceImplTest {
 		Integer id = 100;
 		Payment pay = new Payment(null, null, null);
 		LocalDate date = LocalDate.parse("2023-02-11");
-		Orders updateOrders = new Orders(100, date, date, 989898.0, 2, pay, null);
+		Orders updateOrders = new Orders(100, date, date, 989898.0, 2, null);
 
 		when(repository.findById(id)).thenReturn(Optional.of(orders));
 		when(repository.save(updateOrders)).thenReturn(updateOrders);

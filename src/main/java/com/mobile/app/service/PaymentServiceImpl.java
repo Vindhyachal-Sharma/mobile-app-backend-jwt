@@ -6,10 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mobile.app.entity.Orders;
+import com.mobile.app.entity.Cart;
 import com.mobile.app.entity.Payment;
+import com.mobile.app.exception.OrderException;
 import com.mobile.app.exception.PaymentException;
-import com.mobile.app.repository.OrderRepository;
+import com.mobile.app.repository.CartRepository;
 import com.mobile.app.repository.PaymentRepository;
 @Service
 public class PaymentServiceImpl implements PaymentService{
@@ -17,7 +18,7 @@ public class PaymentServiceImpl implements PaymentService{
 	private PaymentRepository paymentRepository;
 
 	@Autowired
-	private OrderRepository orderRepository;
+	private CartRepository cartRepository;
 	
 	@Override
 	public Payment addPayment(Payment payment) {
@@ -68,18 +69,19 @@ public class PaymentServiceImpl implements PaymentService{
 	}
 
 	@Override
-	public Payment addPaymentToOrder(Payment payment, Integer id) throws PaymentException {
-		Optional<Orders> existingOrder = orderRepository.findById(id);
-		if(existingOrder.isEmpty()) {
+	public Payment addPaymentToCart(Payment payment, Integer cartId) throws PaymentException {
+		Optional<Cart> existingCart = cartRepository.findById(cartId);
+		if(existingCart.isEmpty()) {
 			throw new PaymentException("Order not Found");
 		}
-		Orders foundOrders=existingOrder.get();
+		Cart foundCart=existingCart.get();
 		Payment newPayment=addPayment(payment);
-		foundOrders.setPayment(newPayment);
-		orderRepository.save(foundOrders);
+		foundCart.setPayment(newPayment);
+		cartRepository.save(foundCart);
 		return payment;
 		
 	}
+	
 
 	
 }
