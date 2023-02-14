@@ -25,7 +25,7 @@ public interface CustomerService {
 	
 
 
-	String deleteCartFromCustomerById(Integer customerId,Integer cartId)throws CustomerException, CartException;
+	String deleteExistingCartFromCustomerById(Integer customerId)throws CustomerException;
 
 	List<Orders> getAllOrdersOfCustomer(Integer customerId) throws CustomerException;
 

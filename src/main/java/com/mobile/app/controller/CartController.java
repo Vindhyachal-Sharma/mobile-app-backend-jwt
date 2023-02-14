@@ -60,11 +60,11 @@ public class CartController {
 		return cartService.getCartById(cartId);
 	}
 
-	@DeleteMapping("/card/{cartId}")
-	public String deleteCartById(@Valid @RequestBody Integer customerId, @PathVariable("cartId") Integer cartId)
+	@DeleteMapping("/cart/{customerId}")
+	public String deleteCartById(@PathVariable("customerId") Integer customerId)
 			throws CartException, CustomerException {
 
-		return this.customerService.deleteCartFromCustomerById(customerId, cartId);
+		return this.customerService.deleteExistingCartFromCustomerById(customerId);
 	}
 
 }

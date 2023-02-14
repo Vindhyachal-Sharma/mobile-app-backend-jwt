@@ -25,7 +25,7 @@ public class CartServiceImpl implements CartService {
 
 	@Autowired
 	private PaymentRepository paymentRepository;
-	
+
 	@Autowired
 	private CustomerService customerService;
 
@@ -41,29 +41,19 @@ public class CartServiceImpl implements CartService {
 
 		Mobile mob = mobileService.getMobileById(mobileId);
 
-		if (cart == null) {
-			cart = new Cart();
-			cart.getMobiles().add(mob);
-			cart.setQuantity(updateMobileItemQuantity(mob, customerId));
-			cart.setCost(addMobileAndUpdateTotalCost(mob, customerId));
-			customer.setCart(cart);
-
-		} else {
-			cart = customer.getCart();
-			cart.getMobiles().add(mob);
-			cart.setQuantity(updateMobileItemQuantity(mob, customerId));
-			cart.setCost(addMobileAndUpdateTotalCost(mob, customerId));
-			customer.setCart(cart);
-		}
+		cart = customer.getCart();
+		cart.getMobiles().add(mob);
+		cart.setQuantity(updateMobileItemQuantity(mob, customerId));
+		cart.setCost(addMobileAndUpdateTotalCost(mob, customerId));
+		customer.setCart(cart);
 
 		return this.cartRepository.save(cart);
 
 	}
 
 	@Override
-	public List<Cart> getAllCarts(){
+	public List<Cart> getAllCarts() {
 
-		// TODO Auto-generated method stub
 		return this.cartRepository.findAll();
 	}
 
@@ -147,7 +137,7 @@ public class CartServiceImpl implements CartService {
 		if (customerService.getCustomerById(CustId).getCart().getMobiles().contains(mobile.getMobileId())) {
 
 			totalCost = customerService.getCustomerById(CustId).getCart().getCost();
-			totalCost+=mobile.getMobileCost();
+			totalCost += mobile.getMobileCost();
 			customerService.getCustomerById(CustId).getCart().setCost(totalCost);
 
 		}
@@ -187,14 +177,14 @@ public class CartServiceImpl implements CartService {
 			return cart;
 
 	}
-	
+
 	public Payment removePaymenttFromCartId(Integer cartId) throws OrderException, CartException {
-		Cart cart= getCartById(cartId);
+		Cart cart = getCartById(cartId);
 		Payment pay = cart.getPayment();
 		cart.setPayment(null);
 		paymentRepository.delete(pay);
 		cartRepository.save(cart);
 		return pay;
- 
+
 	}
 }

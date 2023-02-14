@@ -181,22 +181,22 @@ public class CustomerServiceImplTest {
 	@Test
 	public void testDeleteCartFromCustomerByIdSuccess() throws CustomerException, CartException {
 		Integer customerId = 1;
-		Integer cartId = 1;
+		
 
 		Customer mockCustomer = new Customer();
 		mockCustomer.setId(customerId);
 
 		Cart mockCart = new Cart();
-		mockCart.setId(cartId);
+		mockCart.setId(customerId);
 
 		when(customerRepository.findById(customerId)).thenReturn(Optional.of(mockCustomer));
-		when(cartService.deleteCartById(cartId)).thenReturn("Cart deleted Successfully");
+		when(cartService.deleteCartById(customerId)).thenReturn("Cart deleted Successfully");
 
-		String result = customerService.deleteCartFromCustomerById(customerId, cartId);
+		String result = customerService.deleteExistingCartFromCustomerById(customerId);
 
 		assertEquals("Cart deleted Successfully", result);
 		verify(customerRepository, times(1)).findById(customerId);
-		verify(cartService, times(1)).deleteCartById(cartId);
+		verify(cartService, times(1)).deleteCartById(customerId);
 	}
 
 //	@Test(expected = CustomerException.class)

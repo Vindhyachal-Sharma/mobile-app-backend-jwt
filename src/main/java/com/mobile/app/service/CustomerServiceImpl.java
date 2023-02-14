@@ -6,11 +6,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mobile.app.entity.Cart;
 import com.mobile.app.entity.Customer;
 import com.mobile.app.entity.Orders;
-import com.mobile.app.exception.CartException;
 import com.mobile.app.exception.CustomerException;
 import com.mobile.app.exception.OrderException;
+import com.mobile.app.repository.CartRepository;
 import com.mobile.app.repository.CustomerRepository;
 import com.mobile.app.repository.OrderRepository;
 
@@ -24,6 +25,9 @@ public class CustomerServiceImpl implements CustomerService {
 	private OrderRepository orderRepository;
 
 	@Autowired
+	private CartRepository cartRepository;
+
+	@Autowired
 	private CartService cartService;
 
 	@Autowired
@@ -31,8 +35,11 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public Customer addCustomer(Customer newCustomer) {
+		Customer customer = customerRepository.save(newCustomer);
+		Cart cart = new Cart(customer.getId(), 0, 0D, null, null);
+		cartRepository.save(cart);
 
-		return customerRepository.save(newCustomer);
+		return customerRepository.save(customer);
 	}
 
 	@Override
@@ -76,21 +83,21 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public String deleteCartFromCustomerById(Integer customerId, Integer cartId)
-			throws CustomerException, CartException {
+	public String deleteExistingCartFromCustomerById(Integer customerId) throws CustomerException {
 
 		Customer customer = customerRepository.findById(customerId).get();
 
 		if (customer == null) {
 			throw new CustomerException("Customer Not Found");
 		} else {
-			if (customer.getCart() != null) {
-				customer.setCart(null);
-				customerRepository.save(customer);
+			customer.getCart().setCost(0.0);
+			customer.getCart().setQuantity(0);
+			customer.getCart().setPayment(null);
+			customer.getCart().getMobiles().removeAll(customer.getCart().getMobiles());
+			customerRepository.save(customer);
 
-			} else
-				throw new CartException("Requested Cart " + cartId + " Not found");
 		}
+
 		return "Cart deleted Succesfully";
 
 	}
@@ -112,7 +119,7 @@ public class CustomerServiceImpl implements CustomerService {
 		if (customer == null) {
 			throw new CustomerException("Customer Not Found");
 		} else {
-			if (orders.getMobiles().isEmpty()||orders.getMobiles()==null) {
+			if (orders.getMobiles().isEmpty() || orders.getMobiles() == null) {
 				for (Orders order : customer.getOrders()) {
 					if (order.getId() == orderId)
 						deletedOrder = order;
