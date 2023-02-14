@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import com.mobile.app.entity.Cart;
 import com.mobile.app.entity.Customer;
 import com.mobile.app.entity.Orders;
-import com.mobile.app.exception.CartException;
-import com.mobile.app.exception.CustomerException;
-import com.mobile.app.exception.OrderException;
+import com.mobile.app.exception.CartNotFoundException;
+import com.mobile.app.exception.CustomerNotFoundException;
+import com.mobile.app.exception.OrderNotFoundException;
 import com.mobile.app.repository.CustomerRepository;
 import com.mobile.app.repository.OrderRepository;
 
@@ -37,21 +37,20 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public String deleteOrderById(Integer orderId) throws OrderException {
+	public String deleteOrderById(Integer orderId) throws OrderNotFoundException {
 
 		Optional<Orders> optOrder = this.orderRepository.findById(orderId);
 		if (optOrder.isEmpty())
-			throw new OrderException("Order id does not exists to delete !");
-//		Orders order = optOrder.get();
+			throw new OrderNotFoundException("Order id does not exists to delete !");
 		this.orderRepository.deleteById(orderId);
 		return "Order Deleted Succesfully";
 	}
 
 	@Override
-	public Orders getOrderById(Integer orderId) throws OrderException {
+	public Orders getOrderById(Integer orderId) throws OrderNotFoundException {
 		Optional<Orders> optOrder = orderRepository.findById(orderId);
 		if (optOrder.isEmpty())
-			throw new OrderException("Order id not found :" + orderId);
+			throw new OrderNotFoundException("Order id not found :" + orderId);
 
 		return optOrder.get();
 	}
@@ -63,10 +62,10 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Orders addOrderToCustomer(Orders Order, Integer customerId) throws CustomerException {
+	public Orders addOrderToCustomer(Orders Order, Integer customerId) throws CustomerNotFoundException {
 		Optional<Customer> customer = customerRepository.findById(customerId);
 		if (customer.isEmpty()) {
-			throw new CustomerException("Customer Id Not Found");
+			throw new CustomerNotFoundException("Customer Id Not Found");
 
 		}
 		Customer foundCustomer = customer.get();
@@ -78,16 +77,15 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Orders getOrdersFromCart(Integer cartId) throws CartException, CustomerException {
-		
+	public Orders getOrdersFromCart(Integer cartId) throws CartNotFoundException, CustomerNotFoundException {
+
 		Customer customer = customerService.getCustomerById(cartId);
-		Cart cart =cartService.getCartByCustomerId(cartId);
+		Cart cart = cartService.getCartByCustomerId(cartId);
 		Orders order = new Orders();
 		order.setCost(cart.getCost());
 		order.getMobiles().addAll(cart.getMobiles());
 		order.setQuantity(cart.getMobiles().size());
 		order.setOrderDate(LocalDate.now());
-//		order.setDispatchDate(LocalDateTime.from(LocalDate.now().toInstant()).plusDays(1));
 		order.setDispatchDate(LocalDate.now());
 		orderRepository.save(order);
 		List<Orders> orderList = new ArrayList<>();
@@ -97,22 +95,5 @@ public class OrderServiceImpl implements OrderService {
 		return orderRepository.save(order);
 	}
 
-//	@Override
-//	public String updateOrder(Orders order) {
-//		Optional<Orders> existingOrder = orderRepository.findById(order.getId());
-//		if (!existingOrder.isPresent()) {
-//			return "No Order Available to update ";
-//		}
-//		Orders updatedOrder = existingOrder.get();
-//		updatedOrder.setId(order.getId());
-//		updatedOrder.setOrderDate(order.getOrderDate());
-//
-//		updatedOrder.setDispatchDate(order.getDispatchDate());
-//
-//		updatedOrder.setCost(order.getCost());
-//		updatedOrder.setQuantity(order.getQuantity());
-//
-//		return "Order Successfully Updated";
-//	}
 
 }

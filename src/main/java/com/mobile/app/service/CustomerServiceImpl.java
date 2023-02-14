@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import com.mobile.app.entity.Cart;
 import com.mobile.app.entity.Customer;
 import com.mobile.app.entity.Orders;
-import com.mobile.app.exception.CustomerException;
-import com.mobile.app.exception.OrderException;
+import com.mobile.app.exception.CustomerNotFoundException;
+import com.mobile.app.exception.OrderNotFoundException;
 import com.mobile.app.repository.CartRepository;
 import com.mobile.app.repository.CustomerRepository;
 import com.mobile.app.repository.OrderRepository;
@@ -33,42 +33,42 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public Customer addCustomer(Customer customer) {
 		Customer newCustomer = customerRepository.save(customer);
-		Cart cart = new Cart(customer.getId(),0, 0.0);
+		Cart cart = new Cart(customer.getId(), 0, 0.0);
 		cartRepository.save(cart);
 		customer.setCart(cart);
 		customerRepository.save(customer);
-		return  newCustomer;
+		return newCustomer;
 	}
 
 	@Override
-	public Customer getCustomerById(Integer customerId) throws CustomerException {
+	public Customer getCustomerById(Integer customerId) throws CustomerNotFoundException {
 
 		Optional<Customer> optCustomer = customerRepository.findById(customerId);
 		if (optCustomer.isEmpty())
-			throw new CustomerException("Cusomer id not found :" + customerId);
+			throw new CustomerNotFoundException("Cusomer id not found :" + customerId);
 
 		return optCustomer.get();
 	}
 
 	@Override
-	public Customer updateCustomer(Customer customer) throws CustomerException {
+	public Customer updateCustomer(Customer customer) throws CustomerNotFoundException {
 		Optional<Customer> customerOpt = this.customerRepository.findById(customer.getId());
 		if (customerOpt.isEmpty())
-			throw new CustomerException("Customer id does not exist to update.");
+			throw new CustomerNotFoundException("Customer id does not exist to update.");
 
 		Customer updateCustomer = customerOpt.get();
 		updateCustomer.setName(customer.getName());
 		updateCustomer.setMobileNo(customer.getMobileNo());
 		updateCustomer.setEmail(customer.getEmail());
-		
+
 		return this.customerRepository.save(updateCustomer);
 	}
 
 	@Override
-	public String deleteCustomerById(Integer customerId) throws CustomerException {
+	public String deleteCustomerById(Integer customerId) throws CustomerNotFoundException {
 		Optional<Customer> optCustomer = this.customerRepository.findById(customerId);
 		if (optCustomer.isEmpty())
-			throw new CustomerException("Customer id does not exists to delete !");
+			throw new CustomerNotFoundException("Customer id does not exists to delete !");
 		Customer customer = optCustomer.get();
 		this.customerRepository.deleteById(customerId);
 		return "Id Deleted Successfully";
@@ -81,12 +81,12 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public String deleteExistingCartFromCustomerById(Integer customerId) throws CustomerException {
+	public String deleteExistingCartFromCustomerById(Integer customerId) throws CustomerNotFoundException {
 
 		Customer customer = customerRepository.findById(customerId).get();
 
 		if (customer == null) {
-			throw new CustomerException("Customer Not Found");
+			throw new CustomerNotFoundException("Customer Not Found");
 		} else {
 			customer.getCart().setCost(0.0);
 			customer.getCart().setQuantity(0);
@@ -101,7 +101,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public List<Orders> getAllOrdersOfCustomer(Integer customerId) throws CustomerException {
+	public List<Orders> getAllOrdersOfCustomer(Integer customerId) throws CustomerNotFoundException {
 		Customer customer = getCustomerById(customerId);
 
 		return customer.getOrders();
@@ -109,13 +109,13 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public String cancelOrdersFromCustomerById(Integer customerId, Integer orderId)
-			throws CustomerException, OrderException {
+			throws CustomerNotFoundException, OrderNotFoundException {
 		Orders deletedOrder = null;
 		Orders orders = orderRepository.findById(orderId).get();
 		Customer customer = getCustomerById(customerId);
 
 		if (customer == null) {
-			throw new CustomerException("Customer Not Found");
+			throw new CustomerNotFoundException("Customer Not Found");
 		} else {
 			if (orders.getMobiles().isEmpty() || orders.getMobiles() == null) {
 				for (Orders order : customer.getOrders()) {
@@ -126,7 +126,7 @@ public class CustomerServiceImpl implements CustomerService {
 				orderService.deleteOrderById(orderId);
 				customerRepository.save(customer);
 			} else
-				throw new OrderException("Requested Order" + orderId + "Not found");
+				throw new OrderNotFoundException("Requested Order" + orderId + "Not found");
 		}
 		return "Order deleted Succesfully";
 

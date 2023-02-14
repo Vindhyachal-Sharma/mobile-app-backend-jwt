@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.mobile.app.exception.CustomerException;
+import com.mobile.app.exception.CustomerNotFoundException;
 import com.mobile.app.service.CustomerService;
 
 @SpringBootTest
@@ -34,13 +34,13 @@ class MobileApplicationTests {
 //		assertNotNull(customerService.addCustomer(new Customer(100, "test name 100", "test100@gmail.com", "test@100")));
 //	}
 	@Test
-	void getCustomerByIdTest() throws CustomerException {
+	void getCustomerByIdTest() throws CustomerNotFoundException {
 		assertNotNull(customerService.getCustomerById(100));
 	}
 	@Test
 	void getCustomerByIdExceptionTest() {
 		
-		assertThrows(CustomerException.class,()->customerService.getCustomerById(500));
+		assertThrows(CustomerNotFoundException.class,()->customerService.getCustomerById(500));
 	}
 	@Test
 	void getCustomerByIdExceptionMessageTest() {
@@ -48,7 +48,7 @@ class MobileApplicationTests {
 		String msg=null;
 		try {
 			customerService.getCustomerById(500);
-		} catch (CustomerException e) {
+		} catch (CustomerNotFoundException e) {
 			msg=e.getMessage();
 		}
 		

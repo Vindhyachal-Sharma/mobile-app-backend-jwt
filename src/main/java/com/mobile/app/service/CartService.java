@@ -5,32 +5,31 @@ import java.util.List;
 import com.mobile.app.entity.Cart;
 import com.mobile.app.entity.Mobile;
 import com.mobile.app.entity.Payment;
-import com.mobile.app.exception.CartException;
-import com.mobile.app.exception.CustomerException;
-import com.mobile.app.exception.MobileException;
-import com.mobile.app.exception.OrderException;
+import com.mobile.app.exception.CartNotFoundException;
+import com.mobile.app.exception.CustomerNotFoundException;
+import com.mobile.app.exception.MobileNotFoundException;
+import com.mobile.app.exception.OrderNotFoundException;
 
 public interface CartService {
 
-	Cart addMobileToCartByCustomerId(Integer MobileId, Integer custId) throws CustomerException, MobileException, CartException;
+	Cart addMobileToCartByCustomerId(Integer MobileId, Integer custId)
+			throws CustomerNotFoundException, MobileNotFoundException, CartNotFoundException;
 
-	Cart updateCart(Mobile mobile, Integer id) throws CartException;
+	Cart updateCart(Mobile mobile, Integer id) throws CartNotFoundException;
 
-	Cart removeMobileFromCart(Integer mobileId, Integer id) throws CartException, CustomerException, MobileException;
+	Cart removeMobileFromCart(Integer mobileId, Integer id)
+			throws CartNotFoundException, CustomerNotFoundException, MobileNotFoundException;
 
-	Cart getCartById(Integer cartId) throws CartException;
+	Cart getCartById(Integer cartId) throws CartNotFoundException;
 
-	String deleteCartById(Integer cartId) throws CartException, CustomerException;
+	String deleteCartById(Integer cartId) throws CartNotFoundException, CustomerNotFoundException;
 
 	List<Cart> getAllCarts();
 
-	Cart getCartByCustomerId(Integer customerId) throws CartException, CustomerException;
+	Cart getCartByCustomerId(Integer customerId) throws CartNotFoundException, CustomerNotFoundException;
 
-	Payment removePaymentFromCartId(Integer cartId) throws OrderException, CartException;
-	
+	Payment removePaymentFromCartId(Integer cartId) throws OrderNotFoundException, CartNotFoundException;
 
-	String checkout(Payment payment, Integer cartId) throws CartException, CustomerException; 
-	
-	
+	String checkout(Payment payment, Integer cartId) throws CartNotFoundException, CustomerNotFoundException;
 
 }

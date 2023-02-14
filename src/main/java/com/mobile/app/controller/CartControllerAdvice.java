@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.mobile.app.exception.CartException;
+import com.mobile.app.exception.CartNotFoundException;
 
 @RestControllerAdvice
 public class CartControllerAdvice {
-	@ExceptionHandler(CartException.class)
+	@ExceptionHandler(CartNotFoundException.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public String handleMobileExceptions(CartException e) {
+	public String handleMobileExceptions(CartNotFoundException e) {
 
 		return e.getMessage(); 
 	}

@@ -35,10 +35,13 @@ public class Mobile {
 
 	public Mobile() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public Mobile(int mobileId, String mobileName, Double mobileCost, LocalDate mfd, String modelNumber,
-			String companyName, Category category) {
+	public Mobile(int mobileId, @NotBlank(message = "Name is mandatory") String mobileName,
+			@Min(value = 0, message = "Cost cannot be neagtive") Double mobileCost, @NotNull LocalDate mfd,
+			@NotNull @NotBlank(message = "Model Number is mandatory") String modelNumber,
+			@NotNull @NotBlank(message = "Company Name is mandatory") @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Name can only contain letters and spaces") String companyName) {
 		super();
 		this.mobileId = mobileId;
 		this.mobileName = mobileName;
@@ -46,7 +49,6 @@ public class Mobile {
 		this.mfd = mfd;
 		this.modelNumber = modelNumber;
 		this.companyName = companyName;
-
 	}
 
 	public int getMobileId() {

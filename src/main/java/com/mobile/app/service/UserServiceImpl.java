@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mobile.app.entity.User;
-import com.mobile.app.exception.UserException;
+import com.mobile.app.exception.UserNotFoundException;
 import com.mobile.app.repository.UserRepository;
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,13 +21,12 @@ public class UserServiceImpl implements UserService {
 //		User loggedInUser = repository.getUserByUsernameAndPassword(user.getUserName(), user.getPassword());
 //		if (loggedInUser != null)
 //			return loggedInUser;
-//		throw new UserException("User not found in database");
+//		throw new UserNotFoundException("User not found in database");
 //
 //	}
 
 	@Override
 	public User changePassword(Integer id, String changedPassword) {
-		// TODO Auto-generated method stub
 
 		if (repository.existsById(id)) {
 

@@ -9,11 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.mobile.app.entity.Category;
 import com.mobile.app.entity.Mobile;
-import com.mobile.app.entity.Orders;
-import com.mobile.app.exception.CategoryException;
-import com.mobile.app.exception.CustomerException;
-import com.mobile.app.exception.MobileException;
-import com.mobile.app.exception.OrderException;
+import com.mobile.app.exception.CategoryNotFoundException;
+import com.mobile.app.exception.MobileNotFoundException;
 import com.mobile.app.repository.CategoryRepository;
 import com.mobile.app.repository.MobileRepository;
 
@@ -24,92 +21,65 @@ public class MobileServiceImpl implements MobileService {
 	private MobileRepository mobileRepository;
 	@Autowired
 	private CategoryRepository categoryRepository;
-	
+
 	@Autowired
 	private CategoryService categoryService;
-	
+
 	@Autowired
 	private CustomerService customerService;
-	
+
 	@Override
-	public Mobile addMobileToCategoryByCategoryId(Mobile mobile, Integer categoryId) throws CategoryException {
-				Category category=categoryService.getCategoryById(categoryId);
-		//		Optional<Category> optCategory = this.categoryRepository.findById(categoryId);
-		if(category==null) {
-		  throw new CategoryException("Category does not exist!!");	
+	public Mobile addMobileToCategoryByCategoryId(Mobile mobile, Integer categoryId) throws CategoryNotFoundException {
+		Category category = categoryService.getCategoryById(categoryId);
+		// Optional<Category> optCategory =
+		// this.categoryRepository.findById(categoryId);
+		if (category == null) {
+			throw new CategoryNotFoundException("Category does not exist!!");
 		}
 		Category foundCategory = category;
 		Mobile newMobile = this.mobileRepository.save(mobile);// add new mobile to DB
 		foundCategory.getMobiles().add(newMobile); // add managed mobile to catogory list
-		this.categoryRepository.save(foundCategory); // persist category 
+		this.categoryRepository.save(foundCategory); // persist category
 		return newMobile;
 	}
-	
-//	@Override
-//	public Mobile addMobileToCart(Mobile mobile,Integer categoryId, Integer cartId) throws CategoryException, MobileException {
-//		
-//		Optional<Category> category = categoryRepository.findById(categoryId);
-//		if (category.isEmpty()) {
-//			throw new CategoryException("Category Not Found");
-//
-//		}
-//		Category foundCategory =category.get();
-//		Mobile newMobile=addMobileToCategoryByCategoryId(mobile,categoryId);
-//		foundCategory.getMobiles().add(newMobile);
-//		return newMobile;
-//	}
-//	
-//	public Mobile addMobileToOrder(Mobile mobile,Integer categoryId,Integer orderId) throws MobileException,CategoryException,CustomerException,OrderException{
-//		Optional<Category> category = categoryRepository.findById(categoryId);
-//		if (category.isEmpty()) {
-//			throw new CategoryException("Category Not Found");
-//
-//		}
-//		Category foundCategory =category.get();
-//		Mobile newMobile=addMobileToCategoryByCategoryId(mobile,categoryId);
-//		foundCategory.getMobiles().add(newMobile);
-//		return newMobile;
-//	}
-
 
 	@Override
-	public Mobile getMobileById(Integer id) throws MobileException {
+	public Mobile getMobileById(Integer id) throws MobileNotFoundException {
 		Optional<Mobile> optMobile = this.mobileRepository.findById(id);
 		if (optMobile.isEmpty()) {
-			throw new MobileException("Mobile id not found "+id);
+			throw new MobileNotFoundException("Mobile id not found " + id);
 		}
 		return optMobile.get();
 	}
 
 	@Override
-	public String updateMobileDetails(Mobile mobile)throws MobileException {
+	public String updateMobileDetails(Mobile mobile) throws MobileNotFoundException {
 		Optional<Mobile> existingMobile = mobileRepository.findById(mobile.getMobileId());
-		if(!existingMobile.isPresent())
-		{
-			throw new MobileException("Mobile not found");
+		if (!existingMobile.isPresent()) {
+			throw new MobileNotFoundException("Mobile not found");
 		}
-		Mobile updateMobile=existingMobile.get();
+		Mobile updateMobile = existingMobile.get();
 		updateMobile.setMobileId(mobile.getMobileId());
 		updateMobile.setMobileName(mobile.getMobileName());
 		updateMobile.setMfd(mobile.getMfd());
 		updateMobile.setModelNumber(mobile.getModelNumber());
 		updateMobile.setCompanyName(mobile.getCompanyName());
 		updateMobile.setMobileCost(mobile.getMobileCost());
-	    this.mobileRepository.save(updateMobile);
-	    
-	    return "Mobile details updated successfully";
+		this.mobileRepository.save(updateMobile);
+
+		return "Mobile details updated successfully";
 	}
+
 	@Override
-	public String deleteMobileById(Integer mobileId)throws MobileException {
+	public String deleteMobileById(Integer mobileId) throws MobileNotFoundException {
 		Optional<Mobile> optMobile = this.mobileRepository.findById(mobileId);
 		if (optMobile.isEmpty())
-			throw new MobileException("Mobile id does not exists to delete !");
+			throw new MobileNotFoundException("Mobile id does not exists to delete !");
 		Mobile mobile = optMobile.get();
 		this.mobileRepository.deleteById(mobileId);
 		return "Mobile Deleted Successfully";
-		
-	}
 
+	}
 
 	@Override
 	public List<Mobile> getAllMobiles() {
@@ -117,64 +87,66 @@ public class MobileServiceImpl implements MobileService {
 	}
 
 	@Override
-	public List<Mobile> getMobilesByName(String mobileName) throws MobileException {
-		Iterable<Mobile> mobileIterable  = mobileRepository.findByMobileName(mobileName);
-		List<Mobile> mobileList=new ArrayList<>();
-		mobileIterable.forEach(n ->{
+	public List<Mobile> getMobilesByName(String mobileName) throws MobileNotFoundException {
+		Iterable<Mobile> mobileIterable = mobileRepository.findByMobileName(mobileName);
+		List<Mobile> mobileList = new ArrayList<>();
+		mobileIterable.forEach(n -> {
 			mobileList.add(n);
 		});
-		if(mobileList.isEmpty()) {
-			throw new MobileException("No Mobile Found By Given Name");
+		if (mobileList.isEmpty()) {
+			throw new MobileNotFoundException("No Mobile Found By Given Name");
 		}
 		return mobileList;
-	
+
 	}
 
 	@Override
-	public List<Mobile> getMobilesByMobileCost(Double cost) throws MobileException {
-		Iterable<Mobile> mobileIterable  = mobileRepository.findByMobileCost(cost);
-		List<Mobile> mobileList=new ArrayList<>();
-		mobileIterable.forEach(n ->{
+	public List<Mobile> getMobilesByMobileCost(Double cost) throws MobileNotFoundException {
+		Iterable<Mobile> mobileIterable = mobileRepository.findByMobileCost(cost);
+		List<Mobile> mobileList = new ArrayList<>();
+		mobileIterable.forEach(n -> {
 			mobileList.add(n);
 		});
-		if(mobileList.isEmpty()) {
-			throw new MobileException("No Mobile Found By Given Name");
-		}
-		return mobileList;
-	}
-
-	@Override
-	public List<Mobile> getMobilesByModelNumber(String modelNumber) throws MobileException {
-		Iterable<Mobile> mobileIterable  = mobileRepository.findByModelNumber(modelNumber);
-		List<Mobile> mobileList=new ArrayList<>();
-		mobileIterable.forEach(n ->{
-			mobileList.add(n);
-		});
-		if(mobileList.isEmpty()) {
-			throw new MobileException("No Mobile Found By Given Name");
+		if (mobileList.isEmpty()) {
+			throw new MobileNotFoundException("No Mobile Found By Given Name");
 		}
 		return mobileList;
 	}
 
 	@Override
-	public List<Mobile> getMobilesByCompanyName(String companyName) throws MobileException {
-		Iterable<Mobile> mobileIterable  = mobileRepository.findByCompanyName(companyName);
-		List<Mobile> mobileList=new ArrayList<>();
-		mobileIterable.forEach(n ->{
+	public List<Mobile> getMobilesByModelNumber(String modelNumber) throws MobileNotFoundException {
+		Iterable<Mobile> mobileIterable = mobileRepository.findByModelNumber(modelNumber);
+		List<Mobile> mobileList = new ArrayList<>();
+		mobileIterable.forEach(n -> {
 			mobileList.add(n);
 		});
-		if(mobileList.isEmpty()) {
-			throw new MobileException("No Mobile Found By Given Name");
+		if (mobileList.isEmpty()) {
+			throw new MobileNotFoundException("No Mobile Found By Given Name");
 		}
 		return mobileList;
 	}
+
 	@Override
-	public List<Mobile> getMobilesByCategoryId(Integer CategoryId) throws MobileException, CategoryException {
-		Category category =categoryService.getCategoryById(CategoryId);
-		List<Mobile> mobileList=new ArrayList<>();
+	public List<Mobile> getMobilesByCompanyName(String companyName) throws MobileNotFoundException {
+		Iterable<Mobile> mobileIterable = mobileRepository.findByCompanyName(companyName);
+		List<Mobile> mobileList = new ArrayList<>();
+		mobileIterable.forEach(n -> {
+			mobileList.add(n);
+		});
+		if (mobileList.isEmpty()) {
+			throw new MobileNotFoundException("No Mobile Found By Given Name");
+		}
+		return mobileList;
+	}
+
+	@Override
+	public List<Mobile> getMobilesByCategoryId(Integer CategoryId)
+			throws MobileNotFoundException, CategoryNotFoundException {
+		Category category = categoryService.getCategoryById(CategoryId);
+		List<Mobile> mobileList = new ArrayList<>();
 		mobileList.addAll(category.getMobiles());
-		if(mobileList.isEmpty()) {
-			throw new MobileException("No Mobile Found By Given Name");
+		if (mobileList.isEmpty()) {
+			throw new MobileNotFoundException("No Mobile Found By Given Name");
 		}
 		return mobileList;
 	}

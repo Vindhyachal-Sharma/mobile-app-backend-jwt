@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.mobile.app.exception.OrderException;
+import com.mobile.app.exception.OrderNotFoundException;
 
 @RestControllerAdvice
 public class OrderControllerAdvice {
-	@ExceptionHandler(OrderException.class)
+	@ExceptionHandler(OrderNotFoundException.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public String handleMobileExceptions(OrderException e) {
+	public String handleMobileExceptions(OrderNotFoundException e) {
 
 		return e.getMessage();
 	}

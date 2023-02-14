@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.mobile.app.entity.Category;
 import com.mobile.app.entity.Mobile;
-import com.mobile.app.exception.CategoryException;
-import com.mobile.app.exception.MobileException;
+import com.mobile.app.exception.CategoryNotFoundException;
+import com.mobile.app.exception.MobileNotFoundException;
 import com.mobile.app.repository.CategoryRepository;
 
 @Service
@@ -22,25 +22,21 @@ public class CategoryServiceImpl implements CategoryService {
 	private MobileService mobileService;
 
 	@Override
-	public Category addCategory(Category category) throws CategoryException {
+	public Category addCategory(Category category) throws CategoryNotFoundException {
 		Category optCategory = this.categoryRepository.findByName(category.getName());
 		if (optCategory != null) {
-			throw new CategoryException("Category Already Exists");
+			throw new CategoryNotFoundException("Category Already Exists");
 		} else {
 			return this.categoryRepository.save(category);
 		}
 	}
 
 	@Override
-	public String updateCategory(Category category) throws CategoryException {
-//		Category existingCategory = this.categoryRepository.findByName(category.getName());
-//		if (existingCategory == null) {
-//			throw new CategoryException("Category Not Found ");
-//		}
-//		
+	public String updateCategory(Category category) throws CategoryNotFoundException {
+
 		Optional<Category> existingCategory = this.categoryRepository.findById(category.getId());
 		if (existingCategory.isEmpty())
-			throw new CategoryException("Category Not Found");
+			throw new CategoryNotFoundException("Category Not Found");
 		Category updatedCategory = existingCategory.get();
 		updatedCategory.setId(existingCategory.get().getId());
 		updatedCategory.setName(category.getName());
@@ -51,20 +47,20 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public Category getCategoryById(Integer id) throws CategoryException {
+	public Category getCategoryById(Integer id) throws CategoryNotFoundException {
 		Optional<Category> categoryOpt = this.categoryRepository.findById(id);
 		if (categoryOpt.isEmpty())
-			throw new CategoryException("Category Not Found");
+			throw new CategoryNotFoundException("Category Not Found");
 
 		return categoryOpt.get();
 	}
 
 	@Override
-	public String deleteCategoryById(Integer id) throws CategoryException {
+	public String deleteCategoryById(Integer id) throws CategoryNotFoundException {
 		Optional<Category> optCategory = this.categoryRepository.findById(id);
 		if (optCategory.isEmpty())
-			throw new CategoryException("Category does not exists to delete !");
-		Category category = optCategory.get();
+			throw new CategoryNotFoundException("Category does not exists to delete !");
+
 		this.categoryRepository.deleteById(id);
 		return "Id Deleted Successfully";
 	}
@@ -77,12 +73,12 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public String removeMobileFromCategoryById(Integer categoryId, Integer mobileId)
-			throws MobileException, CategoryException {
+			throws MobileNotFoundException, CategoryNotFoundException {
 		Mobile removedMobile = null;
 		Category category = categoryRepository.findById(categoryId).get();
 
 		if (category == null) {
-			throw new CategoryException("Category Not Found");
+			throw new CategoryNotFoundException("Category Not Found");
 		} else {
 			if (category.getMobiles() != null) {
 				for (Mobile mobile : category.getMobiles()) {
@@ -93,7 +89,7 @@ public class CategoryServiceImpl implements CategoryService {
 				mobileService.deleteMobileById(mobileId);
 				categoryRepository.save(category);
 			} else
-				throw new MobileException("Requested Mobile" + mobileId + "Not found");
+				throw new MobileNotFoundException("Requested Mobile" + mobileId + "Not found");
 		}
 		return "Mobile deleted Succesfully";
 	}

@@ -16,15 +16,16 @@ public class Payment {
 	private PaymentStatus paymentStatus;
 
 	public enum PaymentMode {
-		COD,UPI
+		COD, UPI
 	}
 
 	public enum PaymentStatus {
-		PENDING,PAID
+		PENDING, PAID
 	}
- 
+
 	@OneToOne
 	Orders order;
+
 	public Payment() {
 		super();
 

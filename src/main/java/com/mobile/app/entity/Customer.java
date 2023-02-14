@@ -11,7 +11,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Entity
@@ -21,7 +20,7 @@ public class Customer /* extends User */ {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	@NotBlank(message = "Name is mandatory")
-	@Pattern(regexp="^[a-zA-Z\\s]+$", message="First letter should be capital,Name can only contain letters and spaces")
+	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "First letter should be capital,Name can only contain letters and spaces")
 	private String name;
 	@NotBlank(message = "Email is mandatory")
 	@Email(message = "Please enter a valid email Id", regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\\.[a-zA-Z.]{2,5}")

@@ -1,9 +1,6 @@
 package com.mobile.app;
 import static org.assertj.core.api.Assertions.assertThat;
-
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -24,9 +21,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.mobile.app.entity.Cart;
 import com.mobile.app.entity.Customer;
 import com.mobile.app.entity.Orders;
-import com.mobile.app.exception.CartException;
-import com.mobile.app.exception.CustomerException;
-import com.mobile.app.exception.OrderException;
+import com.mobile.app.exception.CartNotFoundException;
+import com.mobile.app.exception.CustomerNotFoundException;
+import com.mobile.app.exception.OrderNotFoundException;
 import com.mobile.app.repository.CustomerRepository;
 import com.mobile.app.repository.OrderRepository;
 import com.mobile.app.service.CartService;
@@ -78,7 +75,7 @@ public class CustomerServiceImplTest {
 	}
 
 	@Test
-	void testGetCustomerById() throws CustomerException {
+	void testGetCustomerById() throws CustomerNotFoundException {
 		when(customerRepository.findById(customer.getId())).thenReturn(Optional.of(customer));
 
 		Customer foundCustomer = customerService.getCustomerById(customer.getId());
@@ -90,11 +87,11 @@ public class CustomerServiceImplTest {
 	void testGetCustomerById_CustomerNotFound() {
 		Mockito.when(customerRepository.findById(customer.getId())).thenReturn(Optional.empty());
 
-		assertThrows(CustomerException.class, () -> customerService.getCustomerById(customer.getId()));
+		assertThrows(CustomerNotFoundException.class, () -> customerService.getCustomerById(customer.getId()));
 	}
 
 	@Test
-	public void testGetCustomerById_Success() throws CustomerException {
+	public void testGetCustomerById_Success() throws CustomerNotFoundException {
 		Integer customerId = 1;
 		Customer expectedCustomer = new Customer();
 		expectedCustomer.setId(customerId);
@@ -107,7 +104,7 @@ public class CustomerServiceImplTest {
 	}
 
 	@Test
-	public void testUpdateCustomer_Success() throws CustomerException {
+	public void testUpdateCustomer_Success() throws CustomerNotFoundException {
 		Integer customerId = 1;
 		Customer expectedCustomer = new Customer();
 		expectedCustomer.setId(customerId);
@@ -142,7 +139,7 @@ public class CustomerServiceImplTest {
 //		customerService.updateCustomer(updateCustomer);
 //	}
 	@Test
-	public void testDeleteCustomerById_Success() throws CustomerException {
+	public void testDeleteCustomerById_Success() throws CustomerNotFoundException {
 		Integer customerId = 1;
 		Customer customer = new Customer();
 		customer.setId(customerId);
@@ -181,7 +178,7 @@ public class CustomerServiceImplTest {
 	}
 
 	@Test
-	public void testDeleteCartFromCustomerByIdSuccess() throws CustomerException, CartException {
+	public void testDeleteCartFromCustomerByIdSuccess() throws CustomerNotFoundException, CartNotFoundException {
 		Integer customerId = 1;
 		
 
@@ -226,7 +223,7 @@ public class CustomerServiceImplTest {
 //	}
 
 	@Test
-	public void testGetAllOrdersOfCustomer() throws CustomerException {
+	public void testGetAllOrdersOfCustomer() throws CustomerNotFoundException {
 		Integer customerId = 1;
 		Customer customer = new Customer();
 		customer.setId(customerId);
@@ -249,7 +246,7 @@ public class CustomerServiceImplTest {
 	}
 
 	@Test
-	public void testDeleteOrdersFromCustomerById() throws CustomerException, OrderException {
+	public void testDeleteOrdersFromCustomerById() throws CustomerNotFoundException, OrderNotFoundException {
 		Integer customerId = 1;
 		Integer orderId = 2;
 		Customer customer = new Customer();

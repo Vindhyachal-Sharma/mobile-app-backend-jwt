@@ -38,16 +38,14 @@ public class Orders {
 		super();
 	}
 
-	public Orders(Integer id, LocalDate orderDate, LocalDate dispatchDate, Double cost, Integer quantity,
-			/* Payment payment, */ List<Mobile> mobiles) {
+	public Orders(Integer id, @NotNull @PastOrPresent LocalDate orderDate, @NotNull LocalDate dispatchDate,
+			@Min(value = 0, message = "Cost cannot be neagtive") Double cost, Integer quantity, List<Mobile> mobiles) {
 		super();
 		this.id = id;
 		this.orderDate = orderDate;
 		this.dispatchDate = dispatchDate;
 		this.cost = cost;
-
 		this.quantity = quantity;
-		
 		this.mobiles = mobiles;
 	}
 
@@ -91,14 +89,6 @@ public class Orders {
 		this.quantity = quantity;
 	}
 
-//	public Payment getPayment() {
-//		return payment;
-//	}
-//
-//	public void setPayment(Payment payment) {
-//		this.payment = payment;
-//	}
-
 	public List<Mobile> getMobiles() {
 		return mobiles;
 	}
@@ -106,5 +96,6 @@ public class Orders {
 	public void setMobiles(List<Mobile> mobiles) {
 		this.mobiles = mobiles;
 	}
+	
 
 }

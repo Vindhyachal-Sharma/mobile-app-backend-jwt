@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.mobile.app.exception.MobileException;
+import com.mobile.app.exception.MobileNotFoundException;
 @RestControllerAdvice
 public class MobileControllerAdvice {
-	@ExceptionHandler(MobileException.class)
+	@ExceptionHandler(MobileNotFoundException.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public String handleMobileExceptions(MobileException e) {
+	public String handleMobileExceptions(MobileNotFoundException e) {
 
 		return e.getMessage();
 }

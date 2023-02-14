@@ -17,10 +17,10 @@ import com.mobile.app.entity.Category;
 import com.mobile.app.entity.Customer;
 import com.mobile.app.entity.Mobile;
 import com.mobile.app.entity.Orders;
-import com.mobile.app.exception.AdminException;
-import com.mobile.app.exception.CategoryException;
-import com.mobile.app.exception.CustomerException;
-import com.mobile.app.exception.MobileException;
+import com.mobile.app.exception.AdminNotFoundException;
+import com.mobile.app.exception.CategoryNotFoundException;
+import com.mobile.app.exception.CustomerNotFoundException;
+import com.mobile.app.exception.MobileNotFoundException;
 import com.mobile.app.service.AdminService;
 import com.mobile.app.service.CategoryService;
 import com.mobile.app.service.CustomerService;
@@ -46,39 +46,39 @@ public class AdminController {
 	private CustomerService customerService;
 
 	@PostMapping("/admin/category")
-	public Category addCategory(@Valid @RequestBody Category category) throws CategoryException {
+	public Category addCategory(@Valid @RequestBody Category category) throws CategoryNotFoundException {
 
 		return categoryService.addCategory(category);
 	}
 
 	@PostMapping("/admin/category/name")
-	public String updateCategoryDetails(@Valid @RequestBody Category category) throws CategoryException {
+	public String updateCategoryDetails(@Valid @RequestBody Category category) throws CategoryNotFoundException {
 
 		return categoryService.updateCategory(category);
 	}
 
 	@PostMapping("/admin/mobile/{categoryId}")
 	public Mobile addMobileToCategoryByCategoryId(@Valid @RequestBody Mobile mobile,
-			@PathVariable("categoryId") Integer categoryId) throws CategoryException {
+			@PathVariable("categoryId") Integer categoryId) throws CategoryNotFoundException {
 
 		return mobileService.addMobileToCategoryByCategoryId(mobile, categoryId);
 	}
 
 	@PutMapping("/admin/mobile/cost")
-	public String updateMobileCostById(@RequestBody Mobile mobile) throws MobileException {
+	public String updateMobileCostById(@RequestBody Mobile mobile) throws MobileNotFoundException {
 
 		return mobileService.updateMobileDetails(mobile);
 	}
 
 	@GetMapping("/admin/customer/{customerId}")
 	public Customer getCustomerById(@PathVariable("customerId") Integer customerId)
-			throws MobileException, CustomerException {
+			throws MobileNotFoundException, CustomerNotFoundException {
 
 		return customerService.getCustomerById(customerId);
 	}
 
 	@PostMapping("/admin")
-	public Admin updateAdminDetails(@Valid @RequestBody Admin admin) throws AdminException {
+	public Admin updateAdminDetails(@Valid @RequestBody Admin admin) throws AdminNotFoundException {
 
 		return adminService.updateAdminDetails(admin);
 	}
@@ -103,7 +103,7 @@ public class AdminController {
 
 	@GetMapping("/admin/mobile/{categoryId}")
 	public List<Mobile> getAllMobilesByCategory(@PathVariable("categoryId") Integer categoryId)
-			throws MobileException, CategoryException {
+			throws MobileNotFoundException, CategoryNotFoundException {
 
 		return mobileService.getMobilesByCategoryId(categoryId);
 	}

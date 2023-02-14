@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.mobile.app.exception.AdminException;
+import com.mobile.app.exception.AdminNotFoundException;
 
 @RestControllerAdvice
 public class AdminControllerAdvice {
-	@ExceptionHandler(AdminException.class)
+	@ExceptionHandler(AdminNotFoundException.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public String handleMobileExceptions(AdminException e) {
+	public String handleMobileExceptions(AdminNotFoundException e) {
 
 		return e.getMessage();
 	}
