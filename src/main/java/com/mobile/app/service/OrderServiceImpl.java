@@ -1,19 +1,21 @@
 package com.mobile.app.service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mobile.app.entity.Cart;
 import com.mobile.app.entity.Customer;
 import com.mobile.app.entity.Orders;
-import com.mobile.app.entity.Payment;
+import com.mobile.app.exception.CartException;
 import com.mobile.app.exception.CustomerException;
 import com.mobile.app.exception.OrderException;
 import com.mobile.app.repository.CustomerRepository;
 import com.mobile.app.repository.OrderRepository;
-import com.mobile.app.repository.PaymentRepository;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -24,7 +26,10 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private CustomerRepository customerRepository;
 	@Autowired
-	private PaymentRepository paymentRepository;
+	private CustomerService customerService;
+
+	@Autowired
+	private CartService cartService;
 
 	public Orders addOrder(Orders newOrder) {
 
@@ -72,6 +77,26 @@ public class OrderServiceImpl implements OrderService {
 		return newOrders;
 	}
 
+	@Override
+	public Orders getOrdersFromCart(Integer cartId) throws CartException, CustomerException {
+		
+		Customer customer = customerService.getCustomerById(cartId);
+		Cart cart =cartService.getCartByCustomerId(cartId);
+		Orders order = new Orders();
+		order.setCost(cart.getCost());
+		order.getMobiles().addAll(cart.getMobiles());
+		order.setQuantity(cart.getMobiles().size());
+		order.setOrderDate(LocalDate.now());
+//		order.setDispatchDate(LocalDateTime.from(LocalDate.now().toInstant()).plusDays(1));
+		order.setDispatchDate(LocalDate.now());
+		orderRepository.save(order);
+		List<Orders> orderList = new ArrayList<>();
+		orderList.add(order);
+		customer.setOrders(orderList);
+		customerRepository.save(customer);
+		return orderRepository.save(order);
+	}
+
 //	@Override
 //	public String updateOrder(Orders order) {
 //		Optional<Orders> existingOrder = orderRepository.findById(order.getId());
@@ -89,10 +114,5 @@ public class OrderServiceImpl implements OrderService {
 //
 //		return "Order Successfully Updated";
 //	}
-	
-
-	
-
-
 
 }

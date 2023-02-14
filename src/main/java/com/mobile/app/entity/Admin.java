@@ -19,45 +19,40 @@ import javax.validation.constraints.Pattern;
 @Entity
 @Table(name = "Admins")
 public class Admin /* extends User */ {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	@Pattern(regexp = "[a-zA-Z0-9]{3,}", message = "name must be min 3 chars, special chars not allowed.")
 	private String name;
 	@Email(message = "Please enter a valid email Id", regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\\.[a-zA-Z.]{2,5}")
 	@NotNull(message = "Please enter a valid email Id")
 	private String email;
-	@Pattern(regexp = "[0-9]{10}",message = "Phone number must be 10 gits")
+	@Pattern(regexp = "[0-9]{10}", message = "Phone number must be 10 gits")
 	private long mobileNo;
 
-	@OneToOne
-	private Cart cart;
+	public Admin() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-	@OneToMany
-	private List<Category> categories = new ArrayList<>();
-
-	@OneToMany
-	private List<Orders> orders = new ArrayList<>();
-
-	@OneToMany
-	private Map<Integer, Mobile> mobilesMap = new HashMap<>();
-
-//	public Admin(Integer id, String username, String password, String role) {
-//		/* super(id, username, password, role); */
-//
-//	}
-
-	public Admin(Integer id, String username, String password, String role, String name, String email, long mobileNo,
-			Cart cart, List<Category> categories, List<Orders> orders, Map<Integer, Mobile> mobilesMap) {
-//		super(id, username, password, role);
+	public Admin(Integer id,
+			@Pattern(regexp = "[a-zA-Z0-9]{3,}", message = "name must be min 3 chars, special chars not allowed.") String name,
+			@Email(message = "Please enter a valid email Id", regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\\.[a-zA-Z.]{2,5}") @NotNull(message = "Please enter a valid email Id") String email,
+			@Pattern(regexp = "[0-9]{10}", message = "Phone number must be 10 gits") long mobileNo) {
+		super();
+		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.mobileNo = mobileNo;
-		this.cart = cart;
-		this.categories = categories;
-		this.orders = orders;
-		this.mobilesMap = mobilesMap;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -82,46 +77,6 @@ public class Admin /* extends User */ {
 
 	public void setMobileNo(long mobileNo) {
 		this.mobileNo = mobileNo;
-	}
-
-	public Cart getCart() {
-		return cart;
-	}
-
-	public void setCart(Cart cart) {
-		this.cart = cart;
-	}
-
-	public List<Category> getCategories() {
-		return categories;
-	}
-
-	public void setCategories(List<Category> categories) {
-		this.categories = categories;
-	}
-
-	public List<Orders> getOrders() {
-		return orders;
-	}
-
-	public void setOrders(List<Orders> orders) {
-		this.orders = orders;
-	}
-
-	public Map<Integer, Mobile> getMobilesMap() {
-		return mobilesMap;
-	}
-
-	public void setMobilesMap(Map<Integer, Mobile> mobilesMap) {
-		this.mobilesMap = mobilesMap;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 }

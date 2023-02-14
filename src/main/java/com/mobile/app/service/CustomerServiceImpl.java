@@ -27,8 +27,6 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	private CartRepository cartRepository;
 
-
-
 	@Autowired
 	private OrderService orderService;
 
@@ -110,7 +108,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public String deleteOrdersFromCustomerById(Integer customerId, Integer orderId)
+	public String cancelOrdersFromCustomerById(Integer customerId, Integer orderId)
 			throws CustomerException, OrderException {
 		Orders deletedOrder = null;
 		Orders orders = orderRepository.findById(orderId).get();
@@ -130,7 +128,7 @@ public class CustomerServiceImpl implements CustomerService {
 			} else
 				throw new OrderException("Requested Order" + orderId + "Not found");
 		}
-		return "Mobile deleted Succesfully";
+		return "Order deleted Succesfully";
 
 	}
 

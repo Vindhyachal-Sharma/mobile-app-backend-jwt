@@ -14,43 +14,33 @@ import com.mobile.app.exception.MobileException;
 import com.mobile.app.exception.OrderException;
 
 public interface AdminService {
-
 //	Category addCategory(Category category) throws CategoryException;
 //
-//	String updateCategoryDetails(Category category) throws CategoryException;
+//	Mobile addMobileToCategoryByCategoryId(Mobile mobile, Integer id) throws CategoryException;
 //
-//	Mobile addMobile(Mobile mobile, Integer id) throws CategoryException;
+//	String updateCategoryName(Category category) throws CategoryException;
 //
 //	String updatemobileDetails(Mobile mobile) throws MobileException;
 //
-//	Mobile changeMobileCostById(Mobile mobile, Integer id);
+//	String updateMobileCostById(Mobile mobile) throws MobileException;
+
+	Admin updateAdminDetails(Admin admin) throws AdminException;
+
+//	Customer getCustomerById(Integer id) throws CustomerException;
 //
-//	Mobile changeMobileQuantityById(Mobile mobile, Integer id);
-//
-//	Orders addMobileToOrderByCustomerId(Integer  mobileId, Integer id) throws CustomerException, MobileException, OrderException;
-//
-//	String ConfirmOrder( Integer id);
-//
-//	String CancelOrder( Integer id);
-//
-//	// Admin beACustomer(Admin admin, Integer id);
-//
-//	String checkCustomerStatusById(Integer id);
-//
-//	Customer getCustomerById( Integer id) throws CustomerException;
-//
-//	Admin updateAdminDetails(Admin admin, Integer id) throws AdminException;
+//	Category getCategoryById(Integer id) throws CategoryException;
 //
 //	List<Category> getAllCategories();
-//	
-//	Category getCategoryById(Integer id) throws CategoryException;
 //
 //	List<Customer> getAllCustomers();
 //
 //	List<Mobile> getAllMobiles();
 //
-//	List<Mobile> getAllMobilesByCategory(Integer id);
+//	List<Mobile> getAllMobilesByCategory(Integer id) throws MobileException, CategoryException;
 //
 //	List<Orders> getAllOrders();
-
+//	Mobile changeMobileQuantityById(Mobile mobile);
+//	String ConfirmOrder( Integer id);
+//	String CancelOrder( Integer id);
+//	String checkCustomerStatusById(Integer id);
 }

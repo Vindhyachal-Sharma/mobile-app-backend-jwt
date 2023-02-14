@@ -31,9 +31,6 @@ public class Orders {
 
 	private Integer quantity;
 
-//	@OneToOne
-//	private Payment payment;
-
 	@OneToMany
 	private List<Mobile> mobiles = new ArrayList<>();
 
@@ -50,7 +47,7 @@ public class Orders {
 		this.cost = cost;
 
 		this.quantity = quantity;
-		//this.payment = payment;
+		
 		this.mobiles = mobiles;
 	}
 

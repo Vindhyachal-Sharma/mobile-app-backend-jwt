@@ -29,7 +29,7 @@ public interface CustomerService {
 
 	List<Orders> getAllOrdersOfCustomer(Integer customerId) throws CustomerException;
 
-	String deleteOrdersFromCustomerById(Integer customerId, Integer orderId) throws CustomerException, OrderException;
+	String cancelOrdersFromCustomerById(Integer customerId, Integer orderId) throws CustomerException, OrderException;
 	
 	
 

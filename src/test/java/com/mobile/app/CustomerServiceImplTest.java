@@ -1,6 +1,7 @@
 package com.mobile.app;
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -261,7 +262,7 @@ public class CustomerServiceImplTest {
 		Mockito.when(customerRepository.findById(customerId)).thenReturn(Optional.of(customer));
 		Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
 
-		String result = customerService.deleteOrdersFromCustomerById(customerId, orderId);
+		String result = customerService.cancelOrdersFromCustomerById(customerId, orderId);
 
 		assertEquals("Mobile deleted Succesfully", result);
 		Mockito.verify(orderService, Mockito.times(1)).deleteOrderById(orderId);

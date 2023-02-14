@@ -1,6 +1,5 @@
 package com.mobile.app.service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +18,6 @@ import com.mobile.app.exception.MobileException;
 import com.mobile.app.exception.OrderException;
 import com.mobile.app.repository.CartRepository;
 import com.mobile.app.repository.CustomerRepository;
-import com.mobile.app.repository.OrderRepository;
 import com.mobile.app.repository.PaymentRepository;
 
 @Service
@@ -42,9 +40,9 @@ public class CartServiceImpl implements CartService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
-	
+
 	@Autowired
-	private OrderRepository orderRepository; 
+	private OrderService orderService;
 
 	@Override
 	public Cart addMobileToCartByCustomerId(Integer mobileId, Integer customerId)
@@ -170,9 +168,8 @@ public class CartServiceImpl implements CartService {
 		if (optCart.isEmpty())
 			throw new CartException("cart id does not exists to delete !");
 		Cart cart = optCart.get();
-		Customer  customer= customerService.getCustomerById(cartId);
-		List<Mobile> newList=new ArrayList<>();
-		cart.setMobiles(newList);
+		Customer customer = customerService.getCustomerById(cartId);
+		cart.getMobiles().clear();
 		cartRepository.save(cart);
 		return "Cart Deleted Successfully";
 
@@ -204,7 +201,7 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public String checkout(Payment payment, Integer cartId) throws CartException, CustomerException {
 
-		Payment madePayment = null;
+		Payment madePayment = new Payment();
 		Cart cart = getCartByCustomerId(cartId);
 		Customer customer = customerService.getCustomerById(cartId);
 		
@@ -212,27 +209,21 @@ public class CartServiceImpl implements CartService {
 		madePayment.setPaymentStatus(payment.getPaymentStatus());
 		paymentRepository.save(madePayment);
 		cart.setPayment(madePayment);
-		cartRepository.save(cart);
-		
-		Orders order = new Orders();
-		order.setCost(cart.getCost());
-		order.setMobiles(cart.getMobiles());
-		order.setQuantity(cart.getMobiles().size());
-		order.setOrderDate(LocalDate.now());
-//		order.setDispatchDate(LocalDateTime.from(LocalDate.now().toInstant()).plusDays(1));
-		order.setDispatchDate(LocalDate.now());
-		orderRepository.save(order);
+		Orders order=orderService.getOrdersFromCart(cartId);
 		List<Orders>orderList=new ArrayList<>();
 		orderList.add(order);
 		customer.setOrders(orderList);
 		customerRepository.save(customer);
-		List<Mobile> newList=new ArrayList<>();
-		cart.setMobiles(newList);
+		
+		
+		
+		cart.getMobiles().clear(); 
+		cart.setQuantity(0);
+		cart.setCost(0.0);
+		cart.setPayment(null);
 		cartRepository.save(cart);
 		
 		return "Thanks for the order";
 	}
-
-	
 
 }

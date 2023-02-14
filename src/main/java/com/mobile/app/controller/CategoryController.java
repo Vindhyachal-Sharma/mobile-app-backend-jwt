@@ -37,27 +37,27 @@ public class CategoryController {
 		return categoryService.addCategory(category);
 	}
 
-	@GetMapping("/category/{id}")
-	public Category getCategoryById(@PathVariable("id") Integer id) throws CategoryException {
+	@GetMapping("/category/{categoryId}")
+	public Category getCategoryById(@PathVariable("categoryId") Integer categoryId) throws CategoryException {
 
-		return categoryService.getCategoryById(id);
+		return categoryService.getCategoryById(categoryId);
 	}
 
-	@PutMapping("/category")
+	@PutMapping("/category/name")
 	public String updateCategory(@Valid @RequestBody Category updateCategory)
 			throws CategoryException {
 
 		return categoryService.updateCategory(updateCategory);
 	}
 
-	@DeleteMapping("/category/{id}")
+	@DeleteMapping("/category/delete/{id}")
 	public String deleteCategoryById(@PathVariable("id") Integer categoryId) throws CategoryException {
 
 		return this.categoryService.deleteCategoryById(categoryId);
 
 	}
 
-	@GetMapping("/allCategories/")
+	@GetMapping("/categories")
 	public List<Category> getAllCategorys() {
 		return categoryService.getAllCategories();
 	}

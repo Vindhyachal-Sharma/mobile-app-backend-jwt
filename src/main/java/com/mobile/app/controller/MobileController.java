@@ -45,11 +45,6 @@ public class MobileController {
 			throws CategoryException {
 		return mobileService.addMobileToCategoryByCategoryId(mobile, categoryId);
 	}
-//	@PostMapping("/mobile")
-//	public Mobile addMobile(@RequestBody Mobile mobile)throws MobileException
-//	{
-//		return mobileService.addMobile(mobile);
-//	}
 
 	@GetMapping("/mobiles/{id}")
 	public Mobile getMobileById(@PathVariable("id") Integer id) throws MobileException {
@@ -57,7 +52,7 @@ public class MobileController {
 		return mobileService.getMobileById(id);
 	}
 
-	@PutMapping("/updateMobile")
+	@PutMapping("/mobile")
 	public String updateMobileDetails(@Valid @RequestBody Mobile mobile) throws MobileException {
 
 		return mobileService.updateMobileDetails(mobile);
@@ -75,26 +70,30 @@ public class MobileController {
 		return mobileService.getAllMobiles();
 	}
 
-	@GetMapping("/mobileN/{mobileName}")
+	@GetMapping("/mobile/name/{mobileName}")
 	public List<Mobile> getMobilesByName(@PathVariable("mobileName") String mobileName) throws MobileException {
 		return mobileService.getMobilesByName(mobileName);
 	}
 
-	@GetMapping("/mobileC/{cost}")
+	@GetMapping("/mobile/cost/{cost}")
 	public List<Mobile> getMobilesByPrice(@PathVariable("cost") Double cost) throws MobileException {
 		return mobileService.getMobilesByMobileCost(cost);
 	}
 
-	@GetMapping("/mobilemn/{modelNumber}")
+	@GetMapping("/mobile/model/{modelNumber}")
 	public List<Mobile> getMobilesByModelNumber(@PathVariable("modelNumber") String modelNumber)
 			throws MobileException {
 		return mobileService.getMobilesByModelNumber(modelNumber);
 	}
 
-	@GetMapping("/mobileCn/{companyName}")
+	@GetMapping("/mobile/company/{companyName}")
 	public List<Mobile> getMobilesByCompanyName(@PathVariable("companyName") String companyName)
 			throws MobileException {
 		return mobileService.getMobilesByCompanyName(companyName);
 	}
-
+	@GetMapping("/mobile/company/{categoryId}")
+	public List<Mobile> getMobilesByCategoryId(@PathVariable("categoryId") Integer categoryId)
+			throws MobileException, CategoryException {
+		return mobileService.getMobilesByCategoryId(categoryId);
+	}
 }

@@ -2,8 +2,9 @@ package com.mobile.app.service;
 
 import java.util.List;
 
+import com.mobile.app.entity.Cart;
 import com.mobile.app.entity.Orders;
-import com.mobile.app.entity.Payment;
+import com.mobile.app.exception.CartException;
 import com.mobile.app.exception.CustomerException;
 import com.mobile.app.exception.OrderException;
 
@@ -26,6 +27,8 @@ public interface OrderService {
 		//double calculateTotalCost(List<Mobile> list);
 		
 		List<Orders> getAllOrders();
+
+		Orders getOrdersFromCart(Integer cartId) throws CartException, CustomerException;
 
 		//Payment removePaymenttByid(Integer orderId) throws OrderException; 
 

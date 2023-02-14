@@ -168,6 +168,15 @@ public class MobileServiceImpl implements MobileService {
 		}
 		return mobileList;
 	}
-
+	@Override
+	public List<Mobile> getMobilesByCategoryId(Integer CategoryId) throws MobileException, CategoryException {
+		Category category =categoryService.getCategoryById(CategoryId);
+		List<Mobile> mobileList=new ArrayList<>();
+		mobileList.addAll(category.getMobiles());
+		if(mobileList.isEmpty()) {
+			throw new MobileException("No Mobile Found By Given Name");
+		}
+		return mobileList;
+	}
 
 }

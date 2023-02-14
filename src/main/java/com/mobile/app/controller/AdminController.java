@@ -22,6 +22,10 @@ import com.mobile.app.exception.CategoryException;
 import com.mobile.app.exception.CustomerException;
 import com.mobile.app.exception.MobileException;
 import com.mobile.app.service.AdminService;
+import com.mobile.app.service.CategoryService;
+import com.mobile.app.service.CustomerService;
+import com.mobile.app.service.MobileService;
+import com.mobile.app.service.OrderService;
 
 @RestController
 public class AdminController {
@@ -29,118 +33,85 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 
-	// ------------------------------AdminServices---------------
-//	Category addCategory(Category category, Integer id) throws CategoryException;
-//	String addCategoryDetails(Category category, Integer id) throws CategoryException;
-//	Mobile addMobile(Mobile mobile, Integer id) throws MobileException;
-//	String updatemobileDetails(Mobile mobile, Integer id) throws MobileException;
-//	Mobile changeMobileCostById(Mobile mobile, Integer id);
-//	Mobile changeMobileQuantityById(Mobile mobile, Integer id);
-//	Orders addOrder(Orders order, Integer id);
-//	String ConfirmOrder(Orders order, Integer id);
-//	String CancelOrder(Orders order, Integer id);
-//	// Admin beACustomer(Admin admin, Integer id);
-//	String checkCustomerStatusById(Customer customer, Integer id);
-//	Customer getCustomerById( Integer id) throws CustomerException;
-//	Admin updateAdminDetails(Admin admin, Integer id) throws AdminException;
-//	List<Category> getAllCategories();
-//	Category getCategoryById(Integer id) throws CategoryException;
-//	List<Customer> getAllCustomers();
-//	List<Mobile> getAllMobiles();
-//	List<Mobile> getAllMobilesByCategory();
-//	List<Orders> getAllOrders();
+	@Autowired
+	private CategoryService categoryService;
 
-//	@PostMapping("admin/addCategory")
-//	public Category addCategory(@Valid @RequestBody Category category)
-//			throws CategoryException {
-//
-//		return adminService.addCategory(category);
-//	}
-//
-//	@PostMapping("admin/addCategoryDetails/{id}")
-//	public String updateCategoryDetails(@Valid @RequestBody Category category)
-//			throws CategoryException {
-//
-//		return adminService.updateCategoryDetails(category);
-//	}
-//
-//	@PostMapping("admin/addmobile/{id}")
-//	public Mobile addMobile(@Valid @RequestBody Mobile mobile, @PathVariable("id") Integer id) throws CategoryException {
-//
-//		return adminService.addMobile(mobile, id);
-//	}
+	@Autowired
+	private OrderService orderService;
 
-//	@PutMapping("admin/updatemobilecost/{id}")
-//	public Mobile changeMobileCostById(@RequestBody Mobile mobile, @PathVariable("id") Integer id)
-//			throws MobileException {
-//
-//		return adminService.changeMobileCostById(mobile, id);
-//	}
+	@Autowired
+	private MobileService mobileService;
 
-//	@PutMapping("admin/updatemobilequantity/{id}")
-//	public Mobile changeMobileQuantityById(@RequestBody Mobile mobile, @PathVariable("id") Integer id)
-//			throws MobileException {
-//
-//		return adminService.changeMobileQuantityById(mobile, id);
-//	}
+	@Autowired
+	private CustomerService customerService;
 
-//	@PutMapping("admin/addorder/{id}")
-//	public Orders addOrder(@RequestBody Orders orders, @PathVariable("id") Integer id) {
-//
-//		return adminService.addOrder(orders, id);
-//	}
+	@PostMapping("/admin/category")
+	public Category addCategory(@Valid @RequestBody Category category) throws CategoryException {
 
-//	@GetMapping("admin/confirmOrder/{id}")
-//	public String ConfirmOrder( @PathVariable("id") Integer id) throws MobileException {
-//
-//		return adminService.ConfirmOrder( id);
-//	}
-//	
-//	@GetMapping("admin/cancelorder/{id}")
-//	public String CancelOrder(@RequestBody Orders order, @PathVariable("id") Integer id) throws MobileException {
-//
-//		return adminService.CancelOrder(id);
-//	}
-//	@GetMapping("admin/checkCustomerStatusById/{id}")
-//	public String checkCustomerStatusById(@PathVariable("id") Integer id) throws MobileException {
-//
-//		return adminService.checkCustomerStatusById(id);
-//	}
-//	@GetMapping("admin/getCustomerById/{id}")
-//	public Customer getCustomerById( @PathVariable("id") Integer id) throws MobileException, CustomerException {
-//
-//		return adminService.getCustomerById(id);
-//	}
-//	@PostMapping("admin/updateAdminDetails/{id}")
-//	public Admin updateAdminDetails(@Valid @RequestBody Admin admin, @PathVariable("id") Integer id)
-//			throws  AdminException {
-//
-//		return adminService.updateAdminDetails(admin, id);
-//	}
-//	@GetMapping("admin/getAllCategories")
-//	public List<Category> getAllCategories(){
-//
-//		return adminService.getAllCategories();
-//	}
-//	@GetMapping("admin/getAllCustomers")
-//	public List<Customer> getAllCustomers(){
-//
-//		return adminService.getAllCustomers();
-//	}
-//	@GetMapping("/getAllMobiles")
-//	public List<Mobile> getAllMobiles(){
-//
-//		return adminService.getAllMobiles();
-//	}
-//	@GetMapping("/getAllMobilesByCategory")
-//	public List<Mobile> getAllMobilesByCategory( @PathVariable("id") Integer id){
-//
-//		return adminService.getAllMobilesByCategory(id);
-//	}
-//	@GetMapping("/getAllOrders")
-//	public List<Orders> getAllOrders(){
-//
-//		return adminService.getAllOrders();
-//	}
-	
+		return categoryService.addCategory(category);
+	}
+
+	@PostMapping("/admin/category/name")
+	public String updateCategoryDetails(@Valid @RequestBody Category category) throws CategoryException {
+
+		return categoryService.updateCategory(category);
+	}
+
+	@PostMapping("/admin/mobile/{categoryId}")
+	public Mobile addMobileToCategoryByCategoryId(@Valid @RequestBody Mobile mobile,
+			@PathVariable("categoryId") Integer categoryId) throws CategoryException {
+
+		return mobileService.addMobileToCategoryByCategoryId(mobile, categoryId);
+	}
+
+	@PutMapping("/admin/mobile/cost")
+	public String updateMobileCostById(@RequestBody Mobile mobile) throws MobileException {
+
+		return mobileService.updateMobileDetails(mobile);
+	}
+
+	@GetMapping("/admin/customer/{customerId}")
+	public Customer getCustomerById(@PathVariable("customerId") Integer customerId)
+			throws MobileException, CustomerException {
+
+		return customerService.getCustomerById(customerId);
+	}
+
+	@PostMapping("/admin")
+	public Admin updateAdminDetails(@Valid @RequestBody Admin admin) throws AdminException {
+
+		return adminService.updateAdminDetails(admin);
+	}
+
+	@GetMapping("/admin/categories")
+	public List<Category> getAllCategories() {
+
+		return categoryService.getAllCategories();
+	}
+
+	@GetMapping("/admin/customers")
+	public List<Customer> getAllCustomers() {
+
+		return customerService.getAllCustomers();
+	}
+
+	@GetMapping("/admin/mobiles")
+	public List<Mobile> getAllMobiles() {
+
+		return mobileService.getAllMobiles();
+	}
+
+	@GetMapping("/admin/mobile/{categoryId}")
+	public List<Mobile> getAllMobilesByCategory(@PathVariable("categoryId") Integer categoryId)
+			throws MobileException, CategoryException {
+
+		return mobileService.getMobilesByCategoryId(categoryId);
+	}
+
+	@GetMapping("/admin/orders")
+	public List<Orders> getAllOrders() {
+
+		return orderService.getAllOrders();
+	}
+
 }

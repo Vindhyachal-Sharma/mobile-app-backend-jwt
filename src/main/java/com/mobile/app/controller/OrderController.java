@@ -44,10 +44,10 @@ public class OrderController {
 //		return orderService.addOrder(newOrder);
 //	}
 
-	@PostMapping("/order/{customerId}")
-	public Orders addOrderToCustomer(@Valid @RequestBody Orders order, @PathVariable("customerId") Integer customerId) throws CustomerException {
-		return this.orderService.addOrderToCustomer(order, customerId);
-	}
+//	@PostMapping("/order/{customerId}")
+//	public Orders addOrderToCustomer(@Valid @RequestBody Orders order, @PathVariable("customerId") Integer customerId) throws CustomerException {
+//		return this.orderService.addOrderToCustomer(order, customerId);
+//	}
 
 	@GetMapping("/order/{id}")
 	public Orders getOrderById(@PathVariable("id") Integer orderId) throws OrderException {
@@ -61,16 +61,16 @@ public class OrderController {
 //		return orderService.updateOrder(order);
 //	}
 
-	@DeleteMapping("/order/{orderId}")
-	public String deleteOrderById( @RequestBody Integer customerId, @PathVariable("orderId") Integer orderId)
+	@DeleteMapping("/cancel/order/{orderId}")
+	public String CancelOrderById( @RequestBody Integer customerId, @PathVariable("orderId") Integer orderId)
 			throws OrderException, CustomerException {
 
-		return this.customerService.deleteOrdersFromCustomerById(customerId,orderId);
+		return this.customerService.cancelOrdersFromCustomerById(customerId,orderId);
 
 	}
 
-	@GetMapping("/allorders/")
-	public List<Orders> getallOrders() {
+	@GetMapping("/orders/")
+	public List<Orders> getallOrders(){
 		return orderService.getAllOrders();
 	}
 }

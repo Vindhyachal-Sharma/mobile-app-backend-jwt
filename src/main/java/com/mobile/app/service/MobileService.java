@@ -31,6 +31,9 @@ public interface MobileService {
 	public List<Mobile> getMobilesByCompanyName(String companyName) throws MobileException;
 
 
+	List<Mobile> getMobilesByCategoryId(Integer CategoryId) throws MobileException, CategoryException;
+
+
 //	Mobile addMobileToCart(Mobile mobile, Integer categoryId, Integer cartId) throws CategoryException, MobileException;
 //
 //
