@@ -22,7 +22,7 @@ public class Admin /* extends User */ {
 	@NotNull(message = "Please enter a valid email Id")
 	private String email;
 	@Pattern(regexp = "[0-9]{10}", message = "Phone number must be 10 gits")
-	private long mobileNo;
+	private String mobileNo;
 
 	public Admin() {
 		super();
@@ -32,7 +32,7 @@ public class Admin /* extends User */ {
 	public Admin(Integer id,
 			@Pattern(regexp = "[a-zA-Z0-9]{3,}", message = "name must be min 3 chars, special chars not allowed.") String name,
 			@Email(message = "Please enter a valid email Id", regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\\.[a-zA-Z.]{2,5}") @NotNull(message = "Please enter a valid email Id") String email,
-			@Pattern(regexp = "[0-9]{10}", message = "Phone number must be 10 gits") long mobileNo) {
+			@Pattern(regexp = "[0-9]{10}", message = "Phone number must be 10 gits") String mobileNo) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -64,11 +64,11 @@ public class Admin /* extends User */ {
 		this.email = email;
 	}
 
-	public long getMobileNo() {
+	public String getMobileNo() {
 		return mobileNo;
 	}
 
-	public void setMobileNo(long mobileNo) {
+	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
 

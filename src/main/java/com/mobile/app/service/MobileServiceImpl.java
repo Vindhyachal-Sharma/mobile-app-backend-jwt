@@ -13,7 +13,12 @@ import com.mobile.app.exception.CategoryNotFoundException;
 import com.mobile.app.exception.MobileNotFoundException;
 import com.mobile.app.repository.CategoryRepository;
 import com.mobile.app.repository.MobileRepository;
-
+/************************************************************************************
+ * @author Amrutha 
+ * Description It is a service class that provides the services
+ *         for add,get,delete,update and viewing all the mobiles Version 1.0
+ *         Created Date 08-FEB-2023
+ ************************************************************************************/
 @Service
 public class MobileServiceImpl implements MobileService {
 
@@ -24,10 +29,15 @@ public class MobileServiceImpl implements MobileService {
 
 	@Autowired
 	private CategoryService categoryService;
-
-	@Autowired
-	private CustomerService customerService;
-
+	/************************************************************************************
+	 * Method:- addMobileToCategory 
+	 * Description:- add the mobile into the category
+	 * @paramTo mobile - mobile will be added to category
+	 * @returns mobile - true, if add otherwise throws CategoryExceptionException
+	 * @throws CategoryException - if Category not found 
+	 * Created By - Amrutha
+	 * Created Date - 8-FEB-2023
+	 ************************************************************************************/
 	@Override
 	public Mobile addMobileToCategoryByCategoryId(Mobile mobile, Integer categoryId) throws CategoryNotFoundException {
 		Category category = categoryService.getCategoryById(categoryId);
@@ -42,7 +52,15 @@ public class MobileServiceImpl implements MobileService {
 		this.categoryRepository.save(foundCategory); // persist category
 		return newMobile;
 	}
-
+	/************************************************************************************
+	 * Method: - getMobileById 
+	 * Description: - get the mobiles using the id
+	 * @paramTo mobile - gets themobile by using id
+	 * @returns mobile - true,otherwise throws mobileException
+	 * @throws MobileException - if Mobile not found 
+	 * Created By - Amrutha 
+	 * Created Date - 8-FEB-2023
+	 ************************************************************************************/
 	@Override
 	public Mobile getMobileById(Integer id) throws MobileNotFoundException {
 		Optional<Mobile> optMobile = this.mobileRepository.findById(id);
@@ -51,6 +69,16 @@ public class MobileServiceImpl implements MobileService {
 		}
 		return optMobile.get();
 	}
+	
+	/************************************************************************************
+	 * Method: - updateMobileDetails 
+	 * Description: - To update the mobile details
+	 * @paramTo mobileId - mobile details will be changed
+	 * @returns mobile - true, if add otherwise throws MobileException
+	 * @throws MobileException - if mobile not found 
+	 * Created By - Amrutha 
+	 * Created Date - 8-FEB-2023
+	 ************************************************************************************/
 
 	@Override
 	public String updateMobileDetails(Mobile mobile) throws MobileNotFoundException {
@@ -69,7 +97,15 @@ public class MobileServiceImpl implements MobileService {
 
 		return "Mobile details updated successfully";
 	}
-
+	/************************************************************************************
+	 * Method: - deleteMobileById
+	 * Description: - deleting the mobile details
+	 * @paramTo mobileId - going to delete the mobile
+	 * @returns mobile - true, if add otherwise throws MobileException
+	 * @throws MobileException - if mobile not found 
+	 * Created By - Amrutha 
+	 * Created Date - 8-FEB-2023
+	 ************************************************************************************/
 	@Override
 	public String deleteMobileById(Integer mobileId) throws MobileNotFoundException {
 		Optional<Mobile> optMobile = this.mobileRepository.findById(mobileId);
@@ -80,12 +116,28 @@ public class MobileServiceImpl implements MobileService {
 		return "Mobile Deleted Successfully";
 
 	}
-
+	/*************************************************************************************
+	 * Method:           - getAllMobiles 
+	 * Description:      - returns all the mobile
+	 * @paramTo mobileId - gets all the mobiles
+	 * @returns mobile   - true, if add otherwise throws MobileException
+	 * @throws MobileException - if mobile not found 
+	 * Created By        - Amrutha 
+	 * Created Date      - 8-FEB-2023
+	 ************************************************************************************/
 	@Override
 	public List<Mobile> getAllMobiles() {
 		return this.mobileRepository.findAll();
 	}
-
+	/************************************************************************************
+	 * Method:           - getMobilesByName 
+	 * Description:      - returns the mobile by using the mobileName
+	 * @paramTo mobileId - get mobiles by using the mobile name
+	 * @returns mobile   - true, if add otherwise throws MobileException
+	 * @throws MobileException - if mobile not found
+	 *  Created By       - Amrutha 
+	 *  Created Date     - 9-FEB-2023
+	 ************************************************************************************/
 	@Override
 	public List<Mobile> getMobilesByName(String mobileName) throws MobileNotFoundException {
 		Iterable<Mobile> mobileIterable = mobileRepository.findByMobileName(mobileName);
@@ -99,7 +151,15 @@ public class MobileServiceImpl implements MobileService {
 		return mobileList;
 
 	}
-
+	/************************************************************************************
+	 * Method:           - getMobilesByMobileCost
+	 * Description:      - returns the mobile by using the mobile cost
+	 * @paramTo mobileId - get mobiles by using the mobile cost
+	 * @returns mobile   - true, if add otherwise throws MobileException
+	 * @throws MobileException - if mobile not found
+	 *  Created By       - Amrutha 
+	 *  Created Date     - 9-FEB-2023
+	 ************************************************************************************/
 	@Override
 	public List<Mobile> getMobilesByMobileCost(Double cost) throws MobileNotFoundException {
 		Iterable<Mobile> mobileIterable = mobileRepository.findByMobileCost(cost);
@@ -112,7 +172,15 @@ public class MobileServiceImpl implements MobileService {
 		}
 		return mobileList;
 	}
-
+	/************************************************************************************
+	 * Method:           - getMobilesByModelNumber
+	 * Description:      - returns the mobile by using the ModelNumber
+	 * @paramTo mobileId - get mobiles by using the model number
+	 * @returns mobile   - true, if add otherwise throws MobileException
+	 * @throws MobileException - if mobile not found
+	 *  Created By       - Amrutha 
+	 *  Created Date     - 10-FEB-2023
+	 ************************************************************************************/
 	@Override
 	public List<Mobile> getMobilesByModelNumber(String modelNumber) throws MobileNotFoundException {
 		Iterable<Mobile> mobileIterable = mobileRepository.findByModelNumber(modelNumber);
@@ -126,6 +194,15 @@ public class MobileServiceImpl implements MobileService {
 		return mobileList;
 	}
 
+	/************************************************************************************
+	 * Method:           -  getMobilesByCompanyName 
+	 * Description:      - returns the mobile by using the CompanyName
+	 * @paramTo mobileId - get mobiles by using the company name
+	 * @returns mobile   - true, if add otherwise throws MobileException
+	 * @throws MobileException - if mobile not found
+	 *  Created By       - Amrutha 
+	 *  Created Date     - 10-FEB-2023
+	 ************************************************************************************/
 	@Override
 	public List<Mobile> getMobilesByCompanyName(String companyName) throws MobileNotFoundException {
 		Iterable<Mobile> mobileIterable = mobileRepository.findByCompanyName(companyName);
@@ -138,7 +215,15 @@ public class MobileServiceImpl implements MobileService {
 		}
 		return mobileList;
 	}
-
+	/************************************************************************************
+	 * Method:           -  getMobilesByCategoryId
+	 * Description:      - returns the mobile by using the CompanyName
+	 * @paramTo mobileId - get mobiles by using the category name
+	 * @returns mobile   - true, if add otherwise throws MobileException
+	 * @throws MobileException - if mobile not found
+	 *  Created By       - Amrutha 
+	 *  Created Date     - 10-FEB-2023
+	 ************************************************************************************/
 	@Override
 	public List<Mobile> getMobilesByCategoryId(Integer CategoryId)
 			throws MobileNotFoundException, CategoryNotFoundException {
