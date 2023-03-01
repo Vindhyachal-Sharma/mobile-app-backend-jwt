@@ -15,12 +15,10 @@ public interface CartService {
 	Cart addMobileToCartByCustomerId(Integer MobileId, Integer custId)
 			throws CustomerNotFoundException, MobileNotFoundException, CartNotFoundException;
 
-	Cart updateCart(Mobile mobile, Integer id) throws CartNotFoundException;
 
 	Cart removeMobileFromCart(Integer mobileId, Integer id)
 			throws CartNotFoundException, CustomerNotFoundException, MobileNotFoundException;
 
-	Cart getCartById(Integer cartId) throws CartNotFoundException;
 
 	String deleteCartById(Integer cartId) throws CartNotFoundException, CustomerNotFoundException;
 
@@ -28,7 +26,7 @@ public interface CartService {
 
 	Cart getCartByCustomerId(Integer customerId) throws CartNotFoundException, CustomerNotFoundException;
 
-	Payment removePaymentFromCartId(Integer cartId) throws OrderNotFoundException, CartNotFoundException;
+//	Payment removePaymentFromCartId(Integer cartId) throws OrderNotFoundException, CartNotFoundException;
 
 	String checkout(Payment payment, Integer cartId) throws CartNotFoundException, CustomerNotFoundException;
 

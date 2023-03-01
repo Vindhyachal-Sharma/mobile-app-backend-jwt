@@ -7,19 +7,20 @@ import com.mobile.app.exception.CategoryNotFoundException;
 import com.mobile.app.exception.MobileNotFoundException;
 
 public interface CategoryService {
-	
+
 	Category addCategory(Category category) throws CategoryNotFoundException;
-	
+
 	String updateCategory(Category category) throws CategoryNotFoundException;
-	
+
 	Category getCategoryById(Integer id) throws CategoryNotFoundException;
-	
+
 	String deleteCategoryById(Integer id) throws CategoryNotFoundException;
-	
-	List<Category>getAllCategories();
-	
-	String removeMobileFromCategoryById(Integer categoryId,Integer mobileId)throws MobileNotFoundException, CategoryNotFoundException;
-	
-	
+
+	List<Category> getAllCategories();
+
+	String removeMobileFromCategoryById(Integer categoryId, Integer mobileId)
+			throws MobileNotFoundException, CategoryNotFoundException;
+
+	Category getCategoryByName(String name) throws CategoryNotFoundException;
 
 }

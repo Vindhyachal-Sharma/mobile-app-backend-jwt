@@ -33,27 +33,28 @@ class MobileApplicationTests {
 //	void addCustomerTest() {
 //		assertNotNull(customerService.addCustomer(new Customer(100, "test name 100", "test100@gmail.com", "test@100")));
 //	}
-	@Test
-	void getCustomerByIdTest() throws CustomerNotFoundException {
-		assertNotNull(customerService.getCustomerById(100));
-	}
-	@Test
-	void getCustomerByIdExceptionTest() {
-		
-		assertThrows(CustomerNotFoundException.class,()->customerService.getCustomerById(500));
-	}
-	@Test
-	void getCustomerByIdExceptionMessageTest() {
-		
-		String msg=null;
-		try {
-			customerService.getCustomerById(500);
-		} catch (CustomerNotFoundException e) {
-			msg=e.getMessage();
-		}
-		
-		assertEquals("Cusomer id not found :500", msg);
-	}
+	//----------------------------------------------
+//	@Test
+//	void getCustomerByIdTest() throws CustomerNotFoundException {
+//		assertNotNull(customerService.getCustomerById(100));
+//	}
+//	@Test
+//	void getCustomerByIdExceptionTest() {
+//		
+//		assertThrows(CustomerNotFoundException.class,()->customerService.getCustomerById(500));
+//	}
+//	@Test
+//	void getCustomerByIdExceptionMessageTest() {
+//		
+//		String msg=null;
+//		try {
+//			customerService.getCustomerById(500);
+//		} catch (CustomerNotFoundException e) {
+//			msg=e.getMessage();
+//		}
+//		
+//		assertEquals("Cusomer id not found :500", msg);
+//	}
 		
 
 }

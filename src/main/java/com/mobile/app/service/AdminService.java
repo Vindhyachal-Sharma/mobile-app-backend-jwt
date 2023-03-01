@@ -8,4 +8,6 @@ public interface AdminService {
 
 	Admin updateAdminDetails(Admin admin) throws AdminNotFoundException;
 
+	Admin addAdmin(Admin newAdmin) throws AdminNotFoundException;
+
 }

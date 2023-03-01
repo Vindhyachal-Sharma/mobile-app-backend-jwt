@@ -3,6 +3,7 @@ package com.mobile.app.service;
 import java.util.List;
 
 import com.mobile.app.entity.Orders;
+import com.mobile.app.entity.Payment;
 import com.mobile.app.exception.CartNotFoundException;
 import com.mobile.app.exception.CustomerNotFoundException;
 import com.mobile.app.exception.OrderNotFoundException;
@@ -20,6 +21,6 @@ public interface OrderService {
 
 	List<Orders> getAllOrders();
 
-	Orders getOrdersFromCart(Integer cartId) throws CartNotFoundException, CustomerNotFoundException;
+	Orders getOrdersFromCart(Payment payment,Integer cartId) throws CartNotFoundException, CustomerNotFoundException;
 
 }

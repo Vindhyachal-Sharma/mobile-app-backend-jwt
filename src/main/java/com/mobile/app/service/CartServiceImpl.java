@@ -66,19 +66,6 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public Cart updateCart(Mobile mobile, Integer cartId) throws CartNotFoundException {
-		Optional<Cart> existingCart = cartRepository.findById(cartId);
-		if (!existingCart.isPresent()) {
-			throw new CartNotFoundException("Cart Id Not Found");
-
-		}
-		Cart updatedCart = existingCart.get();
-		updatedCart.setCost(mobile.getMobileCost());
-		cartRepository.save(updatedCart);
-		return updatedCart;
-	}
-
-	@Override
 	public Cart removeMobileFromCart(Integer mobileId, Integer customerId)
 			throws CartNotFoundException, CustomerNotFoundException, MobileNotFoundException {
 		Cart cart = null;
@@ -149,15 +136,7 @@ public class CartServiceImpl implements CartService {
 		return totalCost;
 	}
 
-	@Override
-	public Cart getCartById(Integer cartId) throws CartNotFoundException {
-		Optional<Cart> optCart = cartRepository.findById(cartId);
-		if (optCart.isEmpty())
-			throw new CartNotFoundException("Cart id not found :" + cartId);
-
-		return optCart.get();
-
-	}
+	
 
 	@Override
 	public String deleteCartById(Integer cartId) throws CartNotFoundException, CustomerNotFoundException {
@@ -167,6 +146,8 @@ public class CartServiceImpl implements CartService {
 		Cart cart = optCart.get();
 		Customer customer = customerService.getCustomerById(cartId);
 		cart.getMobiles().clear();
+		cart.setQuantity(0);
+		cart.setCost(0.0);
 		cartRepository.save(cart);
 		return "Cart Deleted Successfully";
 
@@ -185,40 +166,31 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public Payment removePaymentFromCartId(Integer cartId) throws OrderNotFoundException, CartNotFoundException {
-		Cart cart = getCartById(cartId);
-		Payment pay = cart.getPayment();
-		cart.setPayment(null);
-		paymentRepository.delete(pay);
-		cartRepository.save(cart);
-		return pay;
-
-	}
-
-	@Override
 	public String checkout(Payment payment, Integer cartId) throws CartNotFoundException, CustomerNotFoundException {
 
 		Payment madePayment = new Payment();
 		Cart cart = getCartByCustomerId(cartId);
 		Customer customer = customerService.getCustomerById(cartId);
-
+		if (cart.getQuantity() == 0) {
+			throw new CartNotFoundException("Please Add Some Items Before Checkout");
+		}
+		else {
 		madePayment.setPaymentMode(payment.getPaymentMode());
 		madePayment.setPaymentStatus(payment.getPaymentStatus());
 		paymentRepository.save(madePayment);
-		cart.setPayment(madePayment);
-		Orders order = orderService.getOrdersFromCart(cartId);
+		
+		Orders order = orderService.getOrdersFromCart(madePayment,cartId);
 		List<Orders> orderList = new ArrayList<>();
 		orderList.add(order);
 		customer.setOrders(orderList);
 		customerRepository.save(customer);
-
 		cart.getMobiles().clear();
 		cart.setQuantity(0);
 		cart.setCost(0.0);
-		cart.setPayment(null);
 		cartRepository.save(cart);
 
 		return "Thanks for the order";
+		}
 	}
 
 }

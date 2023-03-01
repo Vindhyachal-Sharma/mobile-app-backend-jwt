@@ -31,11 +31,22 @@ public class CustomerServiceImpl implements CustomerService {
 	private OrderService orderService;
 
 	@Override
-	public Customer addCustomer(Customer customer) {
+	public Customer addCustomer(Customer customer) throws CustomerNotFoundException{
+		Customer optCustomer = this.customerRepository.findByEmail(customer.getEmail());
+		Customer optMobile =this.customerRepository.findByMobileNo(customer.getMobileNo());
+		
+		if(optCustomer!=null) {
+			throw new CustomerNotFoundException("Email already registered");
+		}
+		if(optMobile!=null) {
+			throw new CustomerNotFoundException("Mobile number already registered");
+		}
 		Customer newCustomer = customerRepository.save(customer);
-		Cart cart = new Cart(customer.getId(), 0, 0.0);
+		customer.setStatus("Active");
+		Cart cart = new Cart(customer.getUserId(), 0, 0.0);
 		cartRepository.save(cart);
 		customer.setCart(cart);
+		customer.setRole("customer");
 		customerRepository.save(customer);
 		return newCustomer;
 	}
@@ -52,7 +63,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public Customer updateCustomer(Customer customer) throws CustomerNotFoundException {
-		Optional<Customer> customerOpt = this.customerRepository.findById(customer.getId());
+		Optional<Customer> customerOpt = this.customerRepository.findById(customer.getUserId());
 		if (customerOpt.isEmpty())
 			throw new CustomerNotFoundException("Customer id does not exist to update.");
 
@@ -65,13 +76,14 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public String deleteCustomerById(Integer customerId) throws CustomerNotFoundException {
+	public String deactivateCustomerAccountById(Integer customerId) throws CustomerNotFoundException {
 		Optional<Customer> optCustomer = this.customerRepository.findById(customerId);
 		if (optCustomer.isEmpty())
-			throw new CustomerNotFoundException("Customer id does not exists to delete !");
+			throw new CustomerNotFoundException("Customer id does not exists to deactivate account !");
 		Customer customer = optCustomer.get();
-		this.customerRepository.deleteById(customerId);
-		return "Id Deleted Successfully";
+		customer.setStatus("Inactive");
+		this.customerRepository.save(customer);
+		return "Id Deactivated Successfully will get activated when logged in again";
 	}
 
 	@Override
@@ -90,8 +102,7 @@ public class CustomerServiceImpl implements CustomerService {
 		} else {
 			customer.getCart().setCost(0.0);
 			customer.getCart().setQuantity(0);
-			customer.getCart().setPayment(null);
-			customer.getCart().getMobiles().removeAll(customer.getCart().getMobiles());
+			customer.getCart().getMobiles().clear();
 			customerRepository.save(customer);
 
 		}
@@ -117,19 +128,22 @@ public class CustomerServiceImpl implements CustomerService {
 		if (customer == null) {
 			throw new CustomerNotFoundException("Customer Not Found");
 		} else {
-			if (orders.getMobiles().isEmpty() || orders.getMobiles() == null) {
+			if (!(orders.getMobiles().isEmpty() || orders.getMobiles() == null)){
 				for (Orders order : customer.getOrders()) {
 					if (order.getId() == orderId)
 						deletedOrder = order;
 				}
 				customer.getOrders().remove(deletedOrder);
 				orderService.deleteOrderById(orderId);
+				
 				customerRepository.save(customer);
 			} else
 				throw new OrderNotFoundException("Requested Order" + orderId + "Not found");
 		}
-		return "Order deleted Succesfully";
+		return "Order Cancelled Succesfully payement will be sent back to the original payment method within few days";
 
 	}
+
+	
 
 }

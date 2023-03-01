@@ -39,8 +39,8 @@ public class MobileServiceImpl implements MobileService {
 	 * Created Date - 8-FEB-2023
 	 ************************************************************************************/
 	@Override
-	public Mobile addMobileToCategoryByCategoryId(Mobile mobile, Integer categoryId) throws CategoryNotFoundException {
-		Category category = categoryService.getCategoryById(categoryId);
+	public Mobile addMobileToCategoryByCategoryName(Mobile mobile, String categoryName) throws CategoryNotFoundException {
+		Category category = categoryService.getCategoryByName(categoryName);
 		// Optional<Category> optCategory =
 		// this.categoryRepository.findById(categoryId);
 		if (category == null) {

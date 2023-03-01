@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
@@ -14,11 +11,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Entity
-public class Customer /* extends User */ {
+public class Customer extends User  {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+
 	@NotBlank(message = "Name is mandatory")
 	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "First letter should be capital,Name can only contain letters and spaces")
 	private String name;
@@ -27,7 +22,11 @@ public class Customer /* extends User */ {
 	private String email;
 	@Pattern(regexp = "[0-9]{10}", message = "Phone number must be 10 digits")
 	private String mobileNo;
-
+	
+	private String status;
+	
+	private String address;
+	
 	@OneToOne
 	private Cart cart;
 
@@ -38,26 +37,48 @@ public class Customer /* extends User */ {
 		super();
 	}
 
-	public Customer(Integer id, @NotBlank(message = "Name is mandatory") String name,
+	
+
+	public Customer(
+			@NotBlank(message = "Name is mandatory") @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "First letter should be capital,Name can only contain letters and spaces") String name,
 			@NotBlank(message = "Email is mandatory") @Email(message = "Please enter a valid email Id", regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\\.[a-zA-Z.]{2,5}") String email,
-			@Pattern(regexp = "[0-9]{10}", message = "Phone number must be 10 digits") String mobileNo, Cart cart,
-			List<Orders> orders) {
+			@Pattern(regexp = "[0-9]{10}", message = "Phone number must be 10 digits") String mobileNo, String status,
+			String address, Cart cart, List<Orders> orders) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.mobileNo = mobileNo;
+		this.status = status;
+		this.address = address;
 		this.cart = cart;
 		this.orders = orders;
 	}
 
-	public Integer getId() {
-		return id;
+
+
+	public String getStatus() {
+		return status;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
+
+
+
+	public String getAddress() {
+		return address;
+	}
+
+
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+
 
 	public String getName() {
 		return name;
@@ -99,4 +120,6 @@ public class Customer /* extends User */ {
 		this.orders = orders;
 	}
 
+	
+	
 }

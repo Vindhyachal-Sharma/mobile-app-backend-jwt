@@ -14,7 +14,7 @@ public interface PaymentService {
 
 	Payment deletePaymentById(Integer id) throws PaymentNotFoundException;
 
-	Payment addPaymentToCart(Payment payment, Integer cartId) throws PaymentNotFoundException;
+//	Payment addPaymentToCart(Payment payment, Integer cartId) throws PaymentNotFoundException;
 
 	List<Payment> getAllPayments();
 

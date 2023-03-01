@@ -6,13 +6,15 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Cart {
 
 	@Id
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private Integer id;
 
 	@Min(value = 0, message = "Quantity cannot be neagtive")
@@ -22,9 +24,6 @@ public class Cart {
 
 	@ManyToMany
 	private List<Mobile> mobiles = new ArrayList<>();
-
-	@OneToOne
-	Payment payment;
 
 	public Cart() {
 		super();
@@ -39,13 +38,13 @@ public class Cart {
 	}
 
 	public Cart(Integer id, @Min(value = 0, message = "Cost cannot be neagtive") Integer quantity,
-			@Min(value = 0, message = "Cost cannot be neagtive") Double cost, List<Mobile> mobiles, Payment payment) {
+			@Min(value = 0, message = "Cost cannot be neagtive") Double cost, List<Mobile> mobiles) {
 		super();
 		this.id = id;
 		this.quantity = quantity;
 		this.cost = cost;
 		this.mobiles = mobiles;
-		this.payment = payment;
+		
 	}
 
 	public Integer getId() {
@@ -80,12 +79,5 @@ public class Cart {
 		this.mobiles = mobiles;
 	}
 
-	public Payment getPayment() {
-		return payment;
-	}
-
-	public void setPayment(Payment payment) {
-		this.payment = payment;
-	}
-
+	
 }

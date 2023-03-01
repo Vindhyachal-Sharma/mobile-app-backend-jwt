@@ -15,11 +15,14 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class Orders {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private Integer id;
 	@NotNull
 	@PastOrPresent
@@ -28,26 +31,48 @@ public class Orders {
 	private LocalDate dispatchDate;
 	@Min(value = 0, message = "Cost cannot be neagtive")
 	private Double cost;
+	
+	private String orderAddress;
 
 	private Integer quantity;
 
 	@OneToMany
 	private List<Mobile> mobiles = new ArrayList<>();
+	
+	@OneToOne
+	Payment payment;
 
 	public Orders() {
 		super();
 	}
 
+	
+
 	public Orders(Integer id, @NotNull @PastOrPresent LocalDate orderDate, @NotNull LocalDate dispatchDate,
-			@Min(value = 0, message = "Cost cannot be neagtive") Double cost, Integer quantity, List<Mobile> mobiles) {
+			@Min(value = 0, message = "Cost cannot be neagtive") Double cost, String orderAddress, Integer quantity,
+			List<Mobile> mobiles, Payment payment) {
 		super();
 		this.id = id;
 		this.orderDate = orderDate;
 		this.dispatchDate = dispatchDate;
 		this.cost = cost;
+		this.orderAddress = orderAddress;
 		this.quantity = quantity;
 		this.mobiles = mobiles;
+		this.payment = payment;
 	}
+
+	public String getOrderAddress() {
+		return orderAddress;
+	}
+
+
+
+	public void setOrderAddress(String orderAddress) {
+		this.orderAddress = orderAddress;
+	}
+
+
 
 	public Integer getId() {
 		return id;
@@ -96,6 +121,16 @@ public class Orders {
 	public void setMobiles(List<Mobile> mobiles) {
 		this.mobiles = mobiles;
 	}
+
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
+
+	
 	
 
 }

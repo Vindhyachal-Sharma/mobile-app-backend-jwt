@@ -2,7 +2,6 @@ package com.mobile.app.service;
 
 import java.util.Optional;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +14,14 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository repository;
 
-//	@Override
-//	public User signIn(User user) throws UserException {
-//		// TODO Auto-generated method stub
-//		User loggedInUser = repository.getUserByUsernameAndPassword(user.getUserName(), user.getPassword());
-//		if (loggedInUser != null)
-//			return loggedInUser;
-//		throw new UserNotFoundException("User not found in database");
-//
-//	}
+	@Override
+	public User signIn(User user) throws UserNotFoundException {
+		User loggedInUser = repository.getUserByUsernameAndPassword(user.getUserName(), user.getPassword());
+		if (loggedInUser != null)
+			return loggedInUser;
+		throw new UserNotFoundException("User not found in database");
+
+	}
 
 	@Override
 	public User changePassword(Integer id, String changedPassword) {
@@ -60,7 +58,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User signOut(User user) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

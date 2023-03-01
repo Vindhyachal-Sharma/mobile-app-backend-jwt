@@ -12,14 +12,17 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private Integer id;
 	@NotBlank(message = "Name is mandatory")
-	@Pattern(regexp="^[a-zA-Z\\s]+$", message="Name can only contain letters and spaces")
+	//@Pattern(regexp="^[a-zA-Z\\s]+$", message="Name can only contain letters and spaces")
+	@Pattern(regexp = "[a-zA-Z0-9\\s]{2,}", message = "special chars not allowed.")
 	private String name;
 	
 

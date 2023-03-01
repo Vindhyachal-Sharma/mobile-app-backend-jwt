@@ -54,6 +54,14 @@ public class CategoryServiceImpl implements CategoryService {
 
 		return categoryOpt.get();
 	}
+	@Override
+	public Category getCategoryByName(String name) throws CategoryNotFoundException {
+		Category categoryOpt = this.categoryRepository.findByName(name);
+		if (categoryOpt!=null)
+			throw new CategoryNotFoundException("Category Not Found");
+
+		return categoryOpt;
+	}
 
 	@Override
 	public String deleteCategoryById(Integer id) throws CategoryNotFoundException {

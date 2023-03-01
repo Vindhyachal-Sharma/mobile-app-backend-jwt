@@ -4,23 +4,24 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "Users")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
-	@NotBlank(message = "Name is mandatory")
-	@Pattern(regexp = "[a-zA-Z0-9]{5,}", message = "name must be min 5 chars, special chars not allowed.")
+	private Integer userId;
 	private String userName;
-	@Pattern(regexp = "[a-zA-Z0-9]{8,}", message = "pwd must be 8 chars, no special chars are alllowed")
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
-
 	private String role;
 
 	public User() {
@@ -28,20 +29,20 @@ public class User {
 
 	}
 
-	public User(Integer id, String userName, String password, String role) {
+	public User(Integer userId, String userName, String password, String role) {
 		super();
-		this.id = id;
+		this.userId = userId;
 		this.userName = userName;
 		this.password = password;
 		this.role = role;
 	}
 
-	public Integer getId() {
-		return id;
+	public Integer getUserId() {
+		return userId;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 	public String getUserName() {
@@ -68,4 +69,5 @@ public class User {
 		this.role = role;
 	}
 
+	
 }

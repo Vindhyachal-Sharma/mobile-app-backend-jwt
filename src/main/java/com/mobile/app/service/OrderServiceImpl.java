@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.mobile.app.entity.Cart;
 import com.mobile.app.entity.Customer;
 import com.mobile.app.entity.Orders;
+import com.mobile.app.entity.Payment;
 import com.mobile.app.exception.CartNotFoundException;
 import com.mobile.app.exception.CustomerNotFoundException;
 import com.mobile.app.exception.OrderNotFoundException;
@@ -77,7 +78,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Orders getOrdersFromCart(Integer cartId) throws CartNotFoundException, CustomerNotFoundException {
+	public Orders getOrdersFromCart(Payment payment,Integer cartId) throws CartNotFoundException, CustomerNotFoundException {
 
 		Customer customer = customerService.getCustomerById(cartId);
 		Cart cart = cartService.getCartByCustomerId(cartId);
@@ -87,6 +88,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setQuantity(cart.getMobiles().size());
 		order.setOrderDate(LocalDate.now());
 		order.setDispatchDate(LocalDate.now());
+		order.setOrderAddress(customer.getAddress());
 		orderRepository.save(order);
 		List<Orders> orderList = new ArrayList<>();
 		orderList.add(order);

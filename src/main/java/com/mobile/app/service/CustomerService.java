@@ -9,11 +9,11 @@ import com.mobile.app.exception.OrderNotFoundException;
 
 public interface CustomerService {
 	// CRUD
-	Customer addCustomer(Customer newCustomer);
+	Customer addCustomer(Customer newCustomer) throws CustomerNotFoundException;
 
 	Customer updateCustomer(Customer updateCustomer) throws CustomerNotFoundException;
 
-	String deleteCustomerById(Integer customerId) throws CustomerNotFoundException;
+	String deactivateCustomerAccountById(Integer customerId) throws CustomerNotFoundException;
 
 	Customer getCustomerById(Integer customerId) throws CustomerNotFoundException;
 

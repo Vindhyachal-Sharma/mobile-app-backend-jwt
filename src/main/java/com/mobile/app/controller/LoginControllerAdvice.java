@@ -6,19 +6,16 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.mobile.app.exception.AdminNotFoundException;
-
+import com.mobile.app.exception.UserNotFoundException;
 @RestControllerAdvice
-@CrossOrigin("*")
-public class AdminControllerAdvice {
-	@ExceptionHandler(AdminNotFoundException.class)
+public class LoginControllerAdvice {
+	@ExceptionHandler(UserNotFoundException.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public String handleMobileExceptions(AdminNotFoundException e) {
+	public String handleMobileExceptions(UserNotFoundException e) {
 
 		return e.getMessage();
 	}
@@ -34,4 +31,3 @@ public class AdminControllerAdvice {
 		return errors;
 	}
 }
- 

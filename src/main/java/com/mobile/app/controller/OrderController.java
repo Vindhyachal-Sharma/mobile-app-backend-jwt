@@ -3,10 +3,10 @@ package com.mobile.app.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mobile.app.entity.Orders;
@@ -16,6 +16,7 @@ import com.mobile.app.service.CustomerService;
 import com.mobile.app.service.OrderService;
 
 @RestController
+@CrossOrigin("*")
 public class OrderController {
 
 	@Autowired
@@ -30,8 +31,8 @@ public class OrderController {
 		return orderService.getOrderById(orderId);
 	}
 
-	@DeleteMapping("/cancel/order/{orderId}")
-	public String CancelOrderById(@RequestBody Integer customerId, @PathVariable("orderId") Integer orderId)
+	@DeleteMapping("/cancel/order/{customerId}/{orderId}")
+	public String CancelOrderById(@PathVariable("customerId") Integer customerId, @PathVariable("orderId") Integer orderId)
 			throws OrderNotFoundException, CustomerNotFoundException {
 
 		return this.customerService.cancelOrdersFromCustomerById(customerId, orderId);
