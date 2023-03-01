@@ -18,7 +18,6 @@ import com.mobile.app.exception.CartNotFoundException;
 import com.mobile.app.exception.CustomerNotFoundException;
 import com.mobile.app.exception.MobileNotFoundException;
 import com.mobile.app.exception.UserNotFoundException;
-import com.mobile.app.jwt.ValidateToken;
 import com.mobile.app.service.CartService;
 import com.mobile.app.service.CustomerService;
 
@@ -26,9 +25,6 @@ import com.mobile.app.service.CustomerService;
 @CrossOrigin("*")
 @RequestMapping("/cart")
 public class CartController {
-	
-	@Autowired
-	ValidateToken login;
 
 	@Autowired
 	private CartService cartService;
@@ -39,27 +35,29 @@ public class CartController {
 	public Cart addMobileToCartByCustomerId(@PathVariable("mobileId") Integer mobileId,
 			@PathVariable("customerId") Integer customerId, HttpServletRequest request)
 			throws CustomerNotFoundException, MobileNotFoundException, CartNotFoundException, UserNotFoundException {
-		login.validateToken(request,"customer");
+
 		return cartService.addMobileToCartByCustomerId(mobileId, customerId);
 	}
 
 	@PostMapping("/checkout/{customerId}")
-	public String makePaymentAndProceed(@RequestBody Payment payment, @PathVariable("customerId") Integer customerId, HttpServletRequest request)
+	public String makePaymentAndProceed(@RequestBody Payment payment, @PathVariable("customerId") Integer customerId,
+			HttpServletRequest request)
 			throws CustomerNotFoundException, MobileNotFoundException, CartNotFoundException, UserNotFoundException {
-		login.validateToken(request,"customer");
+
 		return cartService.checkout(payment, customerId);
 	}
 
 	@GetMapping("/{customerId}")
-	public Cart getCartById(@PathVariable("customerId") Integer customerId, HttpServletRequest request) throws CartNotFoundException, UserNotFoundException, CustomerNotFoundException {
-		login.validateToken(request,"customer");
+	public Cart getCartById(@PathVariable("customerId") Integer customerId, HttpServletRequest request)
+			throws CartNotFoundException, UserNotFoundException, CustomerNotFoundException {
+
 		return cartService.getCartByCustomerId(customerId);
 	}
 
 	@DeleteMapping("/delete/{customerId}")
 	public String deleteCartById(@PathVariable("customerId") Integer customerId, HttpServletRequest request)
 			throws CartNotFoundException, CustomerNotFoundException, UserNotFoundException {
-		login.validateToken(request,"customer");
+
 		return this.customerService.deleteExistingCartFromCustomerById(customerId);
 	}
 
@@ -67,9 +65,8 @@ public class CartController {
 	public Cart deleteMobileFromCartById(@PathVariable("mobileId") Integer mobileId,
 			@PathVariable("customerId") Integer customerId, HttpServletRequest request)
 			throws MobileNotFoundException, CartNotFoundException, CustomerNotFoundException, UserNotFoundException {
-		login.validateToken(request,"customer");
+
 		return this.cartService.removeMobileFromCart(mobileId, customerId);
 	}
-
 
 }

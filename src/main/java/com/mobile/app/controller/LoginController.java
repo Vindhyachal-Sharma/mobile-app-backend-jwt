@@ -6,7 +6,6 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +17,6 @@ import com.mobile.app.entity.Customer;
 import com.mobile.app.entity.LoginCredentials;
 import com.mobile.app.entity.User;
 import com.mobile.app.exception.UserNotFoundException;
-import com.mobile.app.jwt.JwtUtil;
 import com.mobile.app.repository.AdminRepository;
 import com.mobile.app.repository.CustomerRepository;
 import com.mobile.app.repository.UserRepository;
@@ -26,7 +24,6 @@ import com.mobile.app.repository.UserRepository;
 @RestController
 @CrossOrigin("*")
 public class LoginController {
-
 
 	@Autowired
 	UserRepository userRepository;
@@ -37,17 +34,14 @@ public class LoginController {
 	@Autowired
 	AdminRepository adminRepository;
 
-	@Autowired
-	private JwtUtil jwtUtil;
-
 	HttpSession session;
 	User user;
 
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@Valid @RequestBody LoginCredentials credentials, HttpServletRequest request,HttpServletResponse response)
-			throws UserNotFoundException {
+	public User login(@Valid @RequestBody LoginCredentials credentials, HttpServletRequest request,
+			HttpServletResponse response) throws UserNotFoundException {
 
-		 user = userRepository.findByUserName(credentials.getUserName());
+		user = userRepository.findByUserName(credentials.getUserName());
 		if (user == null) {
 
 			throw new UserNotFoundException("User with username " + credentials.getUserName() + " does not exists");
@@ -59,10 +53,9 @@ public class LoginController {
 		session = request.getSession();
 		session.setAttribute("name", user.getUserName());
 		session.setAttribute("role", user.getRole());
-		String token = jwtUtil.generateToken(user);
-		
-		 	User newUser=user;
-		 if (user.getRole() == "customer") {
+
+		User newUser = user;
+		if (user.getRole() == "customer") {
 			Customer customer = customerRepository.findByUserName(credentials.getUserName());
 			newUser = customer;
 		}
@@ -70,9 +63,8 @@ public class LoginController {
 			Admin admin = adminRepository.findByUserName(credentials.getUserName());
 			newUser = admin;
 		}
-		 response.setHeader("Authorization", "Bearer "+ token);
-		 
-		return ResponseEntity.ok().body(newUser) ;
+
+		return newUser;
 
 	}
 
