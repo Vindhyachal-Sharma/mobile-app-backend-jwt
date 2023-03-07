@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,14 +40,14 @@ public class CartController {
 		return cartService.addMobileToCartByCustomerId(mobileId, customerId);
 	}
 
-	@PostMapping("/checkout/{customerId}")
+	@PutMapping("/checkout/{customerId}")
 	public String makePaymentAndProceed(@RequestBody Payment payment, @PathVariable("customerId") Integer customerId,
 			HttpServletRequest request)
 			throws CustomerNotFoundException, MobileNotFoundException, CartNotFoundException, UserNotFoundException {
 
 		return cartService.checkout(payment, customerId);
 	}
-
+	
 	@GetMapping("/{customerId}")
 	public Cart getCartById(@PathVariable("customerId") Integer customerId, HttpServletRequest request)
 			throws CartNotFoundException, UserNotFoundException, CustomerNotFoundException {

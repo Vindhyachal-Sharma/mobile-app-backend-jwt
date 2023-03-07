@@ -3,20 +3,28 @@ package com.mobile.app.entity;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "Admins")
 public class Admin extends User {
 
-	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "name must be min 3 chars, special chars not allowed.")
+	@NotBlank(message = "Name is mandatory")
+	@Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
+	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "First letter should be capital,Name can only contain letters and spaces")
 	private String name;
-	@Email(message = "Please enter a valid email Id", regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\\.[a-zA-Z.]{2,5}")
-	@NotNull(message = "Please enter a valid email Id")
 	
+	
+	@NotBlank(message = "Email is required")
+	@Email(message = "Invalid email format")
+	@Pattern(regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\\.[a-zA-Z.]{2,5}")
 	private String email;
-	@Pattern(regexp = "[0-9]{10}", message = "Phone number must be 10 digits")
+	
+	@NotBlank(message = "Mobile number is required")
+	@Pattern(regexp = "^[0-9]{10}$", message = "Invalid mobile number")
 	private String mobileNo;
 
 	public Admin() {
@@ -24,9 +32,9 @@ public class Admin extends User {
 	}
 
 	public Admin(
-			@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "name must be min 3 chars, special chars not allowed.") String name,
-			@Email(message = "Please enter a valid email Id", regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\\.[a-zA-Z.]{2,5}") @NotNull(message = "Please enter a valid email Id") String email,
-			@Pattern(regexp = "[0-9]{10}", message = "Phone number must be 10 digits") String mobileNo) {
+			@NotBlank(message = "Name is mandatory") @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters") @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "First letter should be capital,Name can only contain letters and spaces") String name,
+			@NotBlank(message = "Email is required") @Email(message = "Invalid email format") @Pattern(regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\\.[a-zA-Z.]{2,5}") String email,
+			@NotBlank(message = "Mobile number is required") @Pattern(regexp = "^[0-9]{10}$", message = "Invalid mobile number") String mobileNo) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -56,5 +64,5 @@ public class Admin extends User {
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
-
+	
 }

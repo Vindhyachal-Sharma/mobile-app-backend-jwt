@@ -10,7 +10,7 @@ public interface CategoryService {
 
 	Category addCategory(Category category) throws CategoryNotFoundException;
 
-	String updateCategory(Category category) throws CategoryNotFoundException;
+	String updateCategory(Integer categoryId,Category category) throws CategoryNotFoundException;
 
 	Category getCategoryById(Integer id) throws CategoryNotFoundException;
 

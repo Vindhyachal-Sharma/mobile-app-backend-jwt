@@ -19,6 +19,7 @@ public class Cart {
 
 	@Min(value = 0, message = "Quantity cannot be neagtive")
 	private Integer quantity;
+	
 	@Min(value = 0, message = "Cost cannot be neagtive")
 	private Double cost;
 

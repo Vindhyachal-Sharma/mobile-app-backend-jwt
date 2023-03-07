@@ -3,47 +3,60 @@ package com.mobile.app.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
-public class Customer extends User  {
-
+public class Customer extends User {
 
 	@NotBlank(message = "Name is mandatory")
+	@Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
 	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "First letter should be capital,Name can only contain letters and spaces")
 	private String name;
-	@NotBlank(message = "Email is mandatory")
-	@Email(message = "Please enter a valid email Id", regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\\.[a-zA-Z.]{2,5}")
+	
+	
+	
+	@NotBlank(message = "Email is required")
+	@Email(message = "Invalid email format")
+	@Pattern(regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\\.[a-zA-Z.]{2,5}")
 	private String email;
-	@Pattern(regexp = "[0-9]{10}", message = "Phone number must be 10 digits")
+	
+	@NotBlank(message = "Mobile number is required")
+	@Pattern(regexp = "^[0-9]{10}$", message = "Invalid mobile number")
 	private String mobileNo;
-	
+
 	private String status;
-	
+
+	@Size(max = 255, message = "Address should not exceed 255 characters")
 	private String address;
-	
-	@OneToOne
+
+	@OneToOne(cascade = CascadeType.ALL)
 	private Cart cart;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Orders> orders = new ArrayList<>();
 
+	 public enum CustomerAccountStatus{
+		Active,InActive
+	}
+	
 	public Customer() {
 		super();
 	}
 
-	
-
 	public Customer(
-			@NotBlank(message = "Name is mandatory") @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "First letter should be capital,Name can only contain letters and spaces") String name,
-			@NotBlank(message = "Email is mandatory") @Email(message = "Please enter a valid email Id", regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\\.[a-zA-Z.]{2,5}") String email,
-			@Pattern(regexp = "[0-9]{10}", message = "Phone number must be 10 digits") String mobileNo, String status,
-			String address, Cart cart, List<Orders> orders) {
+			@NotBlank(message = "Name is mandatory") @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters") @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "First letter should be capital,Name can only contain letters and spaces") String name,
+			@NotBlank(message = "Email is required") @Email(message = "Invalid email format") @Pattern(regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\\.[a-zA-Z.]{2,5}") String email,
+			@NotBlank(message = "Mobile number is required") @Pattern(regexp = "^[0-9]{10}$", message = "Invalid mobile number") String mobileNo,
+			String status,
+			@Size(max = 255, message = "Address should not exceed 255 characters") String address, Cart cart,
+			List<Orders> orders) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -53,32 +66,6 @@ public class Customer extends User  {
 		this.cart = cart;
 		this.orders = orders;
 	}
-
-
-
-	public String getStatus() {
-		return status;
-	}
-
-
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-
-
-	public String getAddress() {
-		return address;
-	}
-
-
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-
 
 	public String getName() {
 		return name;
@@ -104,6 +91,22 @@ public class Customer extends User  {
 		this.mobileNo = mobileNo;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	public Cart getCart() {
 		return cart;
 	}
@@ -119,7 +122,8 @@ public class Customer extends User  {
 	public void setOrders(List<Orders> orders) {
 		this.orders = orders;
 	}
-
+	
+	
 	
 	
 }

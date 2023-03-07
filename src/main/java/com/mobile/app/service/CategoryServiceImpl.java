@@ -32,15 +32,15 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public String updateCategory(Category category) throws CategoryNotFoundException {
+	public String updateCategory(Integer categoryId,Category category) throws CategoryNotFoundException {
 
-		Optional<Category> existingCategory = this.categoryRepository.findById(category.getId());
-		if (existingCategory.isEmpty())
+		Category existingCategory = getCategoryById(categoryId);
+		if (existingCategory==null)
 			throw new CategoryNotFoundException("Category Not Found");
-		Category updatedCategory = existingCategory.get();
-		updatedCategory.setId(existingCategory.get().getId());
+		Category updatedCategory = existingCategory;
+		updatedCategory.setId(existingCategory.getId());
 		updatedCategory.setName(category.getName());
-		updatedCategory.setMobiles(category.getMobiles());
+		updatedCategory.setMobiles(existingCategory.getMobiles());
 		this.categoryRepository.save(updatedCategory);
 
 		return "Category Updated Successfully";

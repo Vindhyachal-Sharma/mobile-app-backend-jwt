@@ -54,12 +54,12 @@ public class MobileController {
 			throws MobileNotFoundException {
 		return mobileService.getMobilesByCompanyName(companyName);
 	}
-
-	@GetMapping("/mobile/company/{categoryId}")
-	public List<Mobile> getMobilesByCategoryId(@PathVariable("categoryId") Integer categoryId)
-			throws MobileNotFoundException, CategoryNotFoundException {
-		return mobileService.getMobilesByCategoryId(categoryId);
-	}
+//
+//	@GetMapping("/mobile/company/{categoryId}")
+//	public List<Mobile> getMobilesByCategoryId(@PathVariable("categoryId") Integer categoryId)
+//			throws MobileNotFoundException, CategoryNotFoundException {
+//		return mobileService.getMobilesByCategoryId(categoryId);
+//	}
 
 //	@PostMapping("/mobile/{categoryId}")
 //	public Mobile addMobileByCategory(@Valid @RequestBody Mobile mobile, @PathVariable("categoryId") Integer categoryId)

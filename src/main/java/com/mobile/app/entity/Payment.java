@@ -20,11 +20,8 @@ public class Payment{
 	}
 
 	public enum PaymentStatus {
-		PENDING, PAID
+		PENDING, PAID,REVERSED
 	}
-
-	@OneToOne
-	Orders order;
 
 	public Payment() {
 		super();

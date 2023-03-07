@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +34,7 @@ import com.mobile.app.service.OrderService;
 
 @RestController
 @RequestMapping("/admin")
+@CrossOrigin("*")
 public class AdminController {
 
 	@Autowired
@@ -63,48 +66,70 @@ public class AdminController {
 		return adminService.addAdmin(newAdmin);
 	}
 
-	@PostMapping("/category/name")
-	public String updateCategoryDetails(@Valid @RequestBody Category category, HttpServletRequest request)
+	
+	
+	@PutMapping("/category/{categoryId}")
+	public String updateCategoryDetails(@PathVariable("categoryId") Integer categoryId,@Valid @RequestBody Category category, HttpServletRequest request)
 			throws CategoryNotFoundException, UserNotFoundException {
 		
-		return categoryService.updateCategory(category);
+		return categoryService.updateCategory(categoryId,category);
 	}
 
-	@PostMapping("/mobile/{categoryName}")
-	public Mobile addMobileToCategoryByCategoryName(@Valid @RequestBody Mobile mobile,
-			@PathVariable("categoryName") String categoryName, HttpServletRequest request)
+	@PostMapping("/mobile/{categoryId}")
+	public Mobile addMobileToCategoryByCategoryId(@Valid @RequestBody Mobile mobile,
+			@PathVariable("categoryId") Integer categoryId, HttpServletRequest request)
 			throws CategoryNotFoundException, UserNotFoundException {
 		
-		return mobileService.addMobileToCategoryByCategoryName(mobile, categoryName);
+		return mobileService.addMobileToCategoryByCategoryId(mobile, categoryId);
 	}
 
-	@PutMapping("/mobile/cost")
-	public String updateMobileCostById(@RequestBody Mobile mobile, HttpServletRequest request)
+	
+
+	@PutMapping("/mobile/{mobileId}")
+	public String updateMobile(@PathVariable("mobileId") Integer mobileId,@RequestBody Mobile mobile, HttpServletRequest request)
 			throws MobileNotFoundException, UserNotFoundException {
 		
-		return mobileService.updateMobileDetails(mobile);
+		return mobileService.updateMobileDetails(mobileId,mobile);
 	}
 
-	@PutMapping("/mobile")
-	public String updateMobile(@RequestBody Mobile mobile, HttpServletRequest request)
-			throws MobileNotFoundException, UserNotFoundException {
-		
-		return mobileService.updateMobileDetails(mobile);
-	}
-
-	@GetMapping("/customer/{customerId}")
+	@GetMapping("/{customerId}")
 	public Customer getCustomerById(@PathVariable("customerId") Integer customerId, HttpServletRequest request)
 			throws MobileNotFoundException, CustomerNotFoundException, UserNotFoundException {
 		
 		return customerService.getCustomerById(customerId);
 	}
+	@GetMapping("/mobiles/{mobileId}")
+	public Mobile getMobileById(@PathVariable("mobileId") Integer mobileId, HttpServletRequest request)
+			throws MobileNotFoundException, CustomerNotFoundException, UserNotFoundException {
+		
+		return mobileService.getMobileById(mobileId);
+	}
+	@GetMapping("/customer/{emailId}")
+	public Customer getCustomerByEmail(@PathVariable("emailId") String emailId, HttpServletRequest request)
+			throws MobileNotFoundException, CustomerNotFoundException, UserNotFoundException {
+		
+		return customerService.getCustomerByEmail(emailId);
+	}
+	@GetMapping("/mobNo/{mobNo}")
+	public Customer getCustomerByMobile(@PathVariable("mobNo") String mobNo, HttpServletRequest request)
+			throws MobileNotFoundException, CustomerNotFoundException, UserNotFoundException {
+		
+		return customerService.getCustomerByMobileNo(mobNo);
+	}
+	@GetMapping("/username/{username}")
+	public Customer getCustomerByUsername(@PathVariable("username") String username, HttpServletRequest request)
+			throws MobileNotFoundException, CustomerNotFoundException, UserNotFoundException {
+		
+		return customerService.getCustomerByUsername(username);
+	}
 
-	@PostMapping("/admin")
-	public Admin updateAdminDetails(@Valid @RequestBody Admin admin, HttpServletRequest request)
+	@PutMapping("/{adminId}")
+	public Admin updateAdminDetails(@PathVariable("adminId") Integer adminId,@Valid @RequestBody Admin admin, HttpServletRequest request)
 			throws AdminNotFoundException, UserNotFoundException {
 		
-		return adminService.updateAdminDetails(admin);
+		return adminService.updateAdminDetails(adminId,admin);
 	}
+	
 
 	@GetMapping("/categories")
 	public List<Category> getAllCategories(HttpServletRequest request) throws UserNotFoundException {
@@ -137,5 +162,18 @@ public class AdminController {
 		
 		return orderService.getAllOrders();
 	}
+	
+	@DeleteMapping("/mobiles/{categoryId}/{mobileId}")
+	public String removeMobileFromCategoryById(@PathVariable("categoryId") Integer categoryId, @PathVariable("mobileId") Integer mobileId)
+			throws MobileNotFoundException, CategoryNotFoundException {
 
+		return this.categoryService.removeMobileFromCategoryById(categoryId, mobileId);
+	}
+	
+	@DeleteMapping("/mobile/{mobileId}")
+	public String removeMobileById(  @PathVariable("mobileId") Integer mobileId)
+			throws MobileNotFoundException, CategoryNotFoundException {
+
+		return this.mobileService.deleteMobileById(mobileId);
+	}
 }

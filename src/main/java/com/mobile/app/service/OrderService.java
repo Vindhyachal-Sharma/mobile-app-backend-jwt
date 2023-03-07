@@ -13,7 +13,7 @@ public interface OrderService {
 	// CRUD
 	Orders addOrder(Orders newOrder);
 
-	String deleteOrderById(Integer orderId) throws OrderNotFoundException;
+	String cancelOrderById(Integer orderId) throws OrderNotFoundException;
 
 	Orders getOrderById(Integer orderId) throws OrderNotFoundException;
 
@@ -22,5 +22,7 @@ public interface OrderService {
 	List<Orders> getAllOrders();
 
 	Orders getOrdersFromCart(Payment payment,Integer cartId) throws CartNotFoundException, CustomerNotFoundException;
+
+	List<Orders> getOrderByCustomerId(Integer customerId) throws CustomerNotFoundException;
 
 }

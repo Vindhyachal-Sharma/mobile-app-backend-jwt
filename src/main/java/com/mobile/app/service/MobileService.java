@@ -8,18 +8,15 @@ import com.mobile.app.exception.MobileNotFoundException;
 
 public interface MobileService {
 
-	public Mobile addMobileToCategoryByCategoryName(Mobile mobile, String categoryName)
-			throws CategoryNotFoundException;
-
 	public Mobile getMobileById(Integer MobileId) throws MobileNotFoundException;
 
-	public String updateMobileDetails(Mobile mobile) throws MobileNotFoundException;
+	public String updateMobileDetails(Integer mobileId,Mobile mobile) throws MobileNotFoundException;
 
-	public String deleteMobileById(Integer MobileId) throws MobileNotFoundException;
+	public String deleteMobileById( Integer MobileId) throws MobileNotFoundException;
 
 	public List<Mobile> getAllMobiles();
 
-	public List<Mobile> getMobilesByName(String mobileName) throws MobileNotFoundException;
+	
 
 	public List<Mobile> getMobilesByMobileCost(Double cost) throws MobileNotFoundException;
 
@@ -27,6 +24,15 @@ public interface MobileService {
 
 	public List<Mobile> getMobilesByCompanyName(String companyName) throws MobileNotFoundException;
 
-	List<Mobile> getMobilesByCategoryId(Integer CategoryId) throws MobileNotFoundException, CategoryNotFoundException;
+	List<Mobile> getMobilesByCategoryName(String categoryName) throws MobileNotFoundException, CategoryNotFoundException;
+	
+	
+	List<Mobile> getMobilesByCategoryId(Integer categoryId) throws MobileNotFoundException, CategoryNotFoundException;
+
+	Mobile addMobileToCategoryByCategoryId(Mobile mobile, Integer categoryId) throws CategoryNotFoundException;
+
+	
+	
+	List<Mobile> getMobilesByName(String mobileName) throws MobileNotFoundException;
 
 }

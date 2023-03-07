@@ -26,8 +26,6 @@ public interface CartService {
 
 	Cart getCartByCustomerId(Integer customerId) throws CartNotFoundException, CustomerNotFoundException;
 
-//	Payment removePaymentFromCartId(Integer cartId) throws OrderNotFoundException, CartNotFoundException;
-
 	String checkout(Payment payment, Integer cartId) throws CartNotFoundException, CustomerNotFoundException;
 
 }

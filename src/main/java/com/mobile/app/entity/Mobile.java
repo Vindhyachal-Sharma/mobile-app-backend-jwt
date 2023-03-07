@@ -13,17 +13,22 @@ import javax.validation.constraints.Pattern;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class Mobile {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int mobileId;
+	
 	@NotBlank(message = "Name is mandatory")
+	
 	private String mobileName;
+	
 	@Min(value = 0, message = "Cost cannot be neagtive")
 	private Double mobileCost;
+	
 	@NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate mfd;
 	@NotNull
 	@NotBlank(message = "Model Number is mandatory")
@@ -33,15 +38,35 @@ public class Mobile {
 	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Name can only contain letters and spaces")
 	private String companyName;
 
+	@NotNull
+	@NotBlank(message = "Description is mandatory")
+	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Name can only contain letters and spaces")
+	private String Description;
+	
+	@JsonProperty(access = JsonProperty.Access.AUTO)
+	private Availability availability;
+	
+	 public enum Availability{
+		Available,Unavailable,Comming_Soon
+	}
+	
+	 
+	public MobileOrderStatus orderStatusOfMobile;
+	 
+	public enum MobileOrderStatus{
+		Placed,Cancelled
+	}
+	
 	public Mobile() {
-		super();
-		// TODO Auto-generated constructor stub
+		super();	
 	}
 
 	public Mobile(int mobileId, @NotBlank(message = "Name is mandatory") String mobileName,
 			@Min(value = 0, message = "Cost cannot be neagtive") Double mobileCost, @NotNull LocalDate mfd,
 			@NotNull @NotBlank(message = "Model Number is mandatory") String modelNumber,
-			@NotNull @NotBlank(message = "Company Name is mandatory") @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Name can only contain letters and spaces") String companyName) {
+			@NotNull @NotBlank(message = "Company Name is mandatory") @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Name can only contain letters and spaces") String companyName,
+			@NotNull @NotBlank(message = "Description is mandatory") @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Name can only contain letters and spaces") String description,
+			Availability availability) {
 		super();
 		this.mobileId = mobileId;
 		this.mobileName = mobileName;
@@ -49,6 +74,8 @@ public class Mobile {
 		this.mfd = mfd;
 		this.modelNumber = modelNumber;
 		this.companyName = companyName;
+		Description = description;
+		this.availability = availability;
 	}
 
 	public int getMobileId() {
@@ -99,4 +126,31 @@ public class Mobile {
 		this.companyName = companyName;
 	}
 
+	public String getDescription() {
+		return Description;
+	}
+
+	public void setDescription(String description) {
+		Description = description;
+	}
+
+	public Availability getAvailability() {
+		return availability;
+	}
+
+	public void setAvailability(Availability availability) {
+		this.availability = availability;
+	}
+
+	public MobileOrderStatus getOrderStatusOfMobile() {
+		return orderStatusOfMobile;
+	}
+
+	public void setOrderStatusOfMobile(MobileOrderStatus orderStatusOfMobile) {
+		this.orderStatusOfMobile = orderStatusOfMobile;
+	}
+	
+	
+	
+	
 }

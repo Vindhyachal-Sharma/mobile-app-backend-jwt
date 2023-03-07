@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mobile.app.entity.Admin;
+import com.mobile.app.entity.Customer;
+import com.mobile.app.entity.User.Role;
 import com.mobile.app.exception.AdminNotFoundException;
+import com.mobile.app.exception.CustomerNotFoundException;
 import com.mobile.app.repository.AdminRepository;
 
 @Service
@@ -32,18 +35,16 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public Admin updateAdminDetails(Admin updateAdmin) throws AdminNotFoundException {
-		Optional<Admin> adminOpt = this.adminRepository.findById(updateAdmin.getUserId());
+	public Admin updateAdminDetails(Integer adminId, Admin updateAdmin) throws AdminNotFoundException {
+		Optional<Admin> adminOpt = this.adminRepository.findById(adminId);
 		if (adminOpt.isEmpty())
 			throw new AdminNotFoundException("Admin Id does not exists to update.");
 
 		Admin admin = adminOpt.get();
 		admin.setName(updateAdmin.getName());
-		admin.setRole(admin.getRole());
-		admin.setMobileNo(updateAdmin.getMobileNo());
-		admin.setEmail(updateAdmin.getEmail());
-
 		return this.adminRepository.save(updateAdmin);
 	}
-
+	
+	
+	
 }

@@ -29,6 +29,8 @@ public class MobileServiceImpl implements MobileService {
 
 	@Autowired
 	private CategoryService categoryService;
+	
+	
 	/************************************************************************************
 	 * Method:- addMobileToCategory 
 	 * Description:- add the mobile into the category
@@ -38,11 +40,11 @@ public class MobileServiceImpl implements MobileService {
 	 * Created By - Amrutha
 	 * Created Date - 8-FEB-2023
 	 ************************************************************************************/
+
+	
 	@Override
-	public Mobile addMobileToCategoryByCategoryName(Mobile mobile, String categoryName) throws CategoryNotFoundException {
-		Category category = categoryService.getCategoryByName(categoryName);
-		// Optional<Category> optCategory =
-		// this.categoryRepository.findById(categoryId);
+	public Mobile addMobileToCategoryByCategoryId(Mobile mobile, Integer categoryId) throws CategoryNotFoundException {
+		Category category = categoryService.getCategoryById(categoryId);
 		if (category == null) {
 			throw new CategoryNotFoundException("Category does not exist!!");
 		}
@@ -81,18 +83,19 @@ public class MobileServiceImpl implements MobileService {
 	 ************************************************************************************/
 
 	@Override
-	public String updateMobileDetails(Mobile mobile) throws MobileNotFoundException {
-		Optional<Mobile> existingMobile = mobileRepository.findById(mobile.getMobileId());
-		if (!existingMobile.isPresent()) {
+	public String updateMobileDetails(Integer mobileId,Mobile mobile) throws MobileNotFoundException {
+		Mobile existingMobile = getMobileById(mobileId);
+		if (existingMobile==null) {
 			throw new MobileNotFoundException("Mobile not found");
 		}
-		Mobile updateMobile = existingMobile.get();
-		updateMobile.setMobileId(mobile.getMobileId());
+		Mobile updateMobile = existingMobile;
+		updateMobile.setMobileId(existingMobile.getMobileId());
 		updateMobile.setMobileName(mobile.getMobileName());
 		updateMobile.setMfd(mobile.getMfd());
 		updateMobile.setModelNumber(mobile.getModelNumber());
 		updateMobile.setCompanyName(mobile.getCompanyName());
 		updateMobile.setMobileCost(mobile.getMobileCost());
+		updateMobile.setDescription(mobile.getDescription());
 		this.mobileRepository.save(updateMobile);
 
 		return "Mobile details updated successfully";
@@ -107,13 +110,13 @@ public class MobileServiceImpl implements MobileService {
 	 * Created Date - 8-FEB-2023
 	 ************************************************************************************/
 	@Override
-	public String deleteMobileById(Integer mobileId) throws MobileNotFoundException {
+	public String deleteMobileById( Integer mobileId) throws MobileNotFoundException {
 		Optional<Mobile> optMobile = this.mobileRepository.findById(mobileId);
 		if (optMobile.isEmpty())
 			throw new MobileNotFoundException("Mobile id does not exists to delete !");
 		Mobile mobile = optMobile.get();
 		this.mobileRepository.deleteById(mobileId);
-		return "Mobile Deleted Successfully";
+		return "Mobile Removed  Successfully";
 
 	}
 	/*************************************************************************************
@@ -225,15 +228,28 @@ public class MobileServiceImpl implements MobileService {
 	 *  Created Date     - 10-FEB-2023
 	 ************************************************************************************/
 	@Override
-	public List<Mobile> getMobilesByCategoryId(Integer CategoryId)
+	public List<Mobile> getMobilesByCategoryName(String categoryName)
 			throws MobileNotFoundException, CategoryNotFoundException {
-		Category category = categoryService.getCategoryById(CategoryId);
+		Category category = categoryService.getCategoryByName(categoryName);
 		List<Mobile> mobileList = new ArrayList<>();
 		mobileList.addAll(category.getMobiles());
 		if (mobileList.isEmpty()) {
-			throw new MobileNotFoundException("No Mobile Found By Given Name");
+			throw new MobileNotFoundException("No Mobiles Found for Given category");
 		}
 		return mobileList;
 	}
+	@Override
+	public List<Mobile> getMobilesByCategoryId(Integer categoryId)
+			throws MobileNotFoundException, CategoryNotFoundException {
+		Category category = categoryService.getCategoryById(categoryId);
+		List<Mobile> mobileList = new ArrayList<>();
+		mobileList.addAll(category.getMobiles());
+		if (mobileList.isEmpty()) {
+			throw new MobileNotFoundException("No Mobiles Found for Given category");
+		}
+		return mobileList;
+	}
+	
+	
 
 }

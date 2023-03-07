@@ -1,8 +1,10 @@
 package com.mobile.app.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,13 +13,14 @@ import com.mobile.app.entity.Cart;
 import com.mobile.app.entity.Customer;
 import com.mobile.app.entity.Mobile;
 import com.mobile.app.entity.Orders;
+import com.mobile.app.entity.Orders.OrderStatus;
 import com.mobile.app.entity.Payment;
 import com.mobile.app.exception.CartNotFoundException;
 import com.mobile.app.exception.CustomerNotFoundException;
 import com.mobile.app.exception.MobileNotFoundException;
-import com.mobile.app.exception.OrderNotFoundException;
 import com.mobile.app.repository.CartRepository;
 import com.mobile.app.repository.CustomerRepository;
+import com.mobile.app.repository.OrderRepository;
 import com.mobile.app.repository.PaymentRepository;
 
 @Service
@@ -40,6 +43,7 @@ public class CartServiceImpl implements CartService {
 
 	@Autowired
 	private OrderService orderService;
+	
 
 	@Override
 	public Cart addMobileToCartByCustomerId(Integer mobileId, Integer customerId)
@@ -136,8 +140,6 @@ public class CartServiceImpl implements CartService {
 		return totalCost;
 	}
 
-	
-
 	@Override
 	public String deleteCartById(Integer cartId) throws CartNotFoundException, CustomerNotFoundException {
 		Optional<Cart> optCart = this.cartRepository.findById(cartId);
@@ -173,24 +175,32 @@ public class CartServiceImpl implements CartService {
 		Customer customer = customerService.getCustomerById(cartId);
 		if (cart.getQuantity() == 0) {
 			throw new CartNotFoundException("Please Add Some Items Before Checkout");
-		}
-		else {
-		madePayment.setPaymentMode(payment.getPaymentMode());
-		madePayment.setPaymentStatus(payment.getPaymentStatus());
-		paymentRepository.save(madePayment);
-		
-		Orders order = orderService.getOrdersFromCart(madePayment,cartId);
-		List<Orders> orderList = new ArrayList<>();
-		orderList.add(order);
-		customer.setOrders(orderList);
-		customerRepository.save(customer);
-		cart.getMobiles().clear();
-		cart.setQuantity(0);
-		cart.setCost(0.0);
-		cartRepository.save(cart);
+		} else {
+			madePayment.setPaymentMode(payment.getPaymentMode());
+			madePayment.setPaymentStatus(payment.getPaymentStatus());
+			paymentRepository.save(madePayment);
 
-		return "Thanks for the order";
+			Orders order = new Orders();
+			order.setCost(cart.getCost());		
+			order.setQuantity(cart.getMobiles().size());
+			order.setOrderDate(LocalDate.now());
+			order.setDispatchDate(LocalDate.now());
+			order.setOrderAddress(customer.getAddress());
+			order.setOrderStatus(OrderStatus.PLACED);
+			order.setPayment(madePayment);
+			order.getMobiles().addAll(cart.getMobiles());	
+			customer.getOrders().add(order);
+			orderService.addOrder(order);
+
+			cart.getMobiles().clear();
+			cart.setQuantity(0);
+			cart.setCost(0.0);
+		cartRepository.save(cart);
+			customerRepository.save(customer);
+
+			return "Thanks for the order";
 		}
 	}
+	
 
 }

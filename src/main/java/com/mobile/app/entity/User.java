@@ -7,6 +7,9 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,17 +22,38 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer userId;
+	 
+	
+
+	@NotNull
+	@Size(min = 3, max = 30, message = "Username must be between 3 and 30 characters long")
+	@Pattern(regexp = "^[a-zA-Z0-9_-]{3,}$", message = "Username may only contain alphanumeric characters, underscores, and hyphens")
 	private String userName;
+	
+	
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	@NotNull
+	@NotNull
+	@Size(min = 8, max = 20, message = "Password must be between 8 and 20 characters long")
+	@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$", message = "Password must contain at least one digit, one lowercase, one uppercase letter, one special symbol (@#$%^&+=) and no whitespace")
 	private String password;
+	
+	
 	private String role;
+	
+	public enum Role{
+		Admin,customer
+	}
 
 	public User() {
 		super();
 
 	}
 
-	public User(Integer userId, String userName, String password, String role) {
+	public User(Integer userId,
+			@NotNull @Size(min = 3, max = 30, message = "Username must be between 3 and 30 characters long") @Pattern(regexp = "^[a-zA-Z0-9_-]+$", message = "Username may only contain alphanumeric characters, underscores, and hyphens") String userName,
+			@NotNull @NotNull @Size(min = 8, max = 20, message = "Password must be between 8 and 20 characters long") @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$", message = "Password must contain at least one digit, one lowercase, one uppercase letter, one special symbol (@#$%^&+=) and no whitespace") String password,
+			String role) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
@@ -68,6 +92,8 @@ public class User {
 	public void setRole(String role) {
 		this.role = role;
 	}
-
 	
+
+
+
 }

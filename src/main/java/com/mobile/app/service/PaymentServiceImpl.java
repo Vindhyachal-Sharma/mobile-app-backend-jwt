@@ -68,18 +68,5 @@ public class PaymentServiceImpl implements PaymentService {
 		}
 	}
 
-//	@Override
-//	public Payment addPaymentToCart(Payment payment, Integer cartId) throws PaymentNotFoundException {
-//		Optional<Cart> existingCart = cartRepository.findById(cartId);
-//		if (existingCart.isEmpty()) {
-//			throw new PaymentNotFoundException("Order not Found");
-//		}
-//		Cart foundCart = existingCart.get();
-//		Payment newPayment = addPayment(payment);
-//		foundCart.setPayment(newPayment);
-//		cartRepository.save(foundCart);
-//		return payment;
-//
-//	}
 
 }
