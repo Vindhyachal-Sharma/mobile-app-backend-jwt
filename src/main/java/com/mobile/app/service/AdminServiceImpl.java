@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.mobile.app.entity.Admin;
 import com.mobile.app.entity.Customer;
-import com.mobile.app.entity.User.Role;
 import com.mobile.app.exception.AdminNotFoundException;
 import com.mobile.app.exception.CustomerNotFoundException;
 import com.mobile.app.repository.AdminRepository;
@@ -44,7 +43,15 @@ public class AdminServiceImpl implements AdminService {
 		admin.setName(updateAdmin.getName());
 		return this.adminRepository.save(updateAdmin);
 	}
-	
+	@Override
+	public Admin getAdminById(Integer adminId) throws AdminNotFoundException {
+
+		Optional<Admin> admin = adminRepository.findById(adminId);
+		if (admin.isEmpty())
+			throw new AdminNotFoundException("Admin id not found :" + adminId);
+
+		return admin.get();
+	}
 	
 	
 }

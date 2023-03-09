@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -56,10 +57,13 @@ public class Orders {
 		super();
 	}
 
-	public Orders(@NotNull @PastOrPresent LocalDate orderDate, @NotNull LocalDate dispatchDate,
+	
+
+	public Orders(Integer id, @NotNull @PastOrPresent LocalDate orderDate, @NotNull LocalDate dispatchDate,
 			@Min(value = 0, message = "Cost cannot be neagtive") Double cost, String orderAddress,
 			OrderStatus orderStatus, Integer quantity, List<Mobile> mobiles, Payment payment) {
 		super();
+		this.id = id;
 		this.orderDate = orderDate;
 		this.dispatchDate = dispatchDate;
 		this.cost = cost;

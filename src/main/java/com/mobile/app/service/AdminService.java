@@ -10,4 +10,6 @@ public interface AdminService {
 
 	Admin addAdmin(Admin newAdmin) throws AdminNotFoundException;
 
+	Admin getAdminById(Integer adminId) throws AdminNotFoundException;
+
 }

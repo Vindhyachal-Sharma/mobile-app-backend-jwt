@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mobile.app.entity.Customer;
 import com.mobile.app.entity.Orders;
 import com.mobile.app.exception.CustomerNotFoundException;
+import com.mobile.app.exception.MobileNotFoundException;
 import com.mobile.app.exception.OrderNotFoundException;
 import com.mobile.app.exception.UserNotFoundException;
 import com.mobile.app.service.CustomerService;
@@ -39,27 +40,22 @@ public class CustomerController {
 
 	@GetMapping("/customer/{id}")
 	public Customer getCustomerById(@PathVariable("id") Integer customerId, HttpServletRequest request)
-			throws CustomerNotFoundException, UserNotFoundException {
+			throws CustomerNotFoundException {
 
 		return customerService.getCustomerById(customerId);
 	}
 
 	@PutMapping("/customer/{id}")
 	public Customer updateCustomer(@PathVariable("id") Integer customerId,@Valid @RequestBody Customer customerData, HttpServletRequest request)
-			throws CustomerNotFoundException, UserNotFoundException {
+			throws CustomerNotFoundException {
 
 		return customerService.updateCustomer(customerId,customerData);
 	}
-//	@PutMapping("/customer/")
-//	public Customer updateCustomer(@Valid @RequestBody Customer customerData, HttpServletRequest request)
-//			throws CustomerNotFoundException, UserNotFoundException {
-//			
-//		return customerService.updateCustomer(customerData);
-//	}
+
 
 	@PutMapping("/customer/account/{customerId}")
 	public String deactivateCustomerById(@PathVariable("customerId") Integer customerId, HttpServletRequest request)
-			throws CustomerNotFoundException, UserNotFoundException {
+			throws CustomerNotFoundException {
 //		login.validateToken(request,"customer");
 		return this.customerService.deactivateCustomerAccountById(customerId);
 
@@ -71,14 +67,23 @@ public class CustomerController {
 	
 	@PutMapping("/customer/order/{customerId}/{orderId}")
 	public String cancelOrderFromCustomerById(@PathVariable("customerId") Integer customerId,@PathVariable("orderId")Integer orderId)
-			throws CustomerNotFoundException, UserNotFoundException, OrderNotFoundException {
+			throws CustomerNotFoundException, OrderNotFoundException {
 
 		return customerService.cancelOrdersFromCustomerById(customerId,orderId);
 	}
+	
+	@GetMapping("customer/orders/order/{orderId}")
+	public Orders getCustomerOrdersParticularOrder(@PathVariable("orderId") Integer orderId) throws  OrderNotFoundException{
+		return this.orderService.getOrderById(orderId);
+	}
+	
+	@PutMapping("/customer/order/{customerId}/{orderId}/{mobileId}")
+	public String cancelMobileFromOrderFromCustomerById(@PathVariable("customerId") Integer customerId,@PathVariable("orderId")Integer orderId,@PathVariable("mobileId")Integer mobileId)
+			throws CustomerNotFoundException, OrderNotFoundException, MobileNotFoundException {
 
-//	@GetMapping("/allCustomers")
-//	public List<Customer> getAllCustomers() {
-//		return customerService.getAllCustomers();
-//	}
+		return customerService.cancelMobileFromOrdersById(customerId,orderId,mobileId);
+	}
+
+
 
 }

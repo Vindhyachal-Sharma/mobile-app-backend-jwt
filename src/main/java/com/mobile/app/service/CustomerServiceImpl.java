@@ -214,6 +214,7 @@ public class CustomerServiceImpl implements CustomerService {
 		
 			order.setOrderStatus(OrderStatus.PARTIALLY_CANCELLED);
 		   cancelledMobile.setOrderStatusOfMobile(MobileOrderStatus.Cancelled);
+		   order.getPayment().setPaymentStatus(PaymentStatus.PARTAILLY_REVERSED);
 				orderRepository.save(order);
 				
 				customerRepository.save(customer);

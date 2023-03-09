@@ -12,12 +12,14 @@ import org.springframework.stereotype.Service;
 import com.mobile.app.entity.Cart;
 import com.mobile.app.entity.Customer;
 import com.mobile.app.entity.Mobile;
+import com.mobile.app.entity.Mobile.MobileOrderStatus;
 import com.mobile.app.entity.Orders;
 import com.mobile.app.entity.Orders.OrderStatus;
 import com.mobile.app.entity.Payment;
 import com.mobile.app.exception.CartNotFoundException;
 import com.mobile.app.exception.CustomerNotFoundException;
 import com.mobile.app.exception.MobileNotFoundException;
+import com.mobile.app.exception.PaymentNotFoundException;
 import com.mobile.app.repository.CartRepository;
 import com.mobile.app.repository.CustomerRepository;
 import com.mobile.app.repository.OrderRepository;
@@ -168,9 +170,13 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public String checkout(Payment payment, Integer cartId) throws CartNotFoundException, CustomerNotFoundException {
-
+	public String checkout(Payment payment, Integer cartId) throws CartNotFoundException, CustomerNotFoundException, PaymentNotFoundException {
 		Payment madePayment = new Payment();
+		if(payment==null) {
+			throw new PaymentNotFoundException("Payment mode not proper");
+		}
+		
+		
 		Cart cart = getCartByCustomerId(cartId);
 		Customer customer = customerService.getCustomerById(cartId);
 		if (cart.getQuantity() == 0) {
@@ -188,7 +194,10 @@ public class CartServiceImpl implements CartService {
 			order.setOrderAddress(customer.getAddress());
 			order.setOrderStatus(OrderStatus.PLACED);
 			order.setPayment(madePayment);
-			order.getMobiles().addAll(cart.getMobiles());	
+			order.getMobiles().addAll(cart.getMobiles());
+			for(Mobile mobile:order.getMobiles()) {
+				mobile.setOrderStatusOfMobile(MobileOrderStatus.Placed);
+			}
 			customer.getOrders().add(order);
 			orderService.addOrder(order);
 

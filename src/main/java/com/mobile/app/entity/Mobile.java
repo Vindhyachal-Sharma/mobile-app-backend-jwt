@@ -11,8 +11,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -20,14 +18,14 @@ public class Mobile {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int mobileId;
-	
+
 	@NotBlank(message = "Name is mandatory")
-	
+
 	private String mobileName;
-	
+
 	@Min(value = 0, message = "Cost cannot be neagtive")
 	private Double mobileCost;
-	
+
 	@NotNull
 	private LocalDate mfd;
 	@NotNull
@@ -42,23 +40,22 @@ public class Mobile {
 	@NotBlank(message = "Description is mandatory")
 	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Name can only contain letters and spaces")
 	private String Description;
-	
+
 	@JsonProperty(access = JsonProperty.Access.AUTO)
 	private Availability availability;
-	
-	 public enum Availability{
-		Available,Unavailable,Comming_Soon
+
+	public enum Availability {
+		Available, Unavailable, Comming_Soon
 	}
-	
-	 
+
 	public MobileOrderStatus orderStatusOfMobile;
-	 
-	public enum MobileOrderStatus{
-		Placed,Cancelled
+
+	public enum MobileOrderStatus {
+		Placed, Cancelled
 	}
-	
+
 	public Mobile() {
-		super();	
+		super();
 	}
 
 	public Mobile(int mobileId, @NotBlank(message = "Name is mandatory") String mobileName,
@@ -149,8 +146,5 @@ public class Mobile {
 	public void setOrderStatusOfMobile(MobileOrderStatus orderStatusOfMobile) {
 		this.orderStatusOfMobile = orderStatusOfMobile;
 	}
-	
-	
-	
-	
+
 }

@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 
 import com.mobile.app.entity.Cart;
 import com.mobile.app.entity.Customer;
+import com.mobile.app.entity.Mobile;
 import com.mobile.app.entity.Orders;
 import com.mobile.app.entity.Orders.OrderStatus;
 import com.mobile.app.entity.Payment;
+import com.mobile.app.entity.Mobile.MobileOrderStatus;
 import com.mobile.app.entity.Payment.PaymentStatus;
 import com.mobile.app.exception.CartNotFoundException;
 import com.mobile.app.exception.CustomerNotFoundException;
@@ -48,7 +50,13 @@ public class OrderServiceImpl implements OrderService {
 		Orders order = getOrderById(orderId);
 		if (order==null)
 			throw new OrderNotFoundException("Order id does not exists to cancel!");
-		
+		if (!(order.getMobiles().isEmpty() || order.getMobiles() == null)){
+			
+				for(Mobile mobile: order.getMobiles()) {
+					
+					mobile.setOrderStatusOfMobile(MobileOrderStatus.Cancelled);
+				}
+		}
 		order.setOrderStatus(OrderStatus.CANCELLED);
 		order.getPayment().setPaymentStatus(PaymentStatus.REVERSED);
 		paymentRepository.save(order.getPayment());
