@@ -44,7 +44,7 @@ public class LoginController {
 		user = userRepository.findByUserName(credentials.getUserName());
 		if (user == null) {
 
-			throw new UserNotFoundException("User with username " + credentials.getUserName() + " does not exists");
+			throw new UserNotFoundException("Invalid Username");
 		}
 		if (!user.getPassword().equals(credentials.getPassword())) {
 

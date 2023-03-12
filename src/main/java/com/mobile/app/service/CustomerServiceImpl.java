@@ -51,7 +51,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 		
 		if(userName!=null) {
-			throw new CustomerNotFoundException("Email already registered");
+			throw new CustomerNotFoundException("Username already registered");
 		}
 		
 		if(email!=null) {

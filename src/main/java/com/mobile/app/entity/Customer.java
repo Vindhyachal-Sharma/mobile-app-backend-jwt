@@ -37,7 +37,7 @@ public class Customer extends User {
 	private String address;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	private Cart cart;
+	private Cart cart;	
 
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Orders> orders = new ArrayList<>();

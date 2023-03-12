@@ -71,11 +71,11 @@ public class AdminController {
 		return adminService.addAdmin(admin);
 	}
 	
-	@GetMapping("/admin/{id}")
-	public Admin getAdminById(@PathVariable("id") Integer customerId, HttpServletRequest request)
+	@GetMapping("/admin/{adminId}")
+	public Admin getAdminById(@PathVariable("adminId") Integer adminId, HttpServletRequest request)
 			throws AdminNotFoundException {
 
-		return adminService.getAdminById(customerId);
+		return adminService.getAdminById(adminId);
 	}
 
 	@PutMapping("/category/{categoryId}")

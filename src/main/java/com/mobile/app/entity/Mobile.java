@@ -33,13 +33,13 @@ public class Mobile {
 	private String modelNumber;
 	@NotNull
 	@NotBlank(message = "Company Name is mandatory")
-	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Name can only contain letters and spaces")
+	@Pattern(regexp = "^[a-zA-Z ]+$", message = "Name can only contain letters and spaces")
 	private String companyName;
 
 	@NotNull
 	@NotBlank(message = "Description is mandatory")
-	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Name can only contain letters and spaces")
-	private String Description;
+	@Pattern(regexp = "^[a-zA-Z0-9 ]+$", message = "Name can only contain letters,numbers and spaces")
+	private String description;
 
 	@JsonProperty(access = JsonProperty.Access.AUTO)
 	private Availability availability;
@@ -71,7 +71,7 @@ public class Mobile {
 		this.mfd = mfd;
 		this.modelNumber = modelNumber;
 		this.companyName = companyName;
-		Description = description;
+		this.description = description;
 		this.availability = availability;
 	}
 
@@ -124,11 +124,11 @@ public class Mobile {
 	}
 
 	public String getDescription() {
-		return Description;
+		return description;
 	}
 
 	public void setDescription(String description) {
-		Description = description;
+		this.description = description;
 	}
 
 	public Availability getAvailability() {
