@@ -25,9 +25,13 @@ import com.mobile.app.entity.Payment;
 import com.mobile.app.exception.AdminNotFoundException;
 import com.mobile.app.exception.CategoryNotFoundException;
 import com.mobile.app.exception.CustomerNotFoundException;
+import com.mobile.app.exception.JwtTokenMalformedException;
+import com.mobile.app.exception.JwtTokenMissingException;
 import com.mobile.app.exception.MobileNotFoundException;
 import com.mobile.app.exception.OrderNotFoundException;
 import com.mobile.app.exception.PaymentNotFoundException;
+import com.mobile.app.exception.UserNotFoundException;
+import com.mobile.app.jwt.JwtUtil;
 import com.mobile.app.service.AdminService;
 import com.mobile.app.service.CategoryService;
 import com.mobile.app.service.CustomerService;
@@ -58,52 +62,54 @@ public class AdminController {
 	@Autowired
 	private PaymentService paymentService;
 
-	@PostMapping("/category")
-	public Category addCategory(@Valid @RequestBody Category category, HttpServletRequest request)
-			throws CategoryNotFoundException {
+	
 
+	@PostMapping("/category")
+	public Category addCategory(@Valid @RequestBody Category category, HttpServletRequest request) throws CategoryNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException
+			 {
+		JwtUtil.validateToken(request);
 		return categoryService.addCategory(category);
 	}
 
 	@PostMapping("/register")
-	public Admin registerAdmin(@Valid @RequestBody Admin admin) throws AdminNotFoundException {
-
+	public Admin registerAdmin(@Valid @RequestBody Admin admin, HttpServletRequest request) throws UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException, AdminNotFoundException   {
+		JwtUtil.validateToken(request);
 		return adminService.addAdmin(admin);
 	}
-	
+
 	@GetMapping("/admin/{adminId}")
 	public Admin getAdminById(@PathVariable("adminId") Integer adminId, HttpServletRequest request)
-			throws AdminNotFoundException {
-
+			throws AdminNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
+		JwtUtil.validateToken(request);
 		return adminService.getAdminById(adminId);
 	}
 
 	@PutMapping("/category/{categoryId}")
 	public String updateCategoryDetails(@PathVariable("categoryId") Integer categoryId,
-			@Valid @RequestBody Category category, HttpServletRequest request) throws CategoryNotFoundException {
-
+			@Valid @RequestBody Category category, HttpServletRequest request) throws CategoryNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
+		JwtUtil.validateToken(request);
 		return categoryService.updateCategory(categoryId, category);
 	}
 
 	@PostMapping("/mobile/{categoryId}")
 	public Mobile addMobileToCategoryByCategoryId(@Valid @RequestBody Mobile mobile,
 			@PathVariable("categoryId") Integer categoryId, HttpServletRequest request)
-			throws CategoryNotFoundException {
-
+			throws CategoryNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
+		JwtUtil.validateToken(request);
 		return mobileService.addMobileToCategoryByCategoryId(mobile, categoryId);
 	}
 
 	@PutMapping("/mobile/{mobileId}")
 	public String updateMobile(@PathVariable("mobileId") Integer mobileId, @RequestBody Mobile mobile,
-			HttpServletRequest request) throws MobileNotFoundException {
-
+			HttpServletRequest request) throws MobileNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
+		JwtUtil.validateToken(request);
 		return mobileService.updateMobileDetails(mobileId, mobile);
 	}
 
 	@GetMapping("/{customerId}")
 	public Customer getCustomerById(@PathVariable("customerId") Integer customerId, HttpServletRequest request)
-			throws CustomerNotFoundException {
-
+			throws CustomerNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
+		JwtUtil.validateToken(request);
 		return customerService.getCustomerById(customerId);
 	}
 
@@ -116,29 +122,29 @@ public class AdminController {
 
 	@GetMapping("/customer/{emailId}")
 	public Customer getCustomerByEmail(@PathVariable("emailId") String emailId, HttpServletRequest request)
-			throws CustomerNotFoundException {
-
+			throws CustomerNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
+		JwtUtil.validateToken(request);
 		return customerService.getCustomerByEmail(emailId);
 	}
 
 	@GetMapping("/mobNo/{mobNo}")
 	public Customer getCustomerByMobile(@PathVariable("mobNo") String mobNo, HttpServletRequest request)
-			throws CustomerNotFoundException {
-
+			throws CustomerNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
+		JwtUtil.validateToken(request);
 		return customerService.getCustomerByMobileNo(mobNo);
 	}
 
 	@GetMapping("/username/{username}")
 	public Customer getCustomerByUsername(@PathVariable("username") String username, HttpServletRequest request)
-			throws CustomerNotFoundException {
-
+			throws CustomerNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
+		JwtUtil.validateToken(request);
 		return customerService.getCustomerByUsername(username);
 	}
 
 	@PutMapping("/{adminId}")
 	public Admin updateAdminDetails(@PathVariable("adminId") Integer adminId, @Valid @RequestBody Admin admin,
-			HttpServletRequest request) throws AdminNotFoundException {
-
+			HttpServletRequest request) throws AdminNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
+		JwtUtil.validateToken(request);
 		return adminService.updateAdminDetails(adminId, admin);
 	}
 
@@ -149,7 +155,8 @@ public class AdminController {
 	}
 
 	@GetMapping("/customers")
-	public List<Customer> getAllCustomers(HttpServletRequest request) {
+	public List<Customer> getAllCustomers(HttpServletRequest request) throws UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
+		JwtUtil.validateToken(request);
 		return customerService.getAllCustomers();
 	}
 
@@ -167,8 +174,8 @@ public class AdminController {
 	}
 
 	@GetMapping("/orders")
-	public List<Orders> getAllOrders(HttpServletRequest request) {
-
+	public List<Orders> getAllOrders(HttpServletRequest request) throws UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
+		JwtUtil.validateToken(request);
 		return orderService.getAllOrders();
 	}
 
@@ -181,7 +188,7 @@ public class AdminController {
 	@DeleteMapping("/mobiles/{categoryId}/{mobileId}")
 	public String removeMobileFromCategoryById(@PathVariable("categoryId") Integer categoryId,
 			@PathVariable("mobileId") Integer mobileId) throws MobileNotFoundException, CategoryNotFoundException {
-
+		
 		return this.categoryService.removeMobileFromCategoryById(categoryId, mobileId);
 	}
 
@@ -192,28 +199,28 @@ public class AdminController {
 	}
 
 	@PutMapping("/order/{orderId}")
-	public String cancelOrder(@PathVariable("orderId") Integer orderId) throws OrderNotFoundException {
+	public String cancelOrder(@PathVariable("orderId") Integer orderId,HttpServletRequest request) throws OrderNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
+		JwtUtil.validateToken(request);
 		return this.orderService.cancelOrderById(orderId);
 	}
 
 	@GetMapping("/order/{id}")
-	public Orders getOrderById(@PathVariable("id") Integer orderId) throws OrderNotFoundException {
-
+	public Orders getOrderById(@PathVariable("id") Integer orderId,HttpServletRequest request) throws OrderNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
+		JwtUtil.validateToken(request);
 		return orderService.getOrderById(orderId);
 	}
 
 	@GetMapping("/payment/{paymentId}")
-	public Payment getPaymentById(@PathVariable("paymentId") Integer paymentId) throws PaymentNotFoundException {
-
+	public Payment getPaymentById(@PathVariable("paymentId") Integer paymentId,HttpServletRequest request) throws PaymentNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
+		JwtUtil.validateToken(request);
 		return paymentService.getPaymentById(paymentId);
 	}
 
 	@PutMapping("/payment/{paymentId}")
 	public Payment updatePaymentDetails(@PathVariable("paymentId") Integer paymentId,
-			@Valid @RequestBody Payment payment, HttpServletRequest request) {
-
+			@Valid @RequestBody Payment payment, HttpServletRequest request) throws UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
+		JwtUtil.validateToken(request);
 		return paymentService.updatePayment(payment, paymentId);
 	}
-	
 
 }

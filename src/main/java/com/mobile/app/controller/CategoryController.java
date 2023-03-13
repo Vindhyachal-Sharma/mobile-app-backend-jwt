@@ -43,25 +43,5 @@ public class CategoryController {
 		return categoryService.getAllCategories();
 	}
 
-	/*
-	 * @PutMapping("/name") public String updateCategoryName(@Valid @RequestBody
-	 * Category updateCategory) throws CategoryNotFoundException {
-	 * 
-	 * return categoryService.updateCategory(updateCategory); }
-	 * 
-	 * @DeleteMapping("/delete/{categoryId}") public String
-	 * deleteCategoryById(@PathVariable("categoryId") Integer categoryId) throws
-	 * CategoryNotFoundException {
-	 * 
-	 * return this.categoryService.deleteCategoryById(categoryId);
-	 * 
-	 * }
-	 * 
-	 * @PostMapping("/category") public Category
-	 * registerCategory(@Valid @RequestBody Category category) throws
-	 * CategoryNotFoundException {
-	 * 
-	 * return categoryService.addCategory(category); }
-	 */
 
 }
