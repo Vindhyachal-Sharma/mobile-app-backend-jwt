@@ -32,65 +32,80 @@ public class CustomerController {
 
 	@Autowired
 	private CustomerService customerService;
-	
+
 	@Autowired
 	private OrderService orderService;
 
 	@PostMapping("/customer")
 	public Customer registerCustomer(@Valid @RequestBody Customer newCustomer) throws CustomerNotFoundException {
-		
+
 		return customerService.addCustomer(newCustomer);
-		
+
 	}
 
 	@GetMapping("/customer/{id}")
 	public Customer getCustomerById(@PathVariable("id") Integer customerId, HttpServletRequest request)
-			throws CustomerNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
+			throws CustomerNotFoundException, UserNotFoundException, JwtTokenMalformedException,
+			JwtTokenMissingException {
 		JwtUtil.validateToken(request);
 		return customerService.getCustomerById(customerId);
 	}
 
 	@PutMapping("/customer/{id}")
-	public Customer updateCustomer(@PathVariable("id") Integer customerId,@Valid @RequestBody Customer customerData, HttpServletRequest request)
-			throws CustomerNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
+	public Customer updateCustomer(@PathVariable("id") Integer customerId, @Valid @RequestBody Customer customerData,
+			HttpServletRequest request) throws CustomerNotFoundException, UserNotFoundException,
+			JwtTokenMalformedException, JwtTokenMissingException {
 		JwtUtil.validateToken(request);
-		return customerService.updateCustomer(customerId,customerData);
+		return customerService.updateCustomer(customerId, customerData);
 	}
 
-
-	@PutMapping("/customer/account/{customerId}")
+	@PutMapping("/customer/deactivate/{customerId}")
 	public String deactivateCustomerById(@PathVariable("customerId") Integer customerId, HttpServletRequest request)
-			throws CustomerNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
-		JwtUtil.validateToken(request);
+			throws CustomerNotFoundException, UserNotFoundException, JwtTokenMalformedException,
+			JwtTokenMissingException {
+		// JwtUtil.validateToken(request);
 		return this.customerService.deactivateCustomerAccountById(customerId);
 
 	}
+
+	@PutMapping("/customer/activate/{customerId}")
+	public String activateCustomerById(@PathVariable("customerId") Integer customerId, HttpServletRequest request)
+			throws CustomerNotFoundException {
+
+		return this.customerService.activateCustomerAccountById(customerId);
+
+	}
+
 	@GetMapping("customer/order/{customerId}")
-	public List<Orders> getCustomerOrders(@PathVariable("customerId") Integer customerId,HttpServletRequest request) throws CustomerNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException{
+	public List<Orders> getCustomerOrders(@PathVariable("customerId") Integer customerId, HttpServletRequest request)
+			throws CustomerNotFoundException, UserNotFoundException, JwtTokenMalformedException,
+			JwtTokenMissingException {
 		JwtUtil.validateToken(request);
 		return this.orderService.getOrderByCustomerId(customerId);
 	}
-	
+
 	@PutMapping("/customer/order/{customerId}/{orderId}")
-	public String cancelOrderFromCustomerById(@PathVariable("customerId") Integer customerId,@PathVariable("orderId")Integer orderId,HttpServletRequest request)
-			throws CustomerNotFoundException, OrderNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
-		JwtUtil.validateToken(request);
-		return customerService.cancelOrdersFromCustomerById(customerId,orderId);
-	}
+	public String cancelOrderFromCustomerById(@PathVariable("customerId") Integer customerId,
+			@PathVariable("orderId") Integer orderId, HttpServletRequest request) throws CustomerNotFoundException,
+			OrderNotFoundException{
 	
+		return customerService.cancelOrdersFromCustomerById(customerId, orderId);
+	}
+
 	@GetMapping("customer/orders/order/{orderId}")
-	public Orders getCustomerOrdersParticularOrder(@PathVariable("orderId") Integer orderId,HttpServletRequest request) throws  OrderNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException{
+	public Orders getCustomerOrdersParticularOrder(@PathVariable("orderId") Integer orderId, HttpServletRequest request)
+			throws OrderNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
 		JwtUtil.validateToken(request);
 		return this.orderService.getOrderById(orderId);
 	}
-	
+
 	@PutMapping("/customer/order/{customerId}/{orderId}/{mobileId}")
-	public String cancelMobileFromOrderFromCustomerById(@PathVariable("customerId") Integer customerId,@PathVariable("orderId")Integer orderId,@PathVariable("mobileId")Integer mobileId,HttpServletRequest request)
-			throws CustomerNotFoundException, OrderNotFoundException, MobileNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
-		JwtUtil.validateToken(request);
-		return customerService.cancelMobileFromOrdersById(customerId,orderId,mobileId);
+	public String cancelMobileFromOrderFromCustomerById(@PathVariable("customerId") Integer customerId,
+			@PathVariable("orderId") Integer orderId, @PathVariable("mobileId") Integer mobileId,
+			HttpServletRequest request) throws CustomerNotFoundException, OrderNotFoundException,
+			MobileNotFoundException{
+
+		return customerService.cancelMobileFromOrdersById(customerId, orderId, mobileId);
 	}
-
-
 
 }

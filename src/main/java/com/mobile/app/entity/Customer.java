@@ -33,7 +33,7 @@ public class Customer extends User {
 
 	private String status;
 
-	@Size(max = 255, message = "Address should not exceed 255 characters")
+	@Size( min=3, max = 255, message = "Address should not exceed 255 characters")
 	private String address;
 
 	@OneToOne(cascade = CascadeType.ALL)

@@ -43,7 +43,7 @@ public class PaymentController {
 
 	}
 
-	@GetMapping("/allPayments/")
+	@GetMapping("/allPayments")
 	public List<Payment> getAllPayments() {
 		return paymentService.getAllPayments();
 	}

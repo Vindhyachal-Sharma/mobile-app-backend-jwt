@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mobile.app.entity.Cart;
 import com.mobile.app.entity.Payment;
 import com.mobile.app.exception.PaymentNotFoundException;
 import com.mobile.app.repository.CartRepository;
@@ -67,6 +66,5 @@ public class PaymentServiceImpl implements PaymentService {
 			throw new PaymentNotFoundException("Payment with Id" + paymentId + "was not found");
 		}
 	}
-
 
 }

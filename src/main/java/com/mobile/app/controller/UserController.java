@@ -17,6 +17,7 @@ import com.mobile.app.entity.User;
 import com.mobile.app.exception.UserNotFoundException;
 import com.mobile.app.repository.UserRepository;
 import com.mobile.app.service.UserServiceImpl;
+
 @RestController
 @CrossOrigin("*")
 public class UserController {
@@ -28,66 +29,64 @@ public class UserController {
 
 	@GetMapping(value = "/signin")
 	public ResponseEntity<String> signIn(@RequestBody User user, HttpServletRequest request) {
-		
+
 		try {
 
 			userService.signIn(user);
-			return new ResponseEntity<String>("Login Successfull!", HttpStatus.OK);
+			return new ResponseEntity<>("Login Successfull!", HttpStatus.OK);
 		} catch (UserNotFoundException ex) {
 			System.out.println(ex.getMessage());
 		}
-		return new ResponseEntity<String>("Login Unsuccessfull!", HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>("Login Unsuccessfull!", HttpStatus.BAD_REQUEST);
 
 	}
 
 	@GetMapping("/getUser/{uid}")
 
-	public ResponseEntity<?> getUser(@PathVariable("uid") Integer id, HttpServletRequest request) throws UserNotFoundException {
-		
+	public ResponseEntity<?> getUser(@PathVariable("uid") Integer id, HttpServletRequest request)
+			throws UserNotFoundException {
 
 		User user = userService.getUserById(id);
 		if (user == null) {
 			throw new UserNotFoundException("Appointment with appointment id:" + id + "not found");
 		}
-		return new ResponseEntity<User>(user, HttpStatus.OK);
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
 	@GetMapping("signout")
 	public ResponseEntity<String> signOut(HttpServletRequest request) {
-		
 
-		
-		return new ResponseEntity<String>("Logout Successfull!", HttpStatus.OK);
+		return new ResponseEntity<>("Logout Successfull!", HttpStatus.OK);
 
 	}
 
-
 	@PatchMapping("/{id}/{userName}/{password}")
-	public ResponseEntity<?> updateCredentials(@PathVariable("id") Integer userId, @PathVariable("userName") String userName,
-			@PathVariable("password") String password,HttpServletRequest request) throws UserNotFoundException {
+	public ResponseEntity<?> updateCredentials(@PathVariable("id") Integer userId,
+			@PathVariable("userName") String userName, @PathVariable("password") String password,
+			HttpServletRequest request) throws UserNotFoundException {
 		User user = checkUserLoggedIn(request);
-		if(!user.getRole().equals("admin"))
+		if (!user.getRole().equals("admin"))
 			throw new UserNotFoundException("Invalid Operation");
-		
+
 		User userToBeUpdated = userService.getUserById(userId);
 
 		User updatedUser = userService.updateCredentials(userToBeUpdated, userName, password);
 		if (updatedUser != null) {
-			return new ResponseEntity<String>("Credentials updated successfully", HttpStatus.OK);
+			return new ResponseEntity<>("Credentials updated successfully", HttpStatus.OK);
 		} else
-			return new ResponseEntity<String>("Not able to update credentials", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("Not able to update credentials", HttpStatus.NOT_FOUND);
 
 	}
-	
+
 	public User checkUserLoggedIn(HttpServletRequest request) throws UserNotFoundException {
 		HttpSession session = request.getSession(false);
-		if(session == null) {
+		if (session == null) {
 			throw new UserNotFoundException("You should login first");
 		}
 		String userName = (String) session.getAttribute("name");
 		User user = userRepository.findByUserName(userName);
 		return user;
-				
+
 	}
 
 }

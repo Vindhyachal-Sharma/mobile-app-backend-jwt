@@ -15,6 +15,8 @@ import com.mobile.app.exception.AdminNotFoundException;
 import com.mobile.app.exception.CartNotFoundException;
 import com.mobile.app.exception.CategoryNotFoundException;
 import com.mobile.app.exception.CustomerNotFoundException;
+import com.mobile.app.exception.JwtTokenMalformedException;
+import com.mobile.app.exception.JwtTokenMissingException;
 import com.mobile.app.exception.MobileNotFoundException;
 import com.mobile.app.exception.OrderNotFoundException;
 import com.mobile.app.exception.PaymentNotFoundException;
@@ -30,13 +32,6 @@ public class CommonControllerAdvice {
 		return e.getMessage();
 	}
 
-	@ExceptionHandler(CategoryNotFoundException.class)
-	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public String handleMobileExceptions(CategoryNotFoundException e) {
-
-		return e.getMessage();
-	}
-
 	@ExceptionHandler(CartNotFoundException.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	public String handleMobileExceptions(CartNotFoundException e) {
@@ -44,9 +39,30 @@ public class CommonControllerAdvice {
 		return e.getMessage();
 	}
 
+	@ExceptionHandler(CategoryNotFoundException.class)
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	public String handleMobileExceptions(CategoryNotFoundException e) {
+
+		return e.getMessage();
+	}
+
 	@ExceptionHandler(CustomerNotFoundException.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	public String handleMobileExceptions(CustomerNotFoundException e) {
+
+		return e.getMessage();
+	}
+
+	@ExceptionHandler(JwtTokenMalformedException.class)
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	public String handleMobileExceptions(JwtTokenMalformedException e) {
+
+		return e.getMessage();
+	}
+
+	@ExceptionHandler(JwtTokenMissingException.class)
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	public String handleMobileExceptions(JwtTokenMissingException e) {
 
 		return e.getMessage();
 	}
@@ -64,21 +80,20 @@ public class CommonControllerAdvice {
 
 		return e.getMessage();
 	}
-	
+
 	@ExceptionHandler(OrderNotFoundException.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	public String handleMobileExceptions(OrderNotFoundException e) {
 
 		return e.getMessage();
 	}
-	
+
 	@ExceptionHandler(PaymentNotFoundException.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	public String handleMobileExceptions(PaymentNotFoundException e) {
 
 		return e.getMessage();
 	}
-
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)

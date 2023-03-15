@@ -9,14 +9,14 @@ import javax.validation.constraints.Size;
 
 public class LoginCredentials implements Serializable{
 
-	
+	@NotNull(message = "Username must not be empty")
 	@Column(unique = true, nullable = false)
 	@Size(min = 3, max = 30, message = "Username must be between 3 and 30 characters long")
 	@Pattern(regexp = "^[a-zA-Z0-9_-]+$", message = "Username may only contain alphanumeric characters, underscores, and hyphens")
 	private String userName;
 	
 	
-	@NotNull
+	@NotNull(message = "password must not be empty")
 	@Size(min = 8, max = 20, message = "Password must be between 8 and 20 characters long")
 	@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$", message = "Password must contain at least one digit, one lowercase, one uppercase letter, one special symbol (@#$%^&+=) and no whitespace")
 	private String password;

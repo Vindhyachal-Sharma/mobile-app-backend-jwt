@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mobile.app.entity.Admin;
-import com.mobile.app.entity.Customer;
 import com.mobile.app.exception.AdminNotFoundException;
-import com.mobile.app.exception.CustomerNotFoundException;
 import com.mobile.app.repository.AdminRepository;
 
 @Service
@@ -27,7 +25,7 @@ public class AdminServiceImpl implements AdminService {
 		}
 		if (optMobile != null) {
 			throw new AdminNotFoundException("Mobile number already registered");
-			
+
 		}
 		admin.setRole("Admin");
 		return adminRepository.save(admin);
@@ -43,6 +41,7 @@ public class AdminServiceImpl implements AdminService {
 		admin.setName(updateAdmin.getName());
 		return this.adminRepository.save(updateAdmin);
 	}
+
 	@Override
 	public Admin getAdminById(Integer adminId) throws AdminNotFoundException {
 
@@ -52,6 +51,5 @@ public class AdminServiceImpl implements AdminService {
 
 		return admin.get();
 	}
-	
-	
+
 }

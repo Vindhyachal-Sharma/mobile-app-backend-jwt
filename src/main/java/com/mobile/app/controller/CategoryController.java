@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mobile.app.entity.Category;
 import com.mobile.app.exception.CategoryNotFoundException;
-import com.mobile.app.exception.UserNotFoundException;
 import com.mobile.app.service.CategoryService;
 
 @RestController
@@ -26,14 +25,14 @@ public class CategoryController {
 
 	@GetMapping("/{categoryId}")
 	public Category getCategoryById(@PathVariable("categoryId") Integer categoryId, HttpServletRequest request)
-			throws CategoryNotFoundException, UserNotFoundException {
+			throws CategoryNotFoundException {
 
 		return categoryService.getCategoryById(categoryId);
 	}
 
-	@GetMapping("/{categoryName}")
+	@GetMapping("/name/{categoryName}")
 	public Category getCategoryByName(@PathVariable("categoryName") String categoryName, HttpServletRequest request)
-			throws CategoryNotFoundException, UserNotFoundException {
+			throws CategoryNotFoundException {
 
 		return categoryService.getCategoryByName(categoryName);
 	}
@@ -42,6 +41,5 @@ public class CategoryController {
 	public List<Category> getAllCategorys() {
 		return categoryService.getAllCategories();
 	}
-
 
 }

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mobile.app.entity.Mobile;
-import com.mobile.app.exception.CategoryNotFoundException;
 import com.mobile.app.exception.MobileNotFoundException;
 import com.mobile.app.service.MobileService;
 
@@ -19,8 +18,6 @@ public class MobileController {
 
 	@Autowired
 	private MobileService mobileService;
-
-	
 
 	@GetMapping("/mobiles/{id}")
 	public Mobile getMobileById(@PathVariable("id") Integer id) throws MobileNotFoundException {

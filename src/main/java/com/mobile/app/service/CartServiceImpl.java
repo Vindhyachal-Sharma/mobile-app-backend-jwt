@@ -1,10 +1,8 @@
 package com.mobile.app.service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +20,6 @@ import com.mobile.app.exception.MobileNotFoundException;
 import com.mobile.app.exception.PaymentNotFoundException;
 import com.mobile.app.repository.CartRepository;
 import com.mobile.app.repository.CustomerRepository;
-import com.mobile.app.repository.OrderRepository;
 import com.mobile.app.repository.PaymentRepository;
 
 @Service
@@ -45,7 +42,6 @@ public class CartServiceImpl implements CartService {
 
 	@Autowired
 	private OrderService orderService;
-	
 
 	@Override
 	public Cart addMobileToCartByCustomerId(Integer mobileId, Integer customerId)
@@ -170,13 +166,13 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public String checkout(Payment payment, Integer cartId) throws CartNotFoundException, CustomerNotFoundException, PaymentNotFoundException {
+	public String checkout(Payment payment, Integer cartId)
+			throws CartNotFoundException, CustomerNotFoundException, PaymentNotFoundException {
 		Payment madePayment = new Payment();
-		if(payment==null) {
+		if (payment == null) {
 			throw new PaymentNotFoundException("Payment mode not proper");
 		}
-		
-		
+
 		Cart cart = getCartByCustomerId(cartId);
 		Customer customer = customerService.getCustomerById(cartId);
 		if (cart.getQuantity() == 0) {
@@ -187,7 +183,7 @@ public class CartServiceImpl implements CartService {
 			paymentRepository.save(madePayment);
 
 			Orders order = new Orders();
-			order.setCost(cart.getCost());		
+			order.setCost(cart.getCost());
 			order.setQuantity(cart.getMobiles().size());
 			order.setOrderDate(LocalDate.now());
 			order.setDispatchDate(LocalDate.now());
@@ -195,7 +191,7 @@ public class CartServiceImpl implements CartService {
 			order.setOrderStatus(OrderStatus.PLACED);
 			order.setPayment(madePayment);
 			order.getMobiles().addAll(cart.getMobiles());
-			for(Mobile mobile:order.getMobiles()) {
+			for (Mobile mobile : order.getMobiles()) {
 				mobile.setOrderStatusOfMobile(MobileOrderStatus.Placed);
 			}
 			customer.getOrders().add(order);
@@ -204,12 +200,11 @@ public class CartServiceImpl implements CartService {
 			cart.getMobiles().clear();
 			cart.setQuantity(0);
 			cart.setCost(0.0);
-		cartRepository.save(cart);
+			cartRepository.save(cart);
 			customerRepository.save(customer);
 
 			return "Thanks for the order";
 		}
 	}
-	
 
 }

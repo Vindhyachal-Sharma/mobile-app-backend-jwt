@@ -39,8 +39,8 @@ public class OrderController {
 
 	@DeleteMapping("/cancel/order/{customerId}/{orderId}")
 	public String CancelOrderById(@PathVariable("customerId") Integer customerId, @PathVariable("orderId") Integer orderId,HttpServletRequest request)
-			throws OrderNotFoundException, CustomerNotFoundException, UserNotFoundException, JwtTokenMalformedException, JwtTokenMissingException {
-		JwtUtil.validateToken(request);
+			throws OrderNotFoundException, CustomerNotFoundException{
+
 		return this.customerService.cancelOrdersFromCustomerById(customerId, orderId);
 
 	}

@@ -130,6 +130,17 @@ public class CustomerServiceImpl implements CustomerService {
 		this.customerRepository.save(customer);
 		return "Id Deactivated Successfully will get activated when logged in again";
 	}
+	@Override
+	public String activateCustomerAccountById(Integer customerId) throws CustomerNotFoundException {
+		Optional<Customer> optCustomer = this.customerRepository.findById(customerId);
+		if (optCustomer.isEmpty())
+			throw new CustomerNotFoundException("Customer id does not exists to deactivate account !");
+		Customer customer = optCustomer.get();
+		customer.setStatus("Active");
+		this.customerRepository.save(customer);
+		return "Id Activated Successfully will get activated when logged in again";
+	}
+
 
 	@Override
 	public List<Customer> getAllCustomers() {

@@ -54,17 +54,17 @@ public class LoginController {
 			throw new UserNotFoundException("Invalid Password");
 		}
 		User newUser = user;
-		if ("customer".equals(user.getRole())) {
+		if (user.getRole()=="customer") {
 			Customer customer = customerRepository.findByUserName(credentials.getUserName());
 			newUser = customer;
 		}
-		if ("Admin".equals(user.getRole())) {
+		if (user.getRole()=="Admin") {
 			Admin admin = adminRepository.findByUserName(credentials.getUserName());
 			newUser = admin;
 		}
 
 		String token = jwtUtil.generateToken(user);
-		response.addHeader("Authorization", "Bearer "+ token);
+		response.addHeader("Authorization", "Bearer "+token);
 		response.addHeader("Access-Control-Expose-Headers", "Authorization");
 		return ResponseEntity.ok().body(newUser) ;
 

@@ -35,4 +35,6 @@ public interface CustomerService {
 	String cancelMobileFromOrdersById(Integer customerId, Integer orderId, Integer mobileId)
 			throws CustomerNotFoundException, OrderNotFoundException, MobileNotFoundException;
 
+	String activateCustomerAccountById(Integer customerId) throws CustomerNotFoundException;
+
 }
